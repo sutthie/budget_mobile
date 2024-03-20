@@ -1,0 +1,97 @@
+import 'package:budget_mobile/styles/TextStyle.dart';
+import 'package:budget_mobile/styles/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' show PreviewData;
+import 'package:flutter_link_previewer/flutter_link_previewer.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class test_flutterlink_preview3 extends StatefulWidget {
+  const test_flutterlink_preview3({super.key});
+
+  @override
+  State<test_flutterlink_preview3> createState() =>
+      _test_flutterlink_preview3State();
+}
+
+class _test_flutterlink_preview3State extends State<test_flutterlink_preview3> {
+  //Map<String, PreviewData> datas = {};
+//http://10.130.230.64/budget1/Follow/doc/5754_ข้าราชการไทยยุคใหม่เข้า รพเอกชน ได้แล้ว.pdf
+  String fn = 'S__328314.jpg';
+  String fn1 =
+      '641111-0307.8-2140-ขอเบิกเงินเพื่อใช้ในการจัดประชุมบูรณาการคำของบประมาณรายจ่าย งป.pdf';
+  //String fn ='5754_%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%84%E0%B8%97%E0%B8%A2%E0%B8%A2%E0%B8%B8%E0%B8%84%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%20%E0%B8%A3%E0%B8%9E%E0%B9%80%E0%B8%AD%E0%B8%81%E0%B8%8A%E0%B8%99%20%E0%B9%84%E0%B8%94%E0%B9%89%E0%B9%81%E0%B8%A5%E0%B9%89%E0%B8%A7.pdf';
+  String urlStr = 'http://10.130.230.64/budget1/Follow/doc/';
+  // late String fullUrl = urlStr + Uri.encodeComponent(fn);
+  late String fullUrl = urlStr + Uri.encodeComponent(fn1);
+
+  late PreviewData previewData = PreviewData(link: fullUrl);
+
+  late PreviewData previewData1 = PreviewData(
+    link: fullUrl,
+    title: fn,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    //SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        //title: Text(widget.title),
+        title: Text(
+          "ปรับปรุงข้อมูลผู้ใช้",
+          style: styleHeadWhite4,
+        ),
+      ),
+      backgroundColor: lightyellow2,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Container(
+            //width: MediaQuery.of(context).size.width * 0.9,
+            alignment: Alignment.center,
+            color: lightgreen2,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    LinkPreview(
+                      // linkStyle: TextStyle(
+                      //     fontSize: 20,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: red,
+                      //     decoration: TextDecoration.none),
+                      //textStyle:TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: red),
+                      enableAnimation: true,
+                      onPreviewDataFetched: (data) {},
+                      previewData: previewData1,
+                      text: fullUrl,
+                      //width: 500,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        launchUrl(Uri.parse(fullUrl)).onError(
+                          (error, stackTrace) {
+                            print("Url is not valid!");
+                            return false;
+                          },
+                        );
+                      },
+                      child: Text('Open link'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

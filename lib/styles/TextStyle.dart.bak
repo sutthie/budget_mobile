@@ -1,0 +1,196 @@
+import 'package:flutter/material.dart';
+
+TextStyle styleMedium(color) {
+  return TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 18.0,
+    //color: Colors.green.shade900,
+    color: color,
+    fontWeight: FontWeight.bold,
+    //decorationColor: Colors.yellowAccent.shade100,
+    //backgroundColor: Colors.lightBlueAccent,
+  );
+}
+
+TextStyle styleHeadPurple = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.purple,
+);
+
+TextStyle styleHeadPurple2 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.purple,
+);
+
+TextStyle styleHeadYellow = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.yellow,
+);
+
+TextStyle styleHeadYellow2 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.yellow,
+);
+
+TextStyle styleHeadYellow3 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 14.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.yellow,
+);
+
+TextStyle styleHeadYellow4 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 12.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.yellow,
+);
+
+TextStyle styleHeadYellow5 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 10.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.yellow,
+);
+
+TextStyle styleHeadWhite = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+TextStyle styleHeadWhite2 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+TextStyle styleHeadWhite3 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 14.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+TextStyle styleHeadWhite4 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 12.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+TextStyle styleHeadWhite5 = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 10.0,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+TextStyle styleMsg = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  //color: Colors.green.shade900,
+  color: Colors.green.shade900,
+  fontWeight: FontWeight.bold,
+  //decorationColor: Colors.yellowAccent.shade100,
+  //backgroundColor: Colors.lightBlueAccent,
+  backgroundColor: Colors.white,
+);
+
+TextStyle styleLabel = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  //color: Colors.green.shade900,
+  color: Colors.green.shade900,
+  fontWeight: FontWeight.bold,
+  //decorationColor: Colors.yellowAccent.shade100,
+  backgroundColor: Colors.lightBlueAccent,
+);
+
+TextStyle styleLabelMedium = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  //color: Colors.green.shade900,
+  color: Colors.red,
+  fontWeight: FontWeight.bold,
+  //decorationColor: Colors.yellowAccent.shade100,
+  backgroundColor: Colors.lightBlueAccent,
+);
+
+TextStyle styleLabelLarge = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 20.0,
+  //color: Colors.green.shade900,
+  color: Colors.red,
+  fontWeight: FontWeight.bold,
+  //decorationColor: Colors.yellowAccent.shade100,
+  backgroundColor: Colors.lightBlueAccent,
+);
+
+TextStyle styleError = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  //color: Colors.green.shade900,
+  color: Colors.red,
+  fontWeight: FontWeight.bold,
+  //decorationColor: Colors.yellowAccent.shade100,
+  backgroundColor: Colors.white,
+);
+
+TextStyle styleSmallest = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 10.0,
+  color: Colors.black,
+);
+
+TextStyle styleSmalless = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 12.0,
+  color: Colors.black,
+);
+
+TextStyle styleSmall = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 14.0,
+  color: Colors.black,
+);
+
+TextStyle styleNormal = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 16.0,
+  color: Colors.black,
+);
+
+TextStyle styleNormalMedium = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  color: Colors.black,
+);
+
+TextStyle styleNormalLarge = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 20.0,
+  color: Colors.black,
+);
+
+TextStyle styleChatOur = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  color: Colors.blue,
+);
+
+TextStyle styleChatOther = TextStyle(
+  fontFamily: 'Montserrat',
+  fontSize: 18.0,
+  color: Colors.black,
+);
