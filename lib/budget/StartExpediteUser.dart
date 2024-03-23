@@ -730,10 +730,20 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     _file,
                     "budget1",
                   ).then((value) {
-                    if (value != "") {
-                      print("Upload File Successful \n FileName : " + value);
+                    // if (value != "") {
+                    //   print("Upload File Successful \n FileName : " + value);
+                    // } else {
+                    //   print("Error Upload File");
+                    // }
+                    //var ret = json.decode(value);
+                    //print(ret["result"] + " | " + ret["msg"]);
+                    Map<String, dynamic> ret =
+                        jsonDecode(value.replaceAll("'", '"'));
+
+                    if (ret['result'] == true) {
+                      print("Success Upload File");
                     } else {
-                      print("Error Upload File");
+                      print('Error Upload File : $ret["msg"]');
                     }
                   });
                 }

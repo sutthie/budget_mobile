@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
@@ -55,29 +56,50 @@ class UploadFileClass {
       });
 
       Response response = await Dio().post(
-          //"http://$ipAddress/phpFlutterBudget/UploadFile.php",
-          url,
-          data: formData);
+        //"http://$ipAddress/phpFlutterBudget/UploadFile.php",
+        url,
+        data: formData,
+        //options: Options(responseType: ResponseType.plain),
+      );
 
       if (response.statusCode == 200) {
-        // print("file upload response:$response");
+        //print("file upload response:${response.data}");
 
-        // ข้อมูลการตอบสนองเป็น JSON
+        //ข้อมูลการตอบสนองเป็น JSON
         Map<String, dynamic> data = response.data;
-        print(data['result']); // แสดงชื่อ
-
-        if (data['result'] == true) {
-          return data['msg']; // return filename
-        } else {
-          return "";
-        }
+        // print(data['result']); // แสดงชื่อ
+        // if (data['result'] == true) {
+        //   return data['msg']; // return filename
+        // } else {
+        //   return "false";
+        // }
+        String ret = "{'result': '${data['result']}', 'msg': '${data['msg']}'}";
+        return ret;
       } else {
         // เกิดข้อผิดพลาด
-        return "";
+        var ret = {"result": false, "msg": "No Response from Server"};
+        return ret.toString();
       }
-    } catch (e) {
-      print("expectiation caugch: $e");
-      return "";
+    } on DioException catch (e) {
+      //print("expectiation caugch: $e");
+      //return "false";
+      // เกิดข้อผิดพลาด
+
+      // if (e.response != null) {
+      //   print(e.response!.data);
+      //   print(e.response!.headers);
+      //   print(e.response!.requestOptions);
+      // } else {
+      //   // Something happened in setting up or sending the request that triggered an Error
+      //   print(e.requestOptions);
+      //   print(e.message);
+      // }
+
+      var ret = {
+        "result": "false",
+        "msg": "เกิดความผิดพลาดในการอัพโหลดไฟล์ : ${e.message}"
+      };
+      return ret.toString();
     }
   }
 
