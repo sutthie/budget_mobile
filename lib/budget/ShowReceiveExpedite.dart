@@ -155,7 +155,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                             elevation: 8,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('${tbs.title} | ${tbs.amout}',
+                              child: Text('${tbs.title} | ${tbs.doc_unit_no}',
                                   style: const TextStyle(fontSize: 16.0)),
                             )),
                       ),
@@ -190,7 +190,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                                     // );
                                   },
                                   child: Text(
-                                      'ผู้ส่ง: ${tbs.response_person}|วันเวลาส่ง : ${tbs.date_sent_real}',
+                                      'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real}',
                                       style: TextStyle(fontSize: 13))),
                             )),
                       ),

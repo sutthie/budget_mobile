@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, file_names
 import 'package:budget_mobile/models/TBStatusSearch.dart';
+import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
 import '../global/DateTimes.dart';
 import '../global/ResponseMessage.dart';
-import '../global/GetYearBudget.dart';
+// import '../global/GetYearBudget.dart';
 import '../styles/TextStyle.dart';
 
 class ReceiveExpedite extends StatefulWidget {
@@ -23,11 +24,16 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   late MySQLDB mydb;
   late ResponseMessage msg;
 //=====Controller Text===========
-  final txtIdExpSpen = TextEditingController();
-  final txtListName = TextEditingController();
+  final txtListExpen = TextEditingController();
+  final txtTitle = TextEditingController();
+  final txtDocUnitNo = TextEditingController();
+  final txtUnitSend = TextEditingController();
+  final txtAmout = TextEditingController();
+  final txtDateSend = TextEditingController();
   final txtStatus = TextEditingController();
+  final txtNoDocRx = TextEditingController();
   final txtStRX = TextEditingController();
-  final txtDaystart = TextEditingController();
+
   final txtUnit_chk = TextEditingController();
   final txtResponse = TextEditingController();
 
@@ -56,8 +62,18 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     mydb = MySQLDB();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    // GetYearBudget yb = new GetYearBudget();
+    // yearNow = yb.getYearBudget();
+
+    txtListExpen.text = widget.tbstatus.list_exp_spen;
+    txtTitle.text = widget.tbstatus.title;
+    txtAmout.text = widget.tbstatus.amout;
+    txtDocUnitNo.text = widget.tbstatus.doc_unit_no;
+    txtDateSend.text = widget.tbstatus.date_sent_real;
+    txtUnitSend.text = widget.tbstatus.unit_send_name;
+    txtStatus.text = widget.tbstatus.status_work;
+    txtStRX.text = widget.tbstatus.status_detail;
+    txtResponse.text = widget.tbstatus.response_person;
   }
 
   @override
@@ -86,19 +102,19 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
     //======define widget=======
 
-    final txt_id_exp_spen = TextField(
+    final txt_list_exp_spen = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: _focus,
       focusNode: _focus,
-      controller: txtIdExpSpen,
+      controller: txtListExpen,
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
           //filled : false,
-          fillColor: Colors.white,
+          fillColor: lightpurple2,
           hintText: "รหัสงบ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
@@ -110,19 +126,19 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       },
     );
 
-    final txtlistname = TextField(
+    final txt_title = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: _focus,
       //focusNode: _focus,
-      controller: txtListName,
+      controller: txtTitle,
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
           //filled : false,
-          fillColor: Colors.white,
+          fillColor: lightpurple2,
           //hintText: "ชื่องบ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
@@ -131,22 +147,75 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       },
     );
 
-    final txt_st_rx = TextField(
+    final txt_amout = TextField(
       style: styleInput,
       //autofocus: true,
-      //focusNode: focusNode,
       //focusNode: _focus,
-      controller: txtStRX,
+      //focusNode: _focus,
+      controller: txtAmout,
+      // minLines: 1, // Display at least 5 lines
+      // maxLines: null,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
-          fillColor: Colors.white,
+          //filled : false,
+          fillColor: lightpurple2,
           //hintText: "ชื่องบ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
+    );
+
+    final txt_doc_unit_no = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      //focusNode: _focus,
+      controller: txtDocUnitNo,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
+          //hintText: "ชื่องบ",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+      onSubmitted: (v) {
+        //_fieldFocusChange(context, _focus, _nextFocus);
+      },
+    );
+
+    final txt_unit_send = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      //focusNode: _focus,
+      controller: txtUnitSend,
+      //keyboardType: TextInputType.number,
+
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
+          hintText: "",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+    );
+
+    final txt_date_send = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      focusNode: _focusDayStart,
+      controller: txtDateSend,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
+          hintText: "",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
     );
 
     final txt_status = TextField(
@@ -164,63 +233,42 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: lightpurple2,
           hintText: "",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
     );
-    final txt_daystart = TextField(
+
+    final txt_no_doc_rx = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      focusNode: _focusDayStart,
-      controller: txtDaystart,
+      //focusNode: _focus,
+      controller: txtNoDocRx,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
           fillColor: Colors.white,
-          hintText: "วันที่เริ่ม",
+          hintText: "เลขที่หนังสือรับ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-      onTap: () {
-        DateTime dt = DateTime.now();
-        int dn = dt.year - 5;
-        DateTime ystart = DateTime(dn);
-        dn = dt.year + 10;
-        DateTime yend = DateTime(dn);
-
-        showDatePicker(
-                context: context,
-                initialDate: now.DateTimeNow(),
-                firstDate: ystart,
-                lastDate: yend)
-            .then((value) {
-          if (value != null) {
-            setState(() {
-              DateString = now.ConvertDateThaiNow(value);
-            });
-
-            txtDaystart.text = DateString;
-          }
-        });
-      },
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
     );
 
-    final txt_unit_chk = TextField(
+    final txt_status_rx = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
       //focusNode: _focus,
-      controller: txtUnit_chk,
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        //FilteringTextInputFormatter.digitsOnly,
-        //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-        currencyFormatter,
-      ],
+      controller: txtStRX,
+      //keyboardType: TextInputType.number,
+      // inputFormatters: [
+      //   //FilteringTextInputFormatter.digitsOnly,
+      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+      //   currencyFormatter,
+      // ],
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
@@ -229,6 +277,46 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
     );
+
+    // final txt_daystart = TextField(
+    //   style: styleInput,
+    //   //autofocus: true,
+    //   //focusNode: focusNode,
+    //   focusNode: _focusDayStart,
+    //   controller: txtDaystart,
+    //   decoration: InputDecoration(
+    //       contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+    //       filled: true,
+    //       fillColor: Colors.white,
+    //       hintText: "วันที่เริ่ม",
+    //       border:
+    //           OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+    //   onTap: () {
+    //     DateTime dt = DateTime.now();
+    //     int dn = dt.year - 5;
+    //     DateTime ystart = DateTime(dn);
+    //     dn = dt.year + 10;
+    //     DateTime yend = DateTime(dn);
+
+    //     showDatePicker(
+    //             context: context,
+    //             initialDate: now.DateTimeNow(),
+    //             firstDate: ystart,
+    //             lastDate: yend)
+    //         .then((value) {
+    //       if (value != null) {
+    //         setState(() {
+    //           DateString = now.ConvertDateThaiNow(value);
+    //         });
+
+    //         txtDaystart.text = DateString;
+    //       }
+    //     });
+    //   },
+    //   onSubmitted: (v) {
+    //     //_fieldFocusChange(context, _focus, _nextFocus);
+    //   },
+    // );
 
     final txt_response_person = TextField(
       style: styleInput,
@@ -245,7 +333,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: lightpurple2,
           hintText: "",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
@@ -319,7 +407,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          "ปรับปรุงข้อมูลงบประมาณ",
+          "รายละเอียดงานที่ส่งมา",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -334,7 +422,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('ประจำปี',
+                    Text('งบประมาณประจำปี',
                         style: styleHead.copyWith(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -349,32 +437,16 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text('รายละเอียดงาน', style: styleHead),
+                child: Text('วันที่ : ${now.DateThaiNow()}',
+                    style: styleHeadPurple3),
               ),
-              Visibility(
-                visible: false,
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: txt_id_exp_spen,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: 95,
-                        child: Text('Id_Exp_Spen', style: styleHead3)),
-                    Container(
-                        child: txt_id_exp_spen,
-                        width: MediaQuery.of(context).size.width * 0.70
-                        //width: 350,
-                        ),
-                  ],
-                ),
-              ),
+              // Visibility(
+              //   visible: false,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(2.0),
+              //     child: txt_list_exp_spen,
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
@@ -384,7 +456,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                     Container(
                         width: 80, child: Text('ชื่องบ', style: styleHead3)),
                     Container(
-                        child: txtlistname,
+                        child: txt_list_exp_spen,
                         width: MediaQuery.of(context).size.width * 0.75
                         //width: 350,
                         ),
@@ -398,7 +470,92 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('สถานะงาน', style: styleHead3)),
+                        width: 80, child: Text('ชื่องาน', style: styleHead3)),
+                    Container(
+                        child: txt_title,
+                        width: MediaQuery.of(context).size.width * 0.75
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80, child: Text('จำนวนเงิน', style: styleHead3)),
+                    Container(
+                        child: txt_amout,
+                        width: MediaQuery.of(context).size.width * 0.75
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80,
+                        child: Text('ที่ของหนังสือ', style: styleHead3)),
+                    Container(
+                        child: txt_doc_unit_no,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80,
+                        child: Text('หน่วยที่ส่ง', style: styleHead3)),
+                    Container(
+                        child: txt_unit_send,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80, child: Text('วันส่งมา', style: styleHead3)),
+                    Container(
+                        child: txt_date_send,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80, child: Text('สถานะ', style: styleHead3)),
                     Container(
                         child: txt_status,
                         width: MediaQuery.of(context).size.width * 0.75
@@ -415,9 +572,28 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('วันเริ่ม', style: styleHead3)),
+                        width: 80, child: Text('เลขที่รับ', style: styleHead3)),
                     Container(
-                        child: txt_daystart,
+                        child: txt_no_doc_rx,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80,
+                        child: Text('สถานะการปฏิบัติ', style: styleHead3)),
+                    Container(
+                        child: txt_status_rx,
                         width: MediaQuery.of(context).size.width * 0.75
 
                         //width: 350,
@@ -443,24 +619,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        width: 80,
-                        child: Text('สถานะการปฏิบัติ', style: styleHead3)),
-                    Container(
-                        child: txt_st_rx,
-                        width: MediaQuery.of(context).size.width * 0.75
 
-                        //width: 350,
-                        ),
-                  ],
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: saveButton,
