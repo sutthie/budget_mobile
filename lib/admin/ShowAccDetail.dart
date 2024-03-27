@@ -131,12 +131,6 @@ class _ShowAccountDetailState extends State<ShowAccountDetail> {
   @override
   Widget build(BuildContext context) {
 //====TextStyle========
-    TextStyle styleHead = const TextStyle(
-      fontFamily: 'Montserrat',
-      fontSize: 20.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.brown,
-    );
 
     TextStyle styleHead1 = const TextStyle(
       fontFamily: 'Montserrat',

@@ -211,7 +211,7 @@ class SideMenuLeft extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ShowReceiveExpedite(),
+                    builder: (context) => ShowReceiveExpedite(login.get('uid')),
                   ),
                 ),
               },

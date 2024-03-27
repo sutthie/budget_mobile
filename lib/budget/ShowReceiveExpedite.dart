@@ -1,14 +1,18 @@
+import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:flutter/material.dart';
 //import 'Dialog.dart';
-import '../models/Expedite.dart';
 import '../global/MySQLService.dart';
-import '../budget/ShowExpDetail.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'StartExpedite.dart';
+import 'ReceiveExpedite.dart';
 
 class ShowReceiveExpedite extends StatefulWidget {
+  final String uid;
+  ShowReceiveExpedite(this.uid) {
+    print(this.uid);
+  }
+
   @override
   _ShowReceiveExpediteState createState() => _ShowReceiveExpediteState();
 }
@@ -19,7 +23,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
   //String cond = "";
 
   // ====declare var========
-  late Future<List<Expedite>?> datList;
+  late Future<List<TBStatusSearch>?> datList;
 
   //==========dropdown init======
   // Default Drop Down Item.
@@ -34,12 +38,14 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
   //int yearNow = DateTime.now().year.toInt() + 543;
   late List<int> listyear;
 
-  var id_exp_spen;
+  // var id_exp_spen;
+  // var id_job;
+  // var id_status;
 
-  Future<List<Expedite>?> getDataList(String txtsearch, String ddlyear) {
-    Future<List<Expedite>?> datlist;
+  Future<List<TBStatusSearch>?> getDataList(String txtsearch, String ddlyear) {
+    Future<List<TBStatusSearch>?> datlist;
     MySQLDB mydb = new MySQLDB();
-    datlist = mydb.getExpSearch(txtsearch, ddlyear);
+    datlist = mydb.GetTBStatusSearch(txtsearch, ddlyear, widget.uid);
     return datlist;
   }
 
@@ -97,14 +103,19 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
     );
 
 //Create ListView using data get from service
-    Widget listExpenWidget(context, snapshot) {
+    Widget listTBStatusWidget(context, snapshot) {
       //final String idExpSpen = "";
       if (snapshot.data != null && snapshot.data.length > 0) {
         return ListView.builder(
           shrinkWrap: true,
           itemCount: snapshot.data.length,
           itemBuilder: (context, index) {
-            Expedite spen = snapshot.data[index];
+            TBStatusSearch tbs = snapshot.data[index];
+
+            //String IdJob = tbs.id_job.toString();
+            // get idJob for id_exp_spen in tbl_book_unit and get list_exp_spen in tbl_expedite_spending
+            //String IdExpSpen = "";
+            //IdExpSpen= func(IdJob);
 
             return GestureDetector(
               onTap: () {
@@ -123,10 +134,11 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ShowExpDetail(
-                      id_exp_spen: '${spen.id_exp_spen}',
-                    ),
-                    //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
+                    // builder: (context) => ReceiveExpedite(
+                    //     list_exp_spen: tbs.list_exp_spen,
+                    //     id_status: tbs.id_status.toString(),
+                    //     id_job: tbs.id_job.toString()),
+                    builder: (context) => ReceiveExpedite(tbstatus: tbs),
                   ),
                 );
               },
@@ -143,7 +155,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                             elevation: 8,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('${spen.list_exp_spen}',
+                              child: Text('${tbs.title} | ${tbs.amout}',
                                   style: const TextStyle(fontSize: 16.0)),
                             )),
                       ),
@@ -177,8 +189,9 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                                     //   ),
                                     // );
                                   },
-                                  child: Text('รหัสงบ : ${spen.id_exp_spen}',
-                                      style: TextStyle(fontSize: 14))),
+                                  child: Text(
+                                      'ผู้ส่ง: ${tbs.response_person}|วันเวลาส่ง : ${tbs.date_sent_real}',
+                                      style: TextStyle(fontSize: 13))),
                             )),
                       ),
                     ],
@@ -222,30 +235,10 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                 if (tbDBSnap.hasError)
                   return new Text('Error: ${tbDBSnap.error}');
                 else
-                  return listExpenWidget(context, tbDBSnap);
+                  return listTBStatusWidget(context, tbDBSnap);
             }
           });
     }
-
-    //======define widget=======
-    // ignore: unused_local_variable
-    /*     final txtsearch = TextField(
-          style: styleInput,
-          //autofocus: true,
-          //focusNode: focusNode,
-          //focusNode: _focus,
-          controller: txtSearch,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              filled: true,
-              fillColor: Colors.white,
-              //hintText: "ชื่องบ",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-          onSubmitted: (v) {
-            //_fieldFocusChange(context, _focus, _nextFocus);
-          },
-        ); */
 
     Widget txtsearch() {
       return TextField(
@@ -265,31 +258,8 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
       );
     }
 
-    // final ddlYear = DropdownButton<String>(
-    //   value: dropdownValue,
-    //   icon: const Icon(Icons.arrow_downward),
-    //   iconSize: 24,
-    //   elevation: 16,
-    //   style: styleLabel,
-    //   underline: Container(
-    //     height: 2,
-    //     color: Colors.deepPurpleAccent,
-    //   ),
-    //   onChanged: (String newValue) {
-    //     setState(() {
-    //       dropdownValue = newValue;
-    //     });
-    //   },
-    //   items: <String>['2561', '2562', '2563', '2564', '2565']
-    //       .map<DropdownMenuItem<String>>((String value) {
-    //     return DropdownMenuItem<String>(
-    //       value: value,
-    //       child: Text(value),
-    //     );
-    //   }).toList(),
-    // );
-
     final ddlYearNew = DropdownButton(
+      //borderRadius: BorderRadius.circular(10),
       value: yearNow,
       items: listyear.map((int item) {
         return DropdownMenuItem<int>(
@@ -318,10 +288,11 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
       elevation: 8,
       //style: TextStyle(color: Colors.green, fontSize: 16),
       style: styleLabel,
+      //dropdownColor: Colors.grey.shade200,
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
-      iconSize: 40,
+      iconSize: 30,
     );
 
 //======widget button==========
@@ -365,7 +336,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Main",
+        child: Text("Back",
             textAlign: TextAlign.center,
             style: styleInput.copyWith(color: Colors.white, fontSize: 14
                 //fontWeight: FontWeight.bold
@@ -401,7 +372,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "งบประมาณประจำปี",
+          "บันทึกหลักฐานการรับงาน",
           style: TextStyle(color: Colors.white),
         ),
       ),

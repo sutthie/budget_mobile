@@ -112,13 +112,6 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
 
 //styleCustom("", 16.0, Colors.redAccent.shade700, true)
 
-    TextStyle styleHead2 = const TextStyle(
-      fontFamily: 'Montserrat',
-      fontSize: 16.0,
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    );
-
     TextStyle styleHead3 =
         styleCustom("", 16.0, Colors.redAccent.shade700, true);
 

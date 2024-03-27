@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 import '../models/Expedite.dart';
+import '../models/TBStatusSearch.dart';
 import 'globalVar.dart';
 import '../models/Account.dart';
 import '../models/UnitName.dart';
@@ -980,7 +981,97 @@ class MySQLDB {
     }
   }
 
-//======================================================
+//====================== Table Status ================================
+
+  Future<List<TBStatusSearch>?> GetTBStatusSearch(
+      String cond, String years, String sent_to) async {
+    String url = "http://$ipAddress/phpFlutterBudget/GetTBStatusSearch.php";
+
+    final response = await http.post(Uri.parse(url),
+        body: {"cond": cond, "years": years, "sent_to": sent_to});
+    if (response.statusCode == 200) {
+      print(response.body);
+
+      if (response.body.trim() != "") {
+        final items =
+            json.decode(response.body.trim()).cast<Map<String, dynamic>>();
+
+        List<TBStatusSearch> statusList = items.map<TBStatusSearch>((json) {
+          return TBStatusSearch.fromJson(json);
+        }).toList();
+
+        return statusList;
+      } else {
+        return null;
+      }
+    } else {
+      throw Exception('Failed to load data from Server.');
+    }
+  }
+
+//=========================================================
+  // Future<TBStatus?> getTBStatusDetail(String id_status) async {
+  //   TBStatus tbs;
+  //   String url = "http://$ipAddress/phpFlutterBudget/GetTBStatusDetail.php";
+  //   //String querystring = "?id_exp_spen=$idExpSpen";
+  //   //String qs = urlEncode(text: querystring);
+  //   //log(urlSecret);
+  //   Uri uriObj = Uri.parse(url);
+
+  //   final response = await http.post(uriObj, body: {"id_status": id_status});
+  //   if (response.statusCode == 200) {
+  //     if (response.body.trim() != "") {
+  //       //final items = Expedite.fromJson(json.decode(response.body.trim())); error
+  //       //Map items = json.decode(response.body.trim());
+  //       final jsonRes = json.decode(response.body.trim());
+  //       //Expedite exp = new Expedite.fromJson(jsonRes);
+  //       if (jsonRes != null) {
+  //         int idlist = int.parse(jsonRes[0]["idlist"]);
+  //         String idExpSpen = jsonRes[0]["id_exp_spen"];
+  //         String listExpSpen = jsonRes[0]["list_exp_spen"];
+
+  //         int status = int.parse(jsonRes[0]["status"]);
+
+  //         int years = int.parse(jsonRes[0]["years"]);
+
+  //         String stwork = jsonRes[0]["stwork"];
+
+  //         String createtime = (jsonRes[0]["createtime"] == null)
+  //             ? ''
+  //             : jsonRes[0]["createtime"];
+  //         int whouse = (jsonRes[0]["whouse"] == null)
+  //             ? 0
+  //             : int.parse(jsonRes[0]["whouse"]);
+
+  //         String unit_chk =
+  //             (jsonRes[0]["unit_chk"] == null) ? '' : jsonRes[0]["unit_chk"];
+  //         String st_rx =
+  //             (jsonRes[0]["st_rx"] == null) ? '' : jsonRes[0]["st_rx"];
+
+  //         tbs = TBStatus(
+  //           id_status: id_status,
+  //           id_job: id_status,
+  //           id_use_int: id_use_int,
+  //           status: status,
+  //           sent_to: null,
+  //           date_sent_to: null,
+  //         );
+
+  //         return tbs;
+  //       } else {
+  //         return null;
+  //       }
+  //     } else {
+  //       return null;
+  //     }
+  //   } else {
+  //     throw Exception('Response Error : ${response.statusCode}');
+  //     //return null;
+  //     //log("error reponse : ${response.statusCode}");
+  //   }
+  // }
+
+  //======================================================
   static Future<String> createTable(String tb) async {
     String url = "http://$ipAddress/phpFlutterBudget/CreateTable.php";
 
