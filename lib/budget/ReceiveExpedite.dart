@@ -3,6 +3,7 @@ import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../download/OpenUrlBrowser.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
 import '../global/DateTimes.dart';
@@ -23,24 +24,29 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 // =====declare object===========
   late MySQLDB mydb;
   late ResponseMessage msg;
+// download file attach original
+  late OpenUrlBrowser open;
 //=====Controller Text===========
+  final txtIdExpen = TextEditingController();
   final txtListExpen = TextEditingController();
   final txtTitle = TextEditingController();
   final txtDocUnitNo = TextEditingController();
+  final txtDocUnit = TextEditingController();
   final txtUnitSend = TextEditingController();
   final txtAmout = TextEditingController();
   final txtDateSend = TextEditingController();
+  final txtDateSendReal = TextEditingController();
   final txtStatus = TextEditingController();
   final txtNoDocRx = TextEditingController();
   final txtStRX = TextEditingController();
-
+  final txtETC = TextEditingController();
   final txtUnit_chk = TextEditingController();
   final txtResponse = TextEditingController();
 
 //===== define FocusNode=======
-  final FocusNode _focus = FocusNode();
-  final FocusNode _focusDayStart = FocusNode();
-  final FocusNode _focusDayStop = FocusNode();
+  // final FocusNode _focus = FocusNode();
+  final FocusNode _focus_no_doc_rx = FocusNode();
+  final FocusNode _focus_status = FocusNode();
 
 //=======defind variable==================
   late DateTimes now = DateTimes();
@@ -61,19 +67,32 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     msg = ResponseMessage();
     mydb = MySQLDB();
 
+    open = OpenUrlBrowser();
+
     //=====init Data=================
     // GetYearBudget yb = new GetYearBudget();
     // yearNow = yb.getYearBudget();
+
+    //txtIdExpen.text = widget.tbstatus.id_exp_spen;
+    // print("id_exp_spen : ${widget.tbstatus.id_exp_spen}");
 
     txtListExpen.text = widget.tbstatus.list_exp_spen;
     txtTitle.text = widget.tbstatus.title;
     txtAmout.text = widget.tbstatus.amout;
     txtDocUnitNo.text = widget.tbstatus.doc_unit_no;
-    txtDateSend.text = widget.tbstatus.date_sent_real;
+
+    // file attach
+    txtDocUnit.text = widget.tbstatus.doc_unit;
+
+    txtDateSend.text = widget.tbstatus.date_sent_to;
+    txtDateSendReal.text = widget.tbstatus.date_sent_real;
     txtUnitSend.text = widget.tbstatus.unit_send_name;
     txtStatus.text = widget.tbstatus.status_work;
     txtStRX.text = widget.tbstatus.status_detail;
     txtResponse.text = widget.tbstatus.response_person;
+    txtETC.text = widget.tbstatus.etc;
+
+    _focus_no_doc_rx.requestFocus();
   }
 
   @override
@@ -101,12 +120,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     );
 
     //======define widget=======
+    // final txt_id_exp_spen = TextField(
+    //   controller: txtIdExpen,
+    // );
 
     final txt_list_exp_spen = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: _focus,
-      focusNode: _focus,
+      // focusNode: _focus,
       controller: txtListExpen,
       minLines: 1, // Display at least 5 lines
       maxLines: null,
@@ -118,12 +140,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           hintText: "รหัสงบ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-      onTap: () {
-        _focus.requestFocus();
-      },
-      onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
-      },
+      // onTap: () {
+      //   _focus.requestFocus();
+      // },
+      // onSubmitted: (v) {
+      //   //_fieldFocusChange(context, _focus, _nextFocus);
+      // },
     );
 
     final txt_title = TextField(
@@ -186,6 +208,35 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       },
     );
 
+    final txt_doc_unit = TextField(
+      style: styleLinkNormal(Colors.blue),
+      //autofocus: true,
+      //focusNode: focusNode,
+      //focusNode: _focus,
+      controller: txtDocUnit,
+      //keyboardType: TextInputType.number,
+      minLines: 1, // Display at least 5 lines
+      maxLines: null,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
+          hintText: "",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+      onTap: () {
+        //print(txtDocUnit.text);
+
+        String urlPath = 'http://10.130.230.64/budget1/Follow/doc/';
+
+        //call launchURL(urlStr, fileName)
+        //String fullUrl = urlStr + Uri.encodeComponent(fileName);
+        //url = "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
+
+        open.launchURL(urlPath, txtDocUnit.text);
+      },
+    );
+
     final txt_unit_send = TextField(
       style: styleInput,
       //autofocus: true,
@@ -207,8 +258,23 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      focusNode: _focusDayStart,
+      // focusNode: _focusDayStart,
       controller: txtDateSend,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
+          hintText: "",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+    );
+
+    final txt_date_send_real = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      // focusNode: _focusDayStart,
+      controller: txtDateSendReal,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
@@ -224,12 +290,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //focusNode: focusNode,
       //focusNode: _focus,
       controller: txtStatus,
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        //FilteringTextInputFormatter.digitsOnly,
-        //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-        currencyFormatter,
-      ],
+      //keyboardType: TextInputType.number,
+      // inputFormatters: [
+      //   //FilteringTextInputFormatter.digitsOnly,
+      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+      //   currencyFormatter,
+      // ],
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
@@ -241,9 +307,9 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
     final txt_no_doc_rx = TextField(
       style: styleInput,
-      //autofocus: true,
+      // autofocus: true,
       //focusNode: focusNode,
-      //focusNode: _focus,
+      focusNode: _focus_no_doc_rx,
       controller: txtNoDocRx,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -252,16 +318,24 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           hintText: "เลขที่หนังสือรับ",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-      onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
-      },
+      // onChanged: (val) {
+      //   // _focus_no_doc_rx.requestFocus();
+      //   if (_focus_no_doc_rx.hasFocus) {
+      //     print("TextField is focused");
+      //   } else {
+      //     print("TextField is not focused");
+      //   }
+      // },
+      // onSubmitted: (v) {
+      //   //_fieldFocusChange(context, _focus, _nextFocus);
+      // },
     );
 
     final txt_status_rx = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      //focusNode: _focus,
+      focusNode: _focus_status,
       controller: txtStRX,
       //keyboardType: TextInputType.number,
       // inputFormatters: [
@@ -269,10 +343,35 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
       //   currencyFormatter,
       // ],
+      minLines: 1, // Display at least 5 lines
+      maxLines: null,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
           fillColor: Colors.white,
+          hintText: "",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+    );
+
+    final txt_etc = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      focusNode: _focus_status,
+      controller: txtETC,
+      //keyboardType: TextInputType.number,
+      // inputFormatters: [
+      //   //FilteringTextInputFormatter.digitsOnly,
+      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+      //   currencyFormatter,
+      // ],
+      minLines: 1, // Display at least 5 lines
+      maxLines: null,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: lightpurple2,
           hintText: "",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
@@ -348,7 +447,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          //Navigator.of(context).pop();
+          // save tbl_status
+          print("id_exp_spen : ${widget.tbstatus.id_exp_spen}");
+          print("id_job : ${widget.tbstatus.id_job}");
+          print("id_status : ${widget.tbstatus.id_status}");
+          //print("status : " + txtStatus.text);
+          print("status detail : " + txtStRX.text);
         },
         child: Text("บันทึก",
             textAlign: TextAlign.center,
@@ -401,7 +505,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     //txtResponse.text = result!.response_person;
     // });
 
-    _focus.requestFocus();
+    // _focus_no_doc_rx.requestFocus();
     //========Scaffold======
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -538,9 +642,28 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('วันส่งมา', style: styleHead3)),
+                        width: 80,
+                        child: Text('วันที่หนังสือ', style: styleHead3)),
                     Container(
                         child: txt_date_send,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80,
+                        child: Text('วัน/เวลา ส่งมา', style: styleHead3)),
+                    Container(
+                        child: txt_date_send_real,
                         width: MediaQuery.of(context).size.width * 0.75
 
                         //width: 350,
@@ -608,10 +731,44 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
+                        width: 80, child: Text('หมายเหตุ', style: styleHead3)),
+                    Container(
+                        child: txt_etc,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
                         width: 80,
                         child: Text('ใครรับผิดชอบ', style: styleHead3)),
                     Container(
                         child: txt_response_person,
+                        width: MediaQuery.of(context).size.width * 0.75
+
+                        //width: 350,
+                        ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 80, child: Text('แฟ้มแนบ', style: styleHead3)),
+                    Container(
+                        child: txt_doc_unit,
                         width: MediaQuery.of(context).size.width * 0.75
 
                         //width: 350,
