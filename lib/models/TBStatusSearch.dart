@@ -1,5 +1,6 @@
 class TBStatusSearch {
   String years;
+  String id_exp_spen;
   int id_status;
   int id_job;
   int id_use_int;
@@ -25,6 +26,7 @@ class TBStatusSearch {
 
   TBStatusSearch({
     required this.years,
+    required this.id_exp_spen,
     required this.id_status,
     required this.id_job,
     required this.id_use_int,
@@ -52,12 +54,13 @@ class TBStatusSearch {
   @override
   String toString() {
     //return "id_exp_spen=>$id_exp_spen,list_exp_spen=>$list_exp_spen,memo_th=>$memo_th,mborder=>$mborder,malloc=>$malloc";
-    return "years=>$years,id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status_work=>$status_work,status_detail=>$status_detail,list_exp_spen: $list_exp_spen,title=>$title,unit_send_name=>$unit_send_name,amout=>$amout,doc_unit_no=>$doc_unit_no,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,response_person=>$response_person";
+    return "years=>$years,id_exp_spen=>$id_exp_spen,id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status_work=>$status_work,status_detail=>$status_detail,list_exp_spen: $list_exp_spen,title=>$title,unit_send_name=>$unit_send_name,amout=>$amout,doc_unit_no=>$doc_unit_no,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,response_person=>$response_person";
   }
 
   factory TBStatusSearch.fromJson(Map<String, dynamic> json) {
     return TBStatusSearch(
       years: json['years'],
+      id_exp_spen: json['id_exp_spen'],
       id_status: int.parse(json['id_status']),
       id_job: int.parse(json['id_job']),
       id_use_int: int.parse(json['id_use_int']),
@@ -85,6 +88,7 @@ class TBStatusSearch {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'years': years,
+        'id_exp_spen': id_exp_spen,
         'id_status': id_status,
         'id_job': id_job,
         'id_use_int': id_use_int,

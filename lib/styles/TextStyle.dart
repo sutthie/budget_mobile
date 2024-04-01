@@ -23,6 +23,25 @@ TextStyle styleCustom(font, size, color, weight) {
   );
 }
 
+// TextStyle styleLinkNormal(color) {
+//   return TextStyle(
+//     fontSize: 16.0,
+//     color: color,
+//     decoration: TextDecoration.underline,
+//   );
+// }
+
+TextStyle styleLinkNormal(txtcolor) {
+  return TextStyle(
+    fontSize: 16.0,
+    color: txtcolor,
+    decoration: TextDecoration.underline,
+    decorationColor: Colors.blue,
+    decorationThickness: 2.0,
+    // Set underline color if provided
+  );
+}
+
 TextStyle styleMedium(color) {
   return TextStyle(
     fontFamily: 'Montserrat',
