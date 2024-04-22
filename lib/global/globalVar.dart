@@ -13,8 +13,11 @@ const String url_node = "10.130.230.31:3000"; //node.js ip addr
 
 const String Budget_Site = "budget1";
 
-// set for ChatPerson
+// set UserName for ChatPerson
 String CurrentUName = "";
+
+// set for UnitName
+String CurrentUnitName = "";
 
 // String Aid = "";
 // String UserID = "";

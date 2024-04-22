@@ -12,7 +12,7 @@ import '../../login_success/login_false_screen.dart';
 import '../../../components/default_button.dart';
 import '../../../global/constants.dart';
 import '../../../global/size_config.dart';
-// import 'package:bfriendapp/global/globalVar.dart';
+import '../../../global/globalVar.dart';
 import '../../../global/MySQLService.dart';
 
 // import 'package:bfriendapp/styles/TextStyle_Bfriend.dart';
@@ -149,6 +149,7 @@ class _SignFormState extends State<SignForm> {
                     //unitStr = unit.GetUnitStr(uid).toString();
                     unit.GetUnitStr(uid).then((value) {
                       box.put('unitname', value);
+                      CurrentUnitName = value;
                     });
 //============================================================
                     // print("Aid : " + Aid);

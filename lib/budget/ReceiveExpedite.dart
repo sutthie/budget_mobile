@@ -60,6 +60,9 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   // ==== set caption to Text====
   int yearNow = 0;
 
+// =====set Message==========
+  String msgStr = "";
+
   @override
   void initState() {
     super.initState();
@@ -453,6 +456,117 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           print("id_status : ${widget.tbstatus.id_status}");
           //print("status : " + txtStatus.text);
           print("status detail : " + txtStRX.text);
+          print("no_doc_rx : " + txtNoDocRx.text);
+          print("from unit : +${widget.tbstatus.unit_send_name}");
+          print("unit name : +${CurrentUnitName}");
+
+
+          //=======================================================
+
+          /*
+          if (widget.id_job.isEmpty ||
+              id_use_int == "0" ||
+              sent_to == "0" ||
+              txtDate.text.isEmpty ||
+              sel_status_job == "0" ||
+              itemStatusJobDetail[int.parse(sel_status_job_detail)] ==
+                  'กรุณาเลือกรายละเอียดสถานะงาน' ||
+              txtResponse.text.isEmpty) // add years , id_exp_spen
+          {
+            // if (_file != null) {
+            //   FileName = _file!.path;
+            //   FileName = FileName.replaceAll(RegExp(r'.*/'), '');
+            // } else {
+            //   FileName = "";
+            // }
+            // print("file : " + FileName);
+
+            msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
+            msg.Alert(context, "Error", msgStr);
+          } else {
+            //=======================save===========================================
+            txt_status_job_detail =
+                itemStatusJobDetail[int.parse(sel_status_job_detail)];
+
+            //txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
+            String dateDB = now.ConvDateThaiToDateDB(txtDate.text);
+            print("date format db : " + dateDB);
+
+            // cut only filename
+            if (_file != null) {
+              FileName = _file!.path;
+              FileName =
+                  FileName.replaceAll(RegExp(r'.*/'), ''); // แทนจุดด้วยช่องว่าง
+            } else {
+              FileName = "";
+            }
+            print("file : " + FileName);
+
+            mydb.ReceiveExpediteUser(
+                    txtBookNo.text,
+                    txtListName.text,
+                    txtTitle.text,
+                    txtUnitName.text,
+                    widget.id_job,
+                    id_use_int,
+                    sent_to,
+                    txt_sent_to,
+                    dateDB, //txtDate.text,
+                    txt_status_job, //sel_status_job,
+                    txt_status_job_detail, //sel_status_job_detail,
+                    FileName,
+                    txtETC.text,
+                    txtResponseOriginal.text,
+                    txtResponse.text)
+                .then((String result) {
+              var ret = json.decode(result);
+
+              //String msgstr = "";
+              if (ret["result"] == "false") {
+                msgStr = "ผิดพลาดในการบันทึก : ${ret["msg"]} ";
+              } else if (ret["result"] == "true") {
+                msgStr = "บันทึกเรียบร้อยแล้ว";
+                print("Status Insert : $msgStr");
+
+                if (_file != null) {
+                  upc.UploadFileToServer(
+                    _file,
+                    "budget1",
+                  ).then((value) {
+                    // if (value != "") {
+                    //   print("Upload File Successful \n FileName : " + value);
+                    // } else {
+                    //   print("Error Upload File");
+                    // }
+                    //var ret = json.decode(value);
+                    //print(ret["result"] + " | " + ret["msg"]);
+                    Map<String, dynamic> ret =
+                        jsonDecode(value.replaceAll("'", '"'));
+
+                    if (ret['result'] == true) {
+                      print("Success Upload File");
+                    } else {
+                      print('Error Upload File : $ret["msg"]');
+                    }
+                  });
+                }
+              }
+
+              msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
+
+              // GetExpUserSend.php for show last start 10 send
+              // final oneSecond = Duration(seconds: 1);
+              // Future.delayed(oneSecond * 2, () {
+              //   Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ShowStartBook(),
+              //     ),
+              //   );
+              // });
+            });
+          }
+          */
         },
         child: Text("บันทึก",
             textAlign: TextAlign.center,

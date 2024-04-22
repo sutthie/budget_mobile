@@ -1009,69 +1009,73 @@ class MySQLDB {
     }
   }
 
-//=========================================================
-  // Future<TBStatus?> getTBStatusDetail(String id_status) async {
-  //   TBStatus tbs;
-  //   String url = "http://$ipAddress/phpFlutterBudget/GetTBStatusDetail.php";
-  //   //String querystring = "?id_exp_spen=$idExpSpen";
-  //   //String qs = urlEncode(text: querystring);
-  //   //log(urlSecret);
-  //   Uri uriObj = Uri.parse(url);
+//===============receive from sender in tbs_status=============================
+  Future<String> ReceiveExpediteUser(
+      String Years,
+      String Id_exp_spen,
+      String List_exp_spen,
+      String TitleStr,
+      String BookNo,
+      String Doc_unit,
+      String Money,
+      String Dates,
+      String Secret_class,
+      String Speed_class,
+      String Response,
+      String Units,
+      String UnitSendName,
+      String UnitReceiveName,
+      String TypeJob) async {
+    String url = "http://$ipAddress/phpFlutterBudget/ReceiveExpedite.php";
 
-  //   final response = await http.post(uriObj, body: {"id_status": id_status});
-  //   if (response.statusCode == 200) {
-  //     if (response.body.trim() != "") {
-  //       //final items = Expedite.fromJson(json.decode(response.body.trim())); error
-  //       //Map items = json.decode(response.body.trim());
-  //       final jsonRes = json.decode(response.body.trim());
-  //       //Expedite exp = new Expedite.fromJson(jsonRes);
-  //       if (jsonRes != null) {
-  //         int idlist = int.parse(jsonRes[0]["idlist"]);
-  //         String idExpSpen = jsonRes[0]["id_exp_spen"];
-  //         String listExpSpen = jsonRes[0]["list_exp_spen"];
+    var Dat = <String, dynamic>{};
+    Dat['years'] = Years;
+    Dat['id_exp_spen'] = Id_exp_spen;
+    Dat['list_exp_spen'] = List_exp_spen;
+    Dat['title'] = TitleStr;
+    Dat['doc_unit_no'] = BookNo;
+    Dat['doc_unit'] = Doc_unit;
+    Dat['amout'] = Money;
+    Dat['unit_date_no'] = Dates;
+    Dat['secret_class'] = Secret_class;
+    Dat['speed_class'] = Speed_class;
+    Dat['response_person'] = Response;
+    Dat['type_job'] = TypeJob;
+    Dat['uid'] = Units;
+    Dat['unitname'] = UnitName;
 
-  //         int status = int.parse(jsonRes[0]["status"]);
+    var datAdd = json.encode(Dat);
 
-  //         int years = int.parse(jsonRes[0]["years"]);
+    final response = await http.post(Uri.parse(url),
+        headers: {"Accept": "application/json"}, body: datAdd);
 
-  //         String stwork = jsonRes[0]["stwork"];
+    //log("response.body : " + response.body); // check the status code for the result
 
-  //         String createtime = (jsonRes[0]["createtime"] == null)
-  //             ? ''
-  //             : jsonRes[0]["createtime"];
-  //         int whouse = (jsonRes[0]["whouse"] == null)
-  //             ? 0
-  //             : int.parse(jsonRes[0]["whouse"]);
+    var ret;
+    if (response.statusCode == 200) {
+      log("return response : " +
+          response.body
+              .trim()
+              .toString()); // check the status code for the result
+      //int ret = int.parse(response.body.trim());
+      ret = json.decode(response.body.trim());
+      //log("return value : ${ret}");
+      // check data return
+      log(ret['result'] + " | " + ret["msg"]);
 
-  //         String unit_chk =
-  //             (jsonRes[0]["unit_chk"] == null) ? '' : jsonRes[0]["unit_chk"];
-  //         String st_rx =
-  //             (jsonRes[0]["st_rx"] == null) ? '' : jsonRes[0]["st_rx"];
+      return response.body.trim();
 
-  //         tbs = TBStatus(
-  //           id_status: id_status,
-  //           id_job: id_status,
-  //           id_use_int: id_use_int,
-  //           status: status,
-  //           sent_to: null,
-  //           date_sent_to: null,
-  //         );
+      //return 1;
+      //return ret;
+    } else {
+      log("return statusCode Error");
+      ret = {"result": "false", "msg": "No Response from Server"};
 
-  //         return tbs;
-  //       } else {
-  //         return null;
-  //       }
-  //     } else {
-  //       return null;
-  //     }
-  //   } else {
-  //     throw Exception('Response Error : ${response.statusCode}');
-  //     //return null;
-  //     //log("error reponse : ${response.statusCode}");
-  //   }
-  // }
+      return ret;
+    }
+  }
 
-  //======================================================
+//======================================================
   static Future<String> createTable(String tb) async {
     String url = "http://$ipAddress/phpFlutterBudget/CreateTable.php";
 
