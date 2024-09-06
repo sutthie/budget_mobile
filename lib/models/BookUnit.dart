@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class BookUnit {
   int id_job;
   String id_exp_spen;

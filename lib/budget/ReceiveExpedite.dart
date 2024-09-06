@@ -460,7 +460,6 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           print("from unit : +${widget.tbstatus.unit_send_name}");
           print("unit name : +${CurrentUnitName}");
 
-
           //=======================================================
 
           /*
@@ -475,7 +474,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           {
             // if (_file != null) {
             //   FileName = _file!.path;
-            //   FileName = FileName.replaceAll(RegExp(r'.*/'), '');
+            //   FileName = FileName.replaceAll(RegExp(r'.'), '');
             // } else {
             //   FileName = "";
             // }
@@ -496,7 +495,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
             if (_file != null) {
               FileName = _file!.path;
               FileName =
-                  FileName.replaceAll(RegExp(r'.*/'), ''); // แทนจุดด้วยช่องว่าง
+                  FileName.replaceAll(RegExp(r'.'), ''); // แทนจุดด้วยช่องว่าง
             } else {
               FileName = "";
             }

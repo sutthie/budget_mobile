@@ -23,7 +23,7 @@ String CurrentUnitName = "";
 // String UserID = "";
 // String FullName = "";
 // String Token = "";
-// String Email = "";6
+// String Email = "";
 // bool admin=false;
 
 // picture
