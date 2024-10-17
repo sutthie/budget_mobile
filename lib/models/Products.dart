@@ -1,0 +1,77 @@
+//Class Product New 
+class Products {
+  int pid;
+  int pgid;
+  String productname, description;
+  double rating, price;
+  List<String> images;
+  List<String> reviews;
+  bool discount, isActive;
+  String discountStr;
+
+  Products({
+    required this.pid,
+    required this.pgid,
+    required this.productname,
+    required this.description,
+    required this.price,
+    required this.images,
+    required this.reviews,
+    this.rating = 0.0,
+    this.discount = false,
+    this.isActive = false,
+    this.discountStr = "",
+  });
+
+  @override
+  String toString() {
+    return "pid=>$pid,pgid=>$pgid,productname=>$productname,images=>$images,reviews=>$reviews,description=>$description,rating=>$rating,price=>$price,discount=>$discount,discountStr=>$discountStr,isActive=>$isActive";
+  }
+
+  factory Products.fromJson(Map<String, dynamic> json) {
+    return Products(
+      pid: int.parse(json["pid"]),
+      pgid: int.parse(json["pgid"]),
+      productname: json["productname"],
+      description: json["description"],
+      price: double.parse(json["price"]),
+      rating: double.parse(json["rating"]),
+      discount: (json["discount"] == "1") ? true : false,
+      isActive: (json["isActive"] == "1") ? true : false,
+      discountStr: (json["discountStr"] == null) ? '' : json["discountStr"],
+      // List<String>? channels;
+      //images : (json['channels'] as List?)?.map((item) => item as String)?.toList(),
+      images: json['images'].split(",") as List<String>,
+      reviews: json["reviews"].split(",") as List<String>,
+    );
+  }
+
+  List<String> getStringList(listimgStr) {
+    List<String> tempList = [];
+    tempList = listimgStr.split(",");
+    return tempList;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['pid'] = pid;
+    data['pgid'] = pgid;
+    data['productname'] = productname;
+    data['description'] = description;
+    data['price'] = price;
+    data['rating'] = rating;
+    data['discount'] = discount;
+    data['isActive'] = isActive;
+    data['discountStr'] = discountStr;
+
+    if (images.isNotEmpty) {
+      data['images'] = images.map((v) => v).toList();
+    }
+
+    if (reviews.isNotEmpty) {
+      data['reviews'] = reviews.map((v) => v).toList();
+    }
+
+    return data;
+  }
+}

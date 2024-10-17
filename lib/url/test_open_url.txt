@@ -1,0 +1,149 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:budget_mobile/styles/TextStyle.dart';
+import 'package:budget_mobile/styles/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
+
+class test_open_url extends StatefulWidget {
+  const test_open_url({super.key});
+
+  @override
+  State<test_open_url> createState() => _test_open_urlState();
+}
+
+class _test_open_urlState extends State<test_open_url> {
+//http://10.130.230.64/budget1/Follow/doc/5754_ข้าราชการไทยยุคใหม่เข้า รพเอกชน ได้แล้ว.pdf
+  String fn = '5754_ข้าราชการไทยยุคใหม่เข้า รพเอกชน ได้แล้ว.pdf';
+  String fn1 = 'S__328314.jpg';
+  //String fn ='5754_%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%84%E0%B8%97%E0%B8%A2%E0%B8%A2%E0%B8%B8%E0%B8%84%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%20%E0%B8%A3%E0%B8%9E%E0%B9%80%E0%B8%AD%E0%B8%81%E0%B8%8A%E0%B8%99%20%E0%B9%84%E0%B8%94%E0%B9%89%E0%B9%81%E0%B8%A5%E0%B9%89%E0%B8%A7.pdf';
+  String urlStr = 'http://10.130.230.64/budget1/Follow/doc/';
+  late String fullUrl = urlStr + Uri.encodeComponent(fn1);
+
+  Future<void> openBrowserTab() async {
+    await FlutterWebBrowser.openWebPage(
+        url: "http://10.130.230.64/budget1/Follow/doc/S__328314.jpg");
+  }
+
+  List<BrowserEvent> _events = [];
+
+  StreamSubscription<BrowserEvent>? _browserEvents;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _browserEvents = FlutterWebBrowser.events().listen((event) {
+      setState(() {
+        _events.add(event);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _browserEvents?.cancel();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: lightyellow2,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          'Plugin example app',
+          style: styleHeadWhite4,
+        ),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextButton(
+                onPressed: () => FlutterWebBrowser.warmup(),
+                child: Text('Warmup browser website'),
+              ),
+              TextButton(
+                onPressed: () => openBrowserTab(),
+                child: Text('Open Flutter website'),
+              ),
+              TextButton(
+                onPressed: () => openBrowserTab().then(
+                  (value) => Future.delayed(
+                    Duration(seconds: 5),
+                    () => FlutterWebBrowser.close(),
+                  ),
+                ),
+                child: Text('Open Flutter website & close after 5 seconds'),
+              ),
+              if (Platform.isAndroid) ...[
+                Text('test Android customizations'),
+                TextButton(
+                  onPressed: () {
+                    FlutterWebBrowser.openWebPage(
+                      url: "http://10.130.230.64/budget1/index.htm",
+                      customTabsOptions: CustomTabsOptions(
+                        colorScheme: CustomTabsColorScheme.dark,
+                        darkColorSchemeParams: CustomTabsColorSchemeParams(
+                          toolbarColor: Colors.deepPurple,
+                          secondaryToolbarColor: Colors.green,
+                          navigationBarColor: Colors.amber,
+                          navigationBarDividerColor: Colors.cyan,
+                        ),
+                        shareState: CustomTabsShareState.on,
+                        instantAppsEnabled: true,
+                        showTitle: true,
+                        urlBarHidingEnabled: true,
+                      ),
+                    );
+                  },
+                  child: Text('Open Flutter website'),
+                ),
+              ],
+              if (Platform.isIOS) ...[
+                Text('test iOS customizations'),
+                TextButton(
+                  onPressed: () {
+                    FlutterWebBrowser.openWebPage(
+                      url: "http://10.130.230.64/budget1/index.htm",
+                      safariVCOptions: SafariViewControllerOptions(
+                        barCollapsingEnabled: true,
+                        preferredBarTintColor: Colors.green,
+                        preferredControlTintColor: Colors.amber,
+                        dismissButtonStyle:
+                            SafariViewControllerDismissButtonStyle.close,
+                        modalPresentationCapturesStatusBarAppearance: true,
+                        modalPresentationStyle:
+                            UIModalPresentationStyle.popover,
+                      ),
+                    );
+                  },
+                  child: Text('Open Flutter website'),
+                ),
+                Divider(),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: _events.map((e) {
+                    if (e is RedirectEvent) {
+                      return Text('redirect: ${e.url}');
+                    }
+                    if (e is CloseEvent) {
+                      return Text('closed');
+                    }
+
+                    return Text('Unknown event: $e');
+                  }).toList(),
+                ),
+              ]
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

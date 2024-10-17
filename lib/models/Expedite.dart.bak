@@ -1,0 +1,47 @@
+class Expedite {
+  // ignore: non_constant_identifier_names
+  String id_exp_spen;
+  // ignore: non_constant_identifier_names
+  String list_exp_spen;
+// ignore: non_constant_identifier_names
+  String memo_th;
+  String mborder;
+  String malloc;
+
+  //Spending(this.aid, this.userid, this.passwords);
+  // ignore: non_constant_identifier_names
+  Expedite(
+      {
+      // ignore: non_constant_identifier_names
+      required this.id_exp_spen,
+      // ignore: non_constant_identifier_names
+      required this.list_exp_spen,
+      // ignore: non_constant_identifier_names
+      required this.memo_th,
+      required this.mborder,
+      required this.malloc});
+
+  @override
+  String toString() {
+    return "id_exp_spen=>$id_exp_spen,list_exp_spen=>$list_exp_spen,memo_th=>$memo_th,mborder=>$mborder,malloc=>$malloc";
+  }
+
+  factory Expedite.fromJson(Map<String, dynamic> json) {
+    return Expedite(
+      id_exp_spen: json['id_exp_spen'],
+      list_exp_spen: json['list_exp_spen'],
+      memo_th: json['memo_th'],
+      mborder: json['mborder'] ??= '',
+      malloc: json['malloc'] ??= '',
+    );
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'id_exp_spen': id_exp_spen,
+        'list_exp_spen': list_exp_spen,
+        'memo_th': memo_th,
+        //if(malloc.isNotEmpty) 'mborder': mborder,
+        'mborder': mborder ??= '',
+        'malloc': malloc ??= '',
+      };
+}
