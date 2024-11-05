@@ -24,23 +24,24 @@ import '../download/OpenUrlBrowser.dart';
 
 var login;
 
-class StartExpediteUser extends StatefulWidget {
+class SendTbStatusBetweenUnit extends StatefulWidget {
   // get value from ShowStartBook
   final String id_exp_spen;
   final String id_job;
   final String sel_year;
 
-  const StartExpediteUser(
+  const SendTbStatusBetweenUnit(
       {super.key,
       required this.id_exp_spen,
       required this.id_job,
       required this.sel_year});
 
   @override
-  _StartExpediteUserState createState() => _StartExpediteUserState();
+  _SendTbStatusBetweenUnitState createState() =>
+      _SendTbStatusBetweenUnitState();
 }
 
-class _StartExpediteUserState extends State<StartExpediteUser> {
+class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
   late MySQLDB mydb;
   late ResponseMessage msg;
   late DateTimes now = DateTimes();
@@ -95,9 +96,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   final txtTitle = TextEditingController();
   final txtAmout = TextEditingController();
   final txtDateOriginal = TextEditingController();
-  //final txtResponse = TextEditingController();
   final txtSender = TextEditingController();
-  //final txtMobile= TextEditingController();
   final txtResponseOriginal = TextEditingController();
   final txtYear = TextEditingController();
   final txtBookNo = TextEditingController();
@@ -138,7 +137,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       login = box;
       fullname = login.get('fullname');
       id_use_int = login.get("uid");
-      //txtSender.text = fullname + " " + login.get("unitname");
+      //txtResponse.text = fullname + " " + login.get("unitname");
       txtSender.text = fullname;
       txtUnitName.text = login.get("unitname");
     });
@@ -706,7 +705,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             }
             print("file : " + FileName);
 
-            mydb.SendExpediteUser(
+            mydb.SendTbStatusBetweenUnit(
               txtYear.text,
               txtBookNo.text,
               txtListName.text,
@@ -724,9 +723,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
               txtResponseOriginal.text,
               txtSender.text,
               login.get('mobile'),
-            )
-                //txtResponse.text)
-                .then((String result) {
+            ).then((String result) {
               var ret = json.decode(result);
 
               //String msgstr = "";
@@ -736,6 +733,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 msgStr = "บันทึกเรียบร้อยแล้ว";
                 print("Status Insert : $msgStr");
 
+                //upload file
                 if (_file != null) {
                   upc.UploadFileToServer(
                     _file,

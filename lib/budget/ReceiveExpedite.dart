@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, file_names
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import '../global/ResponseMessage.dart';
 // import '../global/GetYearBudget.dart';
 import '../styles/TextStyle.dart';
 import '../global/ManageLogin.dart';
+import 'SendTbStatusBetweenUnit.dart';
 import 'ShowReceiveExpedite.dart';
 
 var login;
@@ -568,6 +568,52 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       ),
     );
 
+    final sentButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.blueAccent.shade700,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        highlightColor:
+            Colors.blueAccent.shade100, //on press button change color
+        onPressed: () {
+          if (txtNoDocRx.text != '' && txtStRX.text != '') {
+            // update tbs_status current before sent
+            mydb.UpdateStatusBeforSent(widget.tbstatus.id_status.toString())
+                .then((json_value) {
+              print(json_value);
+
+              if (json_value != '') {
+                final jsonRes = json.decode(json_value);
+                if (jsonRes != null) {
+                  print(jsonRes['result'] + " | " + jsonRes["msg"]);
+                }
+              }
+            });
+
+            // go to page send
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SendTbStatusBetweenUnit(
+                    id_exp_spen: widget.tbstatus.id_exp_spen,
+                    id_job: widget.tbstatus.id_job.toString(),
+                    sel_year: widget.tbstatus.years),
+              ),
+            );
+          } else {
+            msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน และ ทำการบันทึกก่อนส่ง !!!";
+            msg.Alert(context, "Error", msgStr);
+          }
+        },
+        child: Text("หน้าส่ง",
+            textAlign: TextAlign.center,
+            style: styleInput.copyWith(
+                color: Colors.yellow, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     final backButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -895,6 +941,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                 padding: const EdgeInsets.all(4.0),
                 child: saveButton,
               ),
+
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: sentButton,
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: backButton,

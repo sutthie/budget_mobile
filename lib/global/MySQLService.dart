@@ -428,7 +428,27 @@ class MySQLDB {
   }
 
 //==============table Status=====================================
+/* txtYear.text,
+             txtBookNo.text,
+             txtListName.text,
+             txtTitle.text,
+             txtUnitName.text,
+             widget.id_job,
+             id_use_int,
+             sent_to,
+             txt_sent_to,
+             dateDB, //txtDate.text,
+             txt_status_job, //sel_status_job,
+             txt_status_job_detail, //sel_status_job_detail,
+             FileName,
+             txtETC.text,
+             txtResponseOriginal.text,
+             txtSender.text,
+             login.get('mobile'),
+*/
   Future<String> SendExpediteUser(
+    //send first from original to other unit
+    String years,
     String doc_unit_no,
     String list_exp_spen,
     String title,
@@ -443,12 +463,13 @@ class MySQLDB {
     String fileName,
     String etc,
     String Response_Original,
-    String Response,
+    String sender,
+    String mobile,
   ) async {
     String url = "http://$ipAddress/phpFlutterBudget/SendExpediteUser.php";
 
     var Dat = <String, dynamic>{};
-
+    Dat['years'] = years;
     Dat['list_exp_spen'] = list_exp_spen;
     Dat['title'] = title;
     Dat['unitname'] = unitname_str;
@@ -463,7 +484,112 @@ class MySQLDB {
     Dat['doc_unit'] = fileName;
     Dat['etc'] = etc;
     Dat['response_person_original'] = Response_Original;
-    Dat['response_person'] = Response;
+    Dat['sender'] = sender;
+    Dat['mobile'] = mobile;
+
+    var datAdd = json.encode(Dat);
+
+    final response = await http.post(Uri.parse(url),
+        headers: {"Accept": "application/json"}, body: datAdd);
+
+    //log("response.body : " + response.body); // check the status code for the result
+
+    var ret;
+    if (response.statusCode == 200) {
+      log("return response : " +
+          response.body
+              .trim()
+              .toString()); // check the status code for the result
+      //int ret = int.parse(response.body.trim());
+      ret = json.decode(response.body.trim());
+      //log("return value : ${ret}");
+      // check data return
+      log(ret['result'] + " | " + ret["msg"]);
+
+      return response.body.trim();
+
+      //return 1;
+      //return ret;
+    } else {
+      log("return statusCode Error");
+      ret = {"result": "false", "msg": "No Response from Server"};
+
+      return ret;
+    }
+  }
+
+//============Update Status BeforSent .php====================
+  Future<String> UpdateStatusBeforSent(String id_status) async {
+    String url = "http://$ipAddress/phpFlutterBudget/UpdateStatusBeforSent.php";
+
+    final response = await http.post(Uri.parse(url),
+        //headers: {"Accept": "application/json"},
+        body: {"id_status": id_status});
+
+    var ret;
+    if (response.statusCode == 200) {
+      log("return response : " +
+          response.body
+              .trim()
+              .toString()); // check the status code for the result
+      //int ret = int.parse(response.body.trim());
+      ret = json.decode(response.body.trim());
+      //log("return value : ${ret}");
+      // check data return
+      log(ret['result'] + " | " + ret["msg"]);
+
+      return response.body.trim();
+    } else {
+      log("return statusCode Error");
+      ret = {"result": "false", "msg": "No Response from Server"};
+
+      return ret;
+    }
+  }
+
+//===================SendTbStatusBetweenUnit===============
+  Future<String> SendTbStatusBetweenUnit(
+    //send first from original to other unit
+    String years,
+    String doc_unit_no,
+    String list_exp_spen,
+    String title,
+    String unitname_str,
+    String id_job,
+    String id_use_int,
+    String sent_to,
+    String sent_to_name,
+    String date_sent_to,
+    String status,
+    String status_detail,
+    String fileName,
+    String etc,
+    String Response_Original,
+    String sender,
+    String mobile,
+  ) async {
+    String url =
+        "http://$ipAddress/phpFlutterBudget/SendTbStatusBetweenUnit.php";
+
+    var Dat = <String, dynamic>{};
+
+    Dat['years'] = years;
+    Dat['list_exp_spen'] = list_exp_spen;
+    Dat['title'] = title;
+    Dat['unitname'] = unitname_str;
+    Dat['doc_unit_no'] = doc_unit_no;
+    Dat['id_job'] = id_job;
+    Dat['id_use_int'] = id_use_int;
+    Dat['sent_to'] = sent_to;
+    Dat['sent_to_name'] = sent_to_name;
+    Dat['date_sent_to'] = date_sent_to;
+    Dat['status'] = status;
+    Dat['status_detail'] = status_detail;
+    Dat['doc_unit'] = fileName;
+    Dat['etc'] = etc;
+    Dat['response_person_original'] = Response_Original;
+    Dat['sender'] = sender;
+    Dat['mobile'] = mobile;
 
     var datAdd = json.encode(Dat);
 

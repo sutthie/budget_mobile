@@ -140,6 +140,7 @@ class _SignFormState extends State<SignForm> {
                     box.put('userid', dat['userid']);
                     box.put('uid', dat['uid']);
                     box.put('fullname', dat['fullname']);
+                    box.put('mobile', dat['mobile']);
                     box.put('email', dat['email']);
                     box.put('status', dat["status"]);
                     box.put('token', dat["token"]);
