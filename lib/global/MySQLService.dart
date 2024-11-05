@@ -596,8 +596,10 @@ class MySQLDB {
           String idExpSpen = jsonRes[0]["id_exp_spen"];
           String listExpSpen = jsonRes[0]["list_exp_spen"];
           String memoTh = jsonRes[0]["memo_th"];
-          double mBorder = jsonRes[0]["mborder"] ?? 0.00;
-          double mAlloc = (jsonRes[0]["malloc"] == null)
+          double mBorder = jsonRes[0]["mborder"] == null
+              ? 0.00
+              : double.parse(jsonRes[0]["mborder"]);
+          double mAlloc = jsonRes[0]["malloc"] == null
               ? 0.00
               : double.parse(jsonRes[0]["malloc"]);
           int status = int.parse(jsonRes[0]["status"]);
@@ -1010,39 +1012,31 @@ class MySQLDB {
   }
 
 //===============receive from sender in tbs_status=============================
+// ReceiveExpediteUser(
+  // txtNoDocRx.text,
+  // txtStatus.text,
+  // widget.tbstatus.id_exp_spen,
+  // widget.tbstatus.id_job,
+  // widget.tbstatus.id_status)
+
   Future<String> ReceiveExpediteUser(
-      String Years,
-      String Id_exp_spen,
-      String List_exp_spen,
-      String TitleStr,
-      String BookNo,
-      String Doc_unit,
-      String Money,
-      String Dates,
-      String Secret_class,
-      String Speed_class,
-      String Response,
-      String Units,
-      String UnitSendName,
-      String UnitReceiveName,
-      String TypeJob) async {
+      String no_doc_rx,
+      String status_detail,
+      String id_exp_spen,
+      String id_job,
+      String id_status,
+      String etc,
+      String fullname) async {
     String url = "http://$ipAddress/phpFlutterBudget/ReceiveExpedite.php";
 
     var Dat = <String, dynamic>{};
-    Dat['years'] = Years;
-    Dat['id_exp_spen'] = Id_exp_spen;
-    Dat['list_exp_spen'] = List_exp_spen;
-    Dat['title'] = TitleStr;
-    Dat['doc_unit_no'] = BookNo;
-    Dat['doc_unit'] = Doc_unit;
-    Dat['amout'] = Money;
-    Dat['unit_date_no'] = Dates;
-    Dat['secret_class'] = Secret_class;
-    Dat['speed_class'] = Speed_class;
-    Dat['response_person'] = Response;
-    Dat['type_job'] = TypeJob;
-    Dat['uid'] = Units;
-    Dat['unitname'] = UnitName;
+    Dat['id_exp_spen'] = id_exp_spen;
+    Dat['id_job'] = id_job;
+    Dat['id_status'] = id_status;
+    Dat['no_doc_rx'] = no_doc_rx;
+    Dat['status_detail'] = status_detail;
+    Dat['fullname'] = fullname;
+    Dat['etc'] = etc;
 
     var datAdd = json.encode(Dat);
 

@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors, file_names
-import 'dart:convert';
-import 'dart:ffi';
 import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +7,9 @@ import '../download/OpenUrlBrowser.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
 import '../global/DateTimes.dart';
-import '../global/FormatMoney.dart';
 import '../global/ResponseMessage.dart';
 // import '../global/GetYearBudget.dart';
 import '../styles/TextStyle.dart';
-import '../global/ManageLogin.dart';
-import 'ShowReceiveExpedite.dart';
-
-var login;
 
 class ReceiveExpedite extends StatefulWidget {
   final TBStatusSearch tbstatus;
@@ -55,7 +48,6 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   // final FocusNode _focus = FocusNode();
   final FocusNode _focus_no_doc_rx = FocusNode();
   final FocusNode _focus_status = FocusNode();
-  final FocusNode _focus_etc = FocusNode();
 
 //=======defind variable==================
   late DateTimes now = DateTimes();
@@ -71,15 +63,6 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
 // =====set Message==========
   String msgStr = "";
-
-  _ShowBudgetDetailState() {
-    // initHive Box Name : LoginData
-    ManageLogin _login = ManageLogin();
-    _login.DefineBox().then((box) {
-      login = box;
-      txtResponse.text = login.get('fullname').toString();
-    });
-  }
 
   @override
   void initState() {
@@ -99,19 +82,20 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
     txtListExpen.text = widget.tbstatus.list_exp_spen;
     txtTitle.text = widget.tbstatus.title;
-    txtAmout.text = FormatMoney.setFormat(double.parse(widget.tbstatus.amout));
+    txtAmout.text = widget.tbstatus.amout;
     txtDocUnitNo.text = widget.tbstatus.doc_unit_no;
 
     // file attach
     txtDocUnit.text = widget.tbstatus.doc_unit;
+
     txtDateSend.text = widget.tbstatus.date_sent_to;
     txtDateSendReal.text = widget.tbstatus.date_sent_real;
     txtUnitSend.text = widget.tbstatus.unit_send_name;
     txtStatus.text = widget.tbstatus.status_work;
     txtStRX.text = widget.tbstatus.status_detail;
     txtSender.text = widget.tbstatus.sender;
+    txtResponse.text = widget.tbstatus.response_person;
     txtETC.text = widget.tbstatus.etc;
-    txtNoDocRx.text = widget.tbstatus.no_doc_rx;
 
     _focus_no_doc_rx.requestFocus();
   }
@@ -379,7 +363,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      focusNode: _focus_etc,
+      focusNode: _focus_status,
       controller: txtETC,
       //keyboardType: TextInputType.number,
       // inputFormatters: [
@@ -392,7 +376,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: lightpurple2,
           hintText: "",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
@@ -465,12 +449,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //focusNode: focusNode,
       //focusNode: _focus,
       controller: txtResponse,
-      //keyboardType: TextInputType.number,
-      //inputFormatters: [
-      //FilteringTextInputFormatter.digitsOnly,
-      //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-      //currencyFormatter,
-      //],
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        //FilteringTextInputFormatter.digitsOnly,
+        //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+        currencyFormatter,
+      ],
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           filled: true,
@@ -514,52 +498,110 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
           //=======================================================
 
-          if (widget.tbstatus.id_job > 0 &&
-              widget.tbstatus.id_exp_spen != "" &&
-              widget.tbstatus.id_status > 0 &&
-              txtNoDocRx.text.isEmpty == false &&
-              txtStatus.text.isEmpty == false) {
+          /*
+          if (widget.id_job.isEmpty ||
+              id_use_int == "0" ||
+              sent_to == "0" ||
+              txtDate.text.isEmpty ||
+              sel_status_job == "0" ||
+              itemStatusJobDetail[int.parse(sel_status_job_detail)] ==
+                  'กรุณาเลือกรายละเอียดสถานะงาน' ||
+              txtResponse.text.isEmpty) // add years , id_exp_spen
+          {
+            // if (_file != null) {
+            //   FileName = _file!.path;
+            //   FileName = FileName.replaceAll(RegExp(r'.'), '');
+            // } else {
+            //   FileName = "";
+            // }
+            // print("file : " + FileName);
+
+            msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
+            msg.Alert(context, "Error", msgStr);
+          } else {
             //=======================save===========================================
-            String date_rec_rx = now.DateNowYMDTime();
-            print("date_rec_rx format db : " + date_rec_rx);
+            txt_status_job_detail =
+                itemStatusJobDetail[int.parse(sel_status_job_detail)];
+
+            //txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
+            String dateDB = now.ConvDateThaiToDateDB(txtDate.text);
+            print("date format db : " + dateDB);
+
+            // cut only filename
+            if (_file != null) {
+              FileName = _file!.path;
+              FileName =
+                  FileName.replaceAll(RegExp(r'.'), ''); // แทนจุดด้วยช่องว่าง
+            } else {
+              FileName = "";
+            }
+            print("file : " + FileName);
 
             mydb.ReceiveExpediteUser(
-                    txtNoDocRx.text,
-                    txtStRX.text,
-                    widget.tbstatus.id_exp_spen,
-                    widget.tbstatus.id_job.toString(),
-                    widget.tbstatus.id_status.toString(),
+                    txtBookNo.text,
+                    txtListName.text,
+                    txtTitle.text,
+                    txtUnitName.text,
+                    widget.id_job,
+                    id_use_int,
+                    sent_to,
+                    txt_sent_to,
+                    dateDB, //txtDate.text,
+                    txt_status_job, //sel_status_job,
+                    txt_status_job_detail, //sel_status_job_detail,
+                    FileName,
                     txtETC.text,
+                    txtResponseOriginal.text,
                     txtResponse.text)
                 .then((String result) {
               var ret = json.decode(result);
 
+              //String msgstr = "";
               if (ret["result"] == "false") {
                 msgStr = "ผิดพลาดในการบันทึก : ${ret["msg"]} ";
               } else if (ret["result"] == "true") {
                 msgStr = "บันทึกเรียบร้อยแล้ว";
                 print("Status Insert : $msgStr");
+
+                if (_file != null) {
+                  upc.UploadFileToServer(
+                    _file,
+                    "budget1",
+                  ).then((value) {
+                    // if (value != "") {
+                    //   print("Upload File Successful \n FileName : " + value);
+                    // } else {
+                    //   print("Error Upload File");
+                    // }
+                    //var ret = json.decode(value);
+                    //print(ret["result"] + " | " + ret["msg"]);
+                    Map<String, dynamic> ret =
+                        jsonDecode(value.replaceAll("'", '"'));
+
+                    if (ret['result'] == true) {
+                      print("Success Upload File");
+                    } else {
+                      print('Error Upload File : $ret["msg"]');
+                    }
+                  });
+                }
               }
 
               msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
 
               // GetExpUserSend.php for show last start 10 send
-              final oneSecond = Duration(seconds: 1);
-              Future.delayed(oneSecond * 2, () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowReceiveExpedite(login.get('uid')),
-                  ),
-                );
-              });
+              // final oneSecond = Duration(seconds: 1);
+              // Future.delayed(oneSecond * 2, () {
+              //   Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ShowStartBook(),
+              //     ),
+              //   );
+              // });
             });
-          } else {
-            msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
-            msg.Alert(context, "Error", msgStr);
           }
-
-          //========================================
+          */
         },
         child: Text("บันทึก",
             textAlign: TextAlign.center,

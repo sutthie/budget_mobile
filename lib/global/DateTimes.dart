@@ -46,6 +46,27 @@ class DateTimes {
     return now;
   }
 
+  String DateNowYMDTime() {
+    DateTime now = DateTime.now();
+    //2024-11-01 15:40:44.129783
+
+    List<String> tmp = now.toString().split(".");
+
+    dayn = now.day;
+    monthn = now.month;
+    yearn = now.year;
+
+    String dateRet = yearn.toString() +
+        "-" +
+        monthn.toString() +
+        "-" +
+        dayn.toString() +
+        " " +
+        tmp[0].split(" ")[1];
+
+    return dateRet;
+  }
+
   String DateNowYMD() {
     DateTime now = DateTime.now();
 

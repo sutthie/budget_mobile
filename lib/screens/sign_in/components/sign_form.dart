@@ -174,7 +174,7 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildUserIdFormField() {
     return TextFormField(
-      initialValue: 'test200',
+      initialValue: 'test100',
       keyboardType: TextInputType.text,
       focusNode: focus_userid,
       onFieldSubmitted: (ValueKey) => focus_pwd.requestFocus(),
@@ -212,7 +212,7 @@ class _SignFormState extends State<SignForm> {
         // ),
         labelText: "UserID",
         labelStyle: TextStyle(fontSize: 22.0, color: red),
-        hintText: "Enter your userid",
+        hintText: "Enter your UserId",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -223,7 +223,7 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      initialValue: 'test200',
+      initialValue: 'test100',
       focusNode: focus_pwd,
       obscureText: true,
       onSaved: (newValue) => password = newValue,

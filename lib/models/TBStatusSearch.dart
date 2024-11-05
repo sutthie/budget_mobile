@@ -22,6 +22,7 @@ class TBStatusSearch {
   String etc;
   bool status_bpay;
   String date_check;
+  String sender;
   String response_person;
 
   TBStatusSearch({
@@ -48,13 +49,14 @@ class TBStatusSearch {
     required this.etc,
     required this.status_bpay,
     required this.date_check,
+    required this.sender,
     required this.response_person,
   });
 
   @override
   String toString() {
     //return "id_exp_spen=>$id_exp_spen,list_exp_spen=>$list_exp_spen,memo_th=>$memo_th,mborder=>$mborder,malloc=>$malloc";
-    return "years=>$years,id_exp_spen=>$id_exp_spen,id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status_work=>$status_work,status_detail=>$status_detail,list_exp_spen: $list_exp_spen,title=>$title,unit_send_name=>$unit_send_name,amout=>$amout,doc_unit_no=>$doc_unit_no,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,response_person=>$response_person";
+    return "years=>$years,id_exp_spen=>$id_exp_spen,id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status_work=>$status_work,status_detail=>$status_detail,list_exp_spen: $list_exp_spen,title=>$title,unit_send_name=>$unit_send_name,amout=>$amout,doc_unit_no=>$doc_unit_no,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,sender=>$sender,response_person=>$response_person";
   }
 
   factory TBStatusSearch.fromJson(Map<String, dynamic> json) {
@@ -82,6 +84,7 @@ class TBStatusSearch {
       etc: json['etc'] ?? '',
       status_bpay: (json["status_bpay"] == 1) ? true : false,
       date_check: json['date_check'] ?? '',
+      sender: json['sender'] ?? '',
       response_person: json['response_person'] ?? '',
     );
   }
@@ -110,6 +113,7 @@ class TBStatusSearch {
         'etc': etc,
         'status_bpay': status_bpay,
         'date_check': date_check,
+        'sender': sender,
         'response_person': response_person,
       };
 }

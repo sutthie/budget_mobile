@@ -154,9 +154,9 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                             ),
                             elevation: 8,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Text('${tbs.title} | ${tbs.doc_unit_no}',
-                                  style: const TextStyle(fontSize: 16.0)),
+                                  style: const TextStyle(fontSize: 14.0)),
                             )),
                       ),
                     ],
@@ -172,7 +172,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                             ),
                             elevation: 8,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: GestureDetector(
                                   onTap: () {
                                     // var msg = new ResponseMessage();
@@ -190,8 +190,8 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                                     // );
                                   },
                                   child: Text(
-                                      'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real}',
-                                      style: TextStyle(fontSize: 13))),
+                                      'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real} \nผู้ส่ง : ${tbs.sender}',
+                                      style: TextStyle(fontSize: 12))),
                             )),
                       ),
                     ],
@@ -388,7 +388,20 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
               SizedBox(
                 width: 5,
               ),
-              ddlYearNew,
+              Container(
+                margin: EdgeInsets.all(3),
+                width: 75,
+                height: 33,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1),
+                ),
+                child: Center(
+                  // Center the DropdownButton horizontally
+                  child: ddlYearNew,
+                ),
+              ),
             ],
           ),
           Row(

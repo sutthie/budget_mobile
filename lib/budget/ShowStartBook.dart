@@ -9,7 +9,7 @@ import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';
 import '../global/FormatMoney.dart';
-import 'StartExpedite.dart';
+//import 'StartExpedite.dart';
 import 'StartExpediteUser.dart';
 
 var login;
@@ -143,10 +143,13 @@ class _GetBudgetState extends State<ShowStartBook>
                             elevation: 3,
                             child: Padding(
                               padding: const EdgeInsets.all(3.0),
-                              child: Text('${book.title}',
-                                  style: const TextStyle(
-                                    fontSize: 12.0,
-                                  )),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text('${book.title}',
+                                    style: const TextStyle(
+                                      fontSize: 12.0,
+                                    )),
+                              ),
                             )),
                       ),
                     ],
@@ -171,12 +174,16 @@ class _GetBudgetState extends State<ShowStartBook>
                                         padding: const EdgeInsets.all(2.0),
                                         child: Row(
                                           children: [
-                                            Text(
-                                                'ที่หนังสือ : ${book.doc_unit_no} | วันที่ : ${dateF} ',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  //fontWeight: FontWeight.bold
-                                                )),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                  'ที่หนังสือ : ${book.doc_unit_no} | วันที่ : ${dateF} ',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    //fontWeight: FontWeight.bold
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -207,8 +214,8 @@ class _GetBudgetState extends State<ShowStartBook>
                                               child: ElevatedButton(
                                                 style: ButtonStyle(
                                                     backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors.red)),
+                                                        WidgetStateProperty.all(
+                                                            Colors.indigo)),
                                                 child: Text(
                                                   "ส่ง",
                                                   style: styleHeadYellow3,
@@ -224,7 +231,9 @@ class _GetBudgetState extends State<ShowStartBook>
                                                                   .id_exp_spen,
                                                               id_job: book
                                                                   .id_job
-                                                                  .toString()),
+                                                                  .toString(),
+                                                              sel_year:
+                                                                  selyear),
                                                     ),
                                                   );
                                                 },
@@ -337,7 +346,7 @@ class _GetBudgetState extends State<ShowStartBook>
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
-      iconSize: 40,
+      iconSize: 30,
     );
 
 //======widget button==========
@@ -382,7 +391,10 @@ class _GetBudgetState extends State<ShowStartBook>
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
+//  Navigator.of(context).pushNamedAndRemoveUntil(MainPage.routeName, (Route<dynamic> route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/mainpage', (Route<dynamic> route) => false);
         },
         child: Text("ย้อนกลับ",
             textAlign: TextAlign.center,
@@ -436,7 +448,20 @@ class _GetBudgetState extends State<ShowStartBook>
               SizedBox(
                 width: 5,
               ),
-              ddlYearNew,
+              Container(
+                margin: EdgeInsets.all(3),
+                width: 75,
+                height: 33,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1),
+                ),
+                child: Center(
+                  // Center the DropdownButton horizontally
+                  child: ddlYearNew,
+                ),
+              ),
             ],
           ),
           Row(

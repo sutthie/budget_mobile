@@ -61,8 +61,11 @@ class BookUnit {
       status_wd: (json["status_wd"] == null) ? 0 : int.parse(json["status_wd"]),
       status_use:
           (json["status_use"] == null) ? 0 : int.parse(json["status_use"]),
-      amout: double.parse(json['amout']),
-      amout_rpay: double.parse(json['amout_rpay']),
+      amout: (json["amout"] == null)
+          ? 0.00
+          : double.parse(json["amout"]), //double.parse(json['amout']),
+      amout_rpay:
+          (json["amout"] == null) ? 0.00 : double.parse(json["amout_rpay"]),
       LastAccess: json['LastAccess'],
       type_job: json['type_job'],
       send: json['send'],

@@ -387,8 +387,8 @@ class _GetBudgetState extends State<ShowExpedite>
                 height: 33,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  //border: Border.all(width: 2),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1),
                 ),
                 child: Center(
                   // Center the DropdownButton horizontally

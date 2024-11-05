@@ -28,9 +28,13 @@ class StartExpediteUser extends StatefulWidget {
   // get value from ShowStartBook
   final String id_exp_spen;
   final String id_job;
+  final String sel_year;
 
   const StartExpediteUser(
-      {super.key, required this.id_exp_spen, required this.id_job});
+      {super.key,
+      required this.id_exp_spen,
+      required this.id_job,
+      required this.sel_year});
 
   @override
   _StartExpediteUserState createState() => _StartExpediteUserState();
@@ -151,10 +155,10 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     //======init Date to TextField========
     DateString = now.DateThaiNow();
     txtDate.text = DateString; // show date send set to now
-
     //=====tbl_book_unit====
     mydb
-        .getBookIdJob(widget.id_job, yearNow.toString())
+        .getBookIdJob(widget.id_job,
+            widget.sel_year) //.getBookIdJob(widget.id_job, yearNow.toString())
         .then((BookUnit? result) {
       if (result != null) {
         txtTitle.text = result.title;
@@ -944,8 +948,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 90,
-                        child:
-                            Text('ชื่อหน่วยงาน : ', style: styleSmalless(red))),
+                        child: Text('ชื่อหน่วยงาน : ',
+                            style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_unitname,
@@ -959,8 +963,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 90,
-                        child:
-                            Text('ชื่องบประมาณ : ', style: styleSmalless(red))),
+                        child: Text('ชื่องบประมาณ : ',
+                            style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txtlistname,
@@ -975,7 +979,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     Container(
                         width: 90,
                         child:
-                            Text('ชื่อเรื่อง : ', style: styleSmalless(red))),
+                            Text('ชื่อเรื่อง : ', style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txttitle,
@@ -991,7 +995,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     Container(
                         width: 90,
                         child: Text('ที่ของหนังสือ : ',
-                            style: styleSmalless(red))),
+                            style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txtbookno,
@@ -1005,7 +1009,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 90,
-                        child: Text('จำนวนเงิน : ', style: styleSmalless(red))),
+                        child:
+                            Text('จำนวนเงิน : ', style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_amout,
@@ -1020,7 +1025,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     Container(
                         width: 90,
                         child: Text('วันที่ของหนังสือ : ',
-                            style: styleSmalless(red))),
+                            style: styleSmalless(black))),
                     Container(
                         width: SizeConfig.screenWidth * 0.7,
                         child: txt_date_original),
@@ -1034,7 +1039,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     Container(
                         width: 85,
                         child: Text('วันที่ส่งเรื่อง : ',
-                            style: styleSmalless(red))),
+                            style: styleSmalless(black))),
                     Container(
                         width: SizeConfig.screenWidth * 0.7, child: txtdate),
                   ],
@@ -1046,8 +1051,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child:
-                            Text('ความเร่งด่วน : ', style: styleSmalless(red))),
+                        child: Text('ความเร่งด่วน : ',
+                            style: styleSmalless(black))),
                     Container(
                         width: SizeConfig.screenWidth * 0.7, child: txt_acc),
                   ],
@@ -1059,8 +1064,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child:
-                            Text('ชั้นความลับ : ', style: styleSmalless(red))),
+                        child: Text('ชั้นความลับ : ',
+                            style: styleSmalless(black))),
                     Container(
                         width: SizeConfig.screenWidth * 0.7, child: txt_secret),
                   ],
@@ -1072,7 +1077,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child: Text('ประเภทงาน : ', style: styleSmalless(red))),
+                        child:
+                            Text('ประเภทงาน : ', style: styleSmalless(black))),
                     Container(
                         width: SizeConfig.screenWidth * 0.7,
                         child: txt_type_job),
@@ -1087,7 +1093,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child: Text('ผู้สร้าง : ', style: styleSmalless(red))),
+                        child:
+                            Text('ผู้สร้าง : ', style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_response_original,
@@ -1107,7 +1114,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       width: 85,
                       child: Text(
                         'เอกสารของต้นเรื่อง : ',
-                        style: styleSmalless(red),
+                        style: styleSmalless(black),
                       ),
                     ),
                     TextButton(
@@ -1171,7 +1178,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
                         'ดาวน์โหลดไฟล์ : ',
-                        style: styleSmalless(red),
+                        style: styleSmalless(black),
                       ),
                     ),
                     Padding(
@@ -1194,7 +1201,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       'ส่งถึงหน่วย :',
-                      style: styleSmalless(red),
+                      style: styleSmalless(black),
                     ),
                   ),
                   Padding(
@@ -1216,7 +1223,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
                       'ประเภทงาน :',
-                      style: styleSmalless(red),
+                      style: styleSmalless(black),
                     ),
                   ),
                   Padding(
@@ -1239,7 +1246,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       children: [
                         Text(
                           'รายละเอียด : ',
-                          style: styleSmalless(red),
+                          style: styleSmalless(black),
                         ),
                       ],
                     ),
@@ -1262,7 +1269,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 75,
-                        child: Text('หมายเหตุ : ', style: styleSmalless(red))),
+                        child:
+                            Text('หมายเหตุ : ', style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_etc,
@@ -1276,8 +1284,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child:
-                            Text('ผู้รับผิดชอบ : ', style: styleSmalless(red))),
+                        child: Text('ผู้รับผิดชอบ : ',
+                            style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_response_person,
@@ -1291,7 +1299,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   children: [
                     Container(
                         width: 80,
-                        child: Text('เอกสารแนบ : ', style: styleSmalless(red))),
+                        child:
+                            Text('เอกสารแนบ : ', style: styleSmalless(black))),
                     Container(
                       width: SizeConfig.screenWidth * 0.74,
                       child: txt_file,

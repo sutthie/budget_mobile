@@ -78,7 +78,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
                       //textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
                     Padding(
@@ -89,12 +89,12 @@ class SideMenuLeftAdmin extends StatelessWidget {
                             "ชื่อผู้ใช้ : ",
                             //textAlign: TextAlign.start,
                             style:
-                                TextStyle(color: Colors.yellow, fontSize: 15),
+                                TextStyle(color: Colors.yellow, fontSize: 14),
                           ),
                           Text(
                             "${login.get('fullname')}",
                             //textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ],
                       ),
@@ -108,13 +108,13 @@ class SideMenuLeftAdmin extends StatelessWidget {
                             "สถานะ : ",
                             //textAlign: TextAlign.start,
                             style:
-                                TextStyle(color: Colors.yellow, fontSize: 15),
+                                TextStyle(color: Colors.yellow, fontSize: 14),
                           ),
                           Text(
                             //"สถานะ : ${login.get('status')}",
                             "${getStatusUser(login.get('status'))}",
                             //textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ],
                       ),
@@ -129,7 +129,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
                             "หน่วยงาน : ",
                             //textAlign: TextAlign.start,
                             style:
-                                TextStyle(color: Colors.yellow, fontSize: 15),
+                                TextStyle(color: Colors.yellow, fontSize: 14),
                           ),
                           Text(
                             //"สถานะ : ${login.get('status')}",
@@ -137,7 +137,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
                             "${CurrentUnitName}",
                             //textAlign: TextAlign.start,
                             style: TextStyle(
-                                color: Colors.cyan.shade50, fontSize: 15),
+                                color: Colors.cyan.shade50, fontSize: 14),
                           ),
                         ],
                       ),
@@ -153,7 +153,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text(
                 'ข้อมูลแอคเค้าท์',
-                style: TextStyle(color: Colors.brown, fontSize: 18),
+                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
               onTap: () => {
                 //Navigator.of(context).pop()
@@ -184,7 +184,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
               leading: const Icon(Icons.manage_accounts),
               title: const Text(
                 'บริหารรายชื่อผู้ใช้',
-                style: TextStyle(color: Colors.brown, fontSize: 18),
+                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
               onTap: () => {
                 //Navigator.of(context).pop()
@@ -200,7 +200,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
               leading: const Icon(Icons.border_color),
               title: const Text(
                 'ข้อมูลงบประมาณ',
-                style: TextStyle(color: Colors.brown, fontSize: 18),
+                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
               onTap: () => {
                 //Navigator.of(context).pop()
@@ -216,7 +216,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
               leading: const Icon(Icons.chat),
               title: const Text(
                 'คุยกัน',
-                style: TextStyle(color: Colors.brown, fontSize: 18),
+                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
               onTap: () => {
                 //Navigator.of(context).pop()
@@ -234,7 +234,7 @@ class SideMenuLeftAdmin extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text(
                 'Logout',
-                style: TextStyle(color: Colors.brown, fontSize: 18),
+                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
               onTap: () => {
                 Navigator.of(context).pushNamedAndRemoveUntil(
