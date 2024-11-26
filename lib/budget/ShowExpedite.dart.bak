@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'Dialog.dart';
+import '../global/ManageLogin.dart';
 import '../models/Expedite.dart';
 import '../global/MySQLService.dart';
 import '../budget/ShowExpDetail.dart';
@@ -7,6 +8,8 @@ import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
 import 'StartExpedite.dart';
+
+var login;
 
 class ShowExpedite extends StatefulWidget {
   @override
@@ -26,6 +29,7 @@ class _GetBudgetState extends State<ShowExpedite>
   //String dropdownValue = '2565';
   // To show Selected Item in Text.
   String selyear = "";
+  String uid = "0";
 
 // init year now
   GetYearBudget yb = new GetYearBudget();
@@ -33,19 +37,32 @@ class _GetBudgetState extends State<ShowExpedite>
 
   //int yearNow = DateTime.now().year.toInt() + 543;
   late List<int> listyear;
+  var id_exp_spen;
 
-  Future<List<Expedite>?> getDataList(String txtsearch, String ddlyear) {
+  Future<List<Expedite>?> getDataList(
+      String txtsearch, String ddlyear, String unit_use) {
     Future<List<Expedite>?> datlist;
     MySQLDB mydb = new MySQLDB();
-    datlist = mydb.getExpSearch(txtsearch, ddlyear);
+    datlist = mydb.getExpSearchUnit(txtsearch, ddlyear, unit_use);
     return datlist;
   }
 
-  void getDropDownItem() {
-    setState(() {
-      //selyear = dropdownValue;
-      selyear = yearNow.toString();
-    });
+  Future<List<Expedite>?> GetBoxData() async {
+    Future<List<Expedite>?> tmplist;
+
+    // init data
+    yearNow = yb.getYearBudget();
+    listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
+
+    selyear = yearNow.toString();
+
+    ManageLogin _login = ManageLogin();
+    login = await _login.DefineBox();
+    uid = login.get("uid");
+
+    tmplist = getDataList(txtSearch.text.trim(), selyear, uid);
+
+    return tmplist;
   }
 
   //=====Controller Text===========
@@ -56,12 +73,14 @@ class _GetBudgetState extends State<ShowExpedite>
     super.initState();
     _controller = AnimationController(vsync: this);
 
-// init data
-    yearNow = yb.getYearBudget();
-    listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
+    datList = GetBoxData();
 
-    getDropDownItem();
-    datList = getDataList(txtSearch.text.trim(), selyear);
+// init data
+    // yearNow = yb.getYearBudget();
+    // listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
+
+    // getDropDownItem();
+    // datList = getDataList(txtSearch.text.trim(), selyear);
   }
 
   @override
@@ -106,22 +125,12 @@ class _GetBudgetState extends State<ShowExpedite>
 
             return GestureDetector(
               onTap: () {
-                //msgBox(context, '${acc.userid}');
-                idExpSpen = '${spen.id_exp_spen}';
-                //msgBox(context, '${spen.list_exp_spen}');
-                //Navigator.of(context).pop();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => EditExpDetail(),
-                //     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
-                //   ),
-                // );
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ShowExpDetail(),
+                    builder: (context) => ShowExpDetail(
+                      id_exp_spen: '${spen.id_exp_spen}',
+                    ),
                     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
                   ),
                 );
@@ -166,7 +175,9 @@ class _GetBudgetState extends State<ShowExpedite>
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => StartExpedite(),
+                                        builder: (context) => StartExpedite(
+                                          id_exp_spen: '${spen.id_exp_spen}',
+                                        ),
                                         //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
                                       ),
                                     );
@@ -222,24 +233,6 @@ class _GetBudgetState extends State<ShowExpedite>
     }
 
     //======define widget=======
-    // ignore: unused_local_variable
-    /*     final txtsearch = TextField(
-          style: styleInput,
-          //autofocus: true,
-          //focusNode: focusNode,
-          //focusNode: _focus,
-          controller: txtSearch,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              filled: true,
-              fillColor: Colors.white,
-              //hintText: "ชื่องบ",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-          onSubmitted: (v) {
-            //_fieldFocusChange(context, _focus, _nextFocus);
-          },
-        ); */
 
     Widget txtsearch() {
       return TextField(
@@ -247,54 +240,30 @@ class _GetBudgetState extends State<ShowExpedite>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+            contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
             filled: true,
             fillColor: Colors.yellowAccent.shade100,
             hintText: "ค้นหา",
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
       );
     }
 
-    // final ddlYear = DropdownButton<String>(
-    //   value: dropdownValue,
-    //   icon: const Icon(Icons.arrow_downward),
-    //   iconSize: 24,
-    //   elevation: 16,
-    //   style: styleLabel,
-    //   underline: Container(
-    //     height: 2,
-    //     color: Colors.deepPurpleAccent,
-    //   ),
-    //   onChanged: (String newValue) {
-    //     setState(() {
-    //       dropdownValue = newValue;
-    //     });
-    //   },
-    //   items: <String>['2561', '2562', '2563', '2564', '2565']
-    //       .map<DropdownMenuItem<String>>((String value) {
-    //     return DropdownMenuItem<String>(
-    //       value: value,
-    //       child: Text(value),
-    //     );
-    //   }).toList(),
-    // );
-
     final ddlYearNew = DropdownButton(
       value: yearNow,
       items: listyear.map((int item) {
         return DropdownMenuItem<int>(
-          child: Text(' $item '),
+          child: Text('$item'),
           value: item,
         );
       }).toList(),
       onChanged: (value) {
         selyear = value.toString();
         //if not found alert no found
-        datList = getDataList(txtSearch.text.trim(), selyear);
+        datList = getDataList(txtSearch.text.trim(), selyear, uid);
 
         ResponseMessage resp = new ResponseMessage();
 
@@ -315,7 +284,7 @@ class _GetBudgetState extends State<ShowExpedite>
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
-      iconSize: 40,
+      iconSize: 27,
     );
 
 //======widget button==========
@@ -325,7 +294,7 @@ class _GetBudgetState extends State<ShowExpedite>
       color: Colors.greenAccent.shade700,
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
-        minWidth: 70,
+        minWidth: 55,
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         //highlightColor: Colors.amber, //on press button change color
         highlightColor:
@@ -336,7 +305,8 @@ class _GetBudgetState extends State<ShowExpedite>
           //dlg.msgBox(context, txtSearch.text);
           //cond = txtSearch.text;
           setState(() {
-            datList = getDataList(txtSearch.text.trim(), yearNow.toString());
+            datList =
+                getDataList(txtSearch.text.trim(), yearNow.toString(), uid);
           });
         },
         child: Text("ค้นหา",
@@ -353,13 +323,13 @@ class _GetBudgetState extends State<ShowExpedite>
       color: Colors.blue,
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
-        minWidth: 45,
+        minWidth: 55,
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Main",
+        child: Text("ย้อนกลับ",
             textAlign: TextAlign.center,
             style: styleInput.copyWith(color: Colors.white, fontSize: 14
                 //fontWeight: FontWeight.bold
@@ -373,7 +343,7 @@ class _GetBudgetState extends State<ShowExpedite>
       color: Colors.redAccent,
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
-        minWidth: 45,
+        minWidth: 55,
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
@@ -381,7 +351,7 @@ class _GetBudgetState extends State<ShowExpedite>
           txtSearch.text = "";
           setState(() {
             yearNow = yb.getYearBudget();
-            datList = getDataList("", yearNow.toString());
+            datList = getDataList("", yearNow.toString(), uid);
           });
         },
         child: Text("Reset",
@@ -411,28 +381,46 @@ class _GetBudgetState extends State<ShowExpedite>
               SizedBox(
                 width: 5,
               ),
-              ddlYearNew,
+              Container(
+                margin: EdgeInsets.all(3),
+                width: 80,
+                height: 33,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1),
+                ),
+                child: Center(
+                  // Center the DropdownButton horizontally
+                  child: ddlYearNew,
+                ),
+              ),
             ],
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text('ค้นหา', style: styleHead),
-              ),
-              Container(width: 140.0, child: txtsearch()),
-              searchButon,
-              SizedBox(
-                width: 3,
-              ),
-              backButon,
-              SizedBox(
-                width: 3,
-              ),
-              ResetButon
-              //ddlYear,
-              //txtsearch,
-            ],
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              children: [
+                Text('ค้นหา', style: styleHead),
+                Container(
+                    width: 150.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: txtsearch(),
+                    )),
+                searchButon,
+                SizedBox(
+                  width: 5,
+                ),
+                ResetButon,
+                SizedBox(
+                  width: 5,
+                ),
+                backButon,
+                //ddlYear,
+                //txtsearch,
+              ],
+            ),
           ),
 
           /* Row(

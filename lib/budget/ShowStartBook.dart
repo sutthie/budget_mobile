@@ -357,7 +357,7 @@ class _GetBudgetState extends State<ShowStartBook>
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
         minWidth: 70,
-        padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+        padding: EdgeInsets.fromLTRB(1.0, 2.0, 1.0, 2.0),
         //highlightColor: Colors.amber, //on press button change color
         highlightColor:
             Colors.greenAccent.shade400, //on press button change color
@@ -467,22 +467,13 @@ class _GetBudgetState extends State<ShowStartBook>
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                 child: Text('ค้นหา', style: styleHead),
               ),
-              Container(width: 170.0, child: txtsearch()),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: searchButon,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: ResetButon,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: backButon,
-              )
+              Container(width: 135.0, child: txtsearch()),
+              searchButon,
+              ResetButon,
+              backButon
               //ddlYear,
               //txtsearch,
             ],

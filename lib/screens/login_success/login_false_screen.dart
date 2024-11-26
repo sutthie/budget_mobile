@@ -7,9 +7,14 @@ import '../../styles/colors.dart';
 
 class LoginFalseScreen extends StatelessWidget {
   static String routeName = "/login_false";
+
   @override
   Widget build(BuildContext context) {
+    // Unfocus any currently focused text field
+    FocusScope.of(context).unfocus();
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: SizedBox(),
         title: Text(
@@ -22,7 +27,7 @@ class LoginFalseScreen extends StatelessWidget {
           SizedBox(height: SizeConfig.screenHeight * 0.04),
           Image.asset(
             "assets/images/unsuccess.png",
-            height: SizeConfig.screenHeight * 0.4, //40%
+            height: SizeConfig.screenHeight * 0.4, // 40%
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.08),
           Text(
@@ -39,6 +44,8 @@ class LoginFalseScreen extends StatelessWidget {
             child: DefaultButton(
               text: "กลับสู่หน้าพิสูจน์สิทธิ์",
               press: () {
+                // Unfocus keyboard when navigating to SignInScreen
+                FocusScope.of(context).unfocus();
                 Navigator.pushNamed(context, SignInScreen.routeName);
               },
             ),

@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../../global/size_config.dart';
+import '../../components/default_button.dart';
+import '../../styles/TextStyle.dart';
+import '../sign_in/sign_in_screen.dart';
+import '../../styles/colors.dart';
+//import '../../helper/keyboard.dart';
+//import '../../global/HideKeyBoard.dart';
+
+class LoginFalseScreen extends StatelessWidget {
+  static String routeName = "/login_false";
+
+  LoginFalseScreen() {}
+
+  void _hideKeyboard(BuildContext context) {
+    // วิธีที่ 1: ใช้ FocusScope
+    //FocusScope.of(context).unfocus();
+
+    // วิธีที่ 2: ใช้ FocusManager
+    //FocusManager.instance.primaryFocus?.unfocus();
+
+    // Method 3
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //KeyboardUtil.hideKeyboard(context);
+    //HideKeyBoard.hideKeyboard(context);
+    //FocusManager.instance.primaryFocus?.unfocus();
+    //FocusScope.of(context).requestFocus(FocusNode());
+    //FocusScope.of(context).unfocus();
+
+    return GestureDetector(
+      onTap: () => _hideKeyboard(context),
+
+      // หรือใช้ behavior นี้เพื่อครอบคลุมการแตะ
+      behavior: HitTestBehavior.opaque,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          leading: SizedBox(),
+          title: Text(
+            "ไม่สามารถพิสูจน์สิทธิ์ได้ !!!",
+            style: styleNormalLarge(yellow),
+          ),
+        ),
+        body: Column(
+          children: [
+            SizedBox(height: SizeConfig.screenHeight * 0.04),
+            Image.asset(
+              "assets/images/unsuccess.png",
+              height: SizeConfig.screenHeight * 0.4, //40%
+            ),
+            SizedBox(height: SizeConfig.screenHeight * 0.08),
+            Text(
+              "Login False",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(30),
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Spacer(),
+            SizedBox(
+              width: SizeConfig.screenWidth * 0.6,
+              child: DefaultButton(
+                text: "กลับสู่หน้าพิสูจน์สิทธิ์",
+                press: () {
+                  Navigator.pushNamed(context, SignInScreen.routeName);
+                },
+              ),
+            ),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+}

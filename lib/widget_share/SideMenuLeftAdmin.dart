@@ -3,6 +3,9 @@
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import '../admin/ShowAccDetail.dart';
+import '../budget/ShowExpedite.dart';
+import '../budget/ShowReceiveExpedite.dart';
+import '../budget/ShowStartBook.dart';
 import '../chat/ChatPerson.dart';
 // import '../admin/AddUser.dart';
 import '../admin/ShowAcc.dart';
@@ -34,9 +37,11 @@ class SideMenuLeftAdmin extends StatelessWidget {
   // box.put('userid', dat['userid']);
   // box.put('uid', dat['uid']);
   // box.put('fullname', dat['fullname']);
+  // box.put('mobile', dat["mobile"]);
   // box.put('email', dat['email']);
   // box.put('status', dat["status"]);
   // box.put('token', dat["token"]);
+
 //============================================================
 
   String getStatusUser(String i) {
@@ -65,201 +70,277 @@ class SideMenuLeftAdmin extends StatelessWidget {
     return Drawer(
       child: Container(
         color: lightpurple2,
-        child: Column(
-          children: [
-            DrawerHeader(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'เมนูหลัก',
-                      //textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DrawerHeader(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'เมนูหลัก',
+                        //textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "ชื่อผู้ใช้ : ",
+                              //textAlign: TextAlign.start,
+                              style:
+                                  TextStyle(color: Colors.yellow, fontSize: 14),
+                            ),
+                            Text(
+                              "${login.get('fullname')}",
+                              //textAlign: TextAlign.start,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              //"สถานะ : ${login.get('status')}",
+                              "สถานะ : ",
+                              //textAlign: TextAlign.start,
+                              style:
+                                  TextStyle(color: Colors.yellow, fontSize: 14),
+                            ),
+                            Text(
+                              //"สถานะ : ${login.get('status')}",
+                              "${getStatusUser(login.get('status'))}",
+                              //textAlign: TextAlign.start,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              //"สถานะ : ${login.get('status')}",
+                              //"หน่วยงาน : ${getStatusUser(login.get('unitname'))}",
+                              "หน่วยงาน : ",
+                              //textAlign: TextAlign.start,
+                              style:
+                                  TextStyle(color: Colors.yellow, fontSize: 14),
+                            ),
+                            Text(
+                              //"สถานะ : ${login.get('status')}",
+                              //"หน่วยงาน : ${getStatusUser(login.get('unitname'))}",
+                              "${CurrentUnitName}",
+                              //textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.cyan.shade50, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: bgcolorApp,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text(
+                  'ข้อมูลแอคเค้าท์',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      //builder: (context) => ShowAccountDetail(login.get('aid')),
+                      builder: (context) => ShowAccountDetail(login.get('aid')),
+                      //builder: (context) => ShowAccount(),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "ชื่อผู้ใช้ : ",
-                            //textAlign: TextAlign.start,
-                            style:
-                                TextStyle(color: Colors.yellow, fontSize: 14),
-                          ),
-                          Text(
-                            "${login.get('fullname')}",
-                            //textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ],
+                  ),
+                },
+              ),
+              // ListTile(
+              //   leading: const Icon(Icons.person_add),
+              //   title: const Text('เพิ่มข้อมูลผู้ใช้'),
+              //   onTap: () => {
+              //     //Navigator.of(context).pop()
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => AddUser(),
+              //       ),
+              //     ),
+              //   },
+              // ),
+              ListTile(
+                leading: const Icon(Icons.border_color),
+                title: const Text(
+                  'ข้อมูลงบประมาณ(User)',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowExpedite(),
+                    ),
+                  ),
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.border_color),
+                title: const Text(
+                  'หน่วยต้นเรื่องส่งต่อ',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowStartBook(),
+                    ),
+                  ),
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.border_color),
+                title: const Text(
+                  'บันทึกรับงานของหน่วย',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ShowReceiveExpedite(login.get('uid')),
+                    ),
+                  ),
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat),
+                title: const Text(
+                  'คุยกัน',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatPerson(
+                        title: '',
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            //"สถานะ : ${login.get('status')}",
-                            "สถานะ : ",
-                            //textAlign: TextAlign.start,
-                            style:
-                                TextStyle(color: Colors.yellow, fontSize: 14),
-                          ),
-                          Text(
-                            //"สถานะ : ${login.get('status')}",
-                            "${getStatusUser(login.get('status'))}",
-                            //textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            //"สถานะ : ${login.get('status')}",
-                            //"หน่วยงาน : ${getStatusUser(login.get('unitname'))}",
-                            "หน่วยงาน : ",
-                            //textAlign: TextAlign.start,
-                            style:
-                                TextStyle(color: Colors.yellow, fontSize: 14),
-                          ),
-                          Text(
-                            //"สถานะ : ${login.get('status')}",
-                            //"หน่วยงาน : ${getStatusUser(login.get('unitname'))}",
-                            "${CurrentUnitName}",
-                            //textAlign: TextAlign.start,
-                            style: TextStyle(
-                                color: Colors.cyan.shade50, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: bgcolorApp,
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(
-                'ข้อมูลแอคเค้าท์',
-                style: TextStyle(color: Colors.brown, fontSize: 15),
-              ),
-              onTap: () => {
-                //Navigator.of(context).pop()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    //builder: (context) => ShowAccountDetail(login.get('aid')),
-                    builder: (context) => ShowAccountDetail(login.get('aid')),
-                    //builder: (context) => ShowAccount(),
                   ),
-                ),
-              },
-            ),
-            // ListTile(
-            //   leading: const Icon(Icons.person_add),
-            //   title: const Text('เพิ่มข้อมูลผู้ใช้'),
-            //   onTap: () => {
-            //     //Navigator.of(context).pop()
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => AddUser(),
-            //       ),
-            //     ),
-            //   },
-            // ),
-            ListTile(
-              leading: const Icon(Icons.manage_accounts),
-              title: const Text(
-                'บริหารรายชื่อผู้ใช้',
-                style: TextStyle(color: Colors.brown, fontSize: 15),
+                },
               ),
-              onTap: () => {
-                //Navigator.of(context).pop()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowAccount(),
-                  ),
+              ListTile(
+                //leading: const Icon(Icons.chat),
+                title: const Text(
+                  '-----------ฟังก์ชันแอดมิน------------',
+                  style: TextStyle(
+                      color: Colors.purple,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
                 ),
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.border_color),
-              title: const Text(
-                'ข้อมูลงบประมาณ',
-                style: TextStyle(color: Colors.brown, fontSize: 15),
               ),
-              onTap: () => {
-                //Navigator.of(context).pop()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowExpediteAdmin(),
-                  ),
+              ListTile(
+                leading: const Icon(Icons.manage_accounts),
+                title: const Text(
+                  'บริหารรายชื่อผู้ใช้',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
                 ),
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.chat),
-              title: const Text(
-                'คุยกัน',
-                style: TextStyle(color: Colors.brown, fontSize: 15),
-              ),
-              onTap: () => {
-                //Navigator.of(context).pop()
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatPerson(
-                      title: '',
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowAccount(),
                     ),
                   ),
-                ),
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.brown, fontSize: 15),
+                },
               ),
-              onTap: () => {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    SignInScreen.routeName, (Route<dynamic> route) => false),
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => SignInScreen(),
-                //   ),
-                // ),
-              },
-            ),
-            /* ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Test List Page'),
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TestListPage(),
-                  ),
+              ListTile(
+                leading: const Icon(Icons.border_color),
+                title: const Text(
+                  'ข้อมูลงบประมาณ(แอดมิน)',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
                 ),
-              },
-            ), */
-          ],
+                onTap: () => {
+                  //Navigator.of(context).pop()
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowExpediteAdmin(),
+                    ),
+                  ),
+                },
+              ),
+
+              ListTile(
+                //leading: const Icon(Icons.chat),
+                title: const Text(
+                  '------------------------------------------',
+                  style: TextStyle(
+                      color: Colors.purple,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.brown, fontSize: 15),
+                ),
+                onTap: () => {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      SignInScreen.routeName, (Route<dynamic> route) => false),
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => SignInScreen(),
+                  //   ),
+                  // ),
+                },
+              ),
+              /* ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text('Test List Page'),
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TestListPage(),
+                    ),
+                  ),
+                },
+              ), */
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:budget_mobile/MainPageAdmin.dart';
 import 'package:flutter/material.dart';
 //import 'Dialog.dart';
 import '../global/ManageLogin.dart';
@@ -21,6 +22,7 @@ class _GetBudgetState extends State<ShowExpedite>
   late AnimationController _controller;
   //String cond = "";
 
+  final FocusNode _focustxtSearch = FocusNode(); //
   // ====declare var========
   late Future<List<Expedite>?> datList;
 
@@ -81,12 +83,15 @@ class _GetBudgetState extends State<ShowExpedite>
 
     // getDropDownItem();
     // datList = getDataList(txtSearch.text.trim(), selyear);
+
+    //_focustxtSearch.requestFocus();
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _focustxtSearch.dispose();
   }
 
   @override
@@ -239,6 +244,7 @@ class _GetBudgetState extends State<ShowExpedite>
         style: styleInput,
         //autofocus: true,
         controller: txtSearch,
+        focusNode: _focustxtSearch,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
             filled: true,
@@ -327,7 +333,15 @@ class _GetBudgetState extends State<ShowExpedite>
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          Navigator.of(context).pop();
+          if (uid == '30') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainPageAdmin(),
+              ),
+            );
+          } else
+            Navigator.of(context).pop();
         },
         child: Text("ย้อนกลับ",
             textAlign: TextAlign.center,
@@ -403,19 +417,11 @@ class _GetBudgetState extends State<ShowExpedite>
               children: [
                 Text('ค้นหา', style: styleHead),
                 Container(
-                    width: 150.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: txtsearch(),
-                    )),
+                  width: 130.0,
+                  child: txtsearch(),
+                ),
                 searchButon,
-                SizedBox(
-                  width: 5,
-                ),
                 ResetButon,
-                SizedBox(
-                  width: 5,
-                ),
                 backButon,
                 //ddlYear,
                 //txtsearch,

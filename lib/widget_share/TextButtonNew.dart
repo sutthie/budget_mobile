@@ -31,9 +31,9 @@ class TextButtonNew extends StatelessWidget {
       height: height,
       child: TextButton(
         style: ButtonStyle(
-          minimumSize: MaterialStateProperty.all(Size(width, height)),
-          backgroundColor: MaterialStateProperty.all(bgcolor),
-          shape: MaterialStateProperty.all(
+          minimumSize: WidgetStateProperty.all(Size(width, height)),
+          backgroundColor: WidgetStateProperty.all(bgcolor),
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               side: BorderSide(
                 color: bordercolor, // Change this color

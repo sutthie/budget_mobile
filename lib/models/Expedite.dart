@@ -122,9 +122,9 @@ class Expedite {
       id_exp_spen: json['id_exp_spen'],
       list_exp_spen: json['list_exp_spen'],
       memo_th: json['memo_th'],
-      status: int.parse(json['status']),
-      daystart: json['daystart'],
-      daystop: json['daystop'],
+      status: (json["status"] == null) ? 0 : int.parse(json['status']),
+      daystart: json['daystart'] ?? '0000-00-00',
+      daystop: json['daystop'] ?? '0000-00-00',
       code_bud_rtarf: json['code_bud_rtarf'] ?? '',
       field_work:
           (json["field_work"] == null) ? 0 : int.parse(json["field_work"]),

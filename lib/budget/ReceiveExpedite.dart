@@ -4,6 +4,7 @@ import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../MainPageAdmin.dart';
 import '../download/OpenUrlBrowser.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
@@ -31,6 +32,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 // =====declare object===========
   late MySQLDB mydb;
   late ResponseMessage msg;
+  String uid = "0";
 // download file attach original
   late OpenUrlBrowser open;
 //=====Controller Text===========
@@ -78,6 +80,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     _login.DefineBox().then((box) {
       login = box;
       txtResponse.text = login.get('fullname').toString();
+      uid = login.get('uid');
     });
   }
 
@@ -579,19 +582,6 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
             Colors.blueAccent.shade100, //on press button change color
         onPressed: () {
           if (txtNoDocRx.text != '' && txtStRX.text != '') {
-            // update tbs_status current before sent
-            mydb.UpdateStatusBeforSent(widget.tbstatus.id_status.toString())
-                .then((json_value) {
-              print(json_value);
-
-              if (json_value != '') {
-                final jsonRes = json.decode(json_value);
-                if (jsonRes != null) {
-                  print(jsonRes['result'] + " | " + jsonRes["msg"]);
-                }
-              }
-            });
-
             // go to page send
             Navigator.push(
               context,
@@ -599,6 +589,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                 builder: (context) => SendTbStatusBetweenUnit(
                     id_exp_spen: widget.tbstatus.id_exp_spen,
                     id_job: widget.tbstatus.id_job.toString(),
+                    id_status: widget.tbstatus.id_status.toString(),
                     sel_year: widget.tbstatus.years),
               ),
             );
@@ -623,7 +614,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          Navigator.of(context).pop();
+          if (uid == '30') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainPageAdmin(),
+              ),
+            );
+          } else
+            Navigator.of(context).pop();
         },
         child: Text("ย้อนกลับ",
             textAlign: TextAlign.center,

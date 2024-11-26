@@ -102,6 +102,8 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
 
   @override
   Widget build(BuildContext context) {
+    var widthTextFiled = MediaQuery.of(context).size.width * 0.65;
+
 //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
@@ -1531,9 +1533,7 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
                     Container(
                         width: 105,
                         child: Text('ขอใช้ไม่มีรหัส', style: styleHead3)),
-                    Container(
-                        child: txt_bpay_n,
-                        width: MediaQuery.of(context).size.width * 0.7
+                    Container(child: txt_bpay_n, width: widthTextFiled
 
                         //width: 350,
                         ),
@@ -1618,9 +1618,7 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
                     Container(
                         width: 90,
                         child: Text('เบิกจ่ายไม่มีรหัส', style: styleHead3)),
-                    Container(
-                        child: txt_spay_n,
-                        width: MediaQuery.of(context).size.width * 0.72
+                    Container(child: txt_spay_n, width: widthTextFiled
 
                         //width: 350,
                         ),

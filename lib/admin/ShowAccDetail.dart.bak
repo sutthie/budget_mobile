@@ -490,7 +490,6 @@ class _ShowAccountDetailState extends State<ShowAccountDetail> {
 
     //_focus.requestFocus();
     var widthTextFiled = MediaQuery.of(context).size.width * 0.6;
-
     return Scaffold(
       // help protect bottom  overflow display
       resizeToAvoidBottomInset: false,

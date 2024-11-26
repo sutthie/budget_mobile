@@ -112,10 +112,10 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
           itemBuilder: (context, index) {
             TBStatusSearch tbs = snapshot.data[index];
 
-            //String IdJob = tbs.id_job.toString();
+            // String IdJob = tbs.id_job.toString();
             // get idJob for id_exp_spen in tbl_book_unit and get list_exp_spen in tbl_expedite_spending
-            //String IdExpSpen = "";
-            //IdExpSpen= func(IdJob);
+            // String IdExpSpen = "";
+            // IdExpSpen= func(IdJob);
 
             return GestureDetector(
               onTap: () {
@@ -251,7 +251,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
             fillColor: Colors.yellowAccent.shade100,
             hintText: "ค้นหา",
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -302,7 +302,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
       color: Colors.greenAccent.shade700,
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
-        minWidth: 70,
+        minWidth: 60,
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         //highlightColor: Colors.amber, //on press button change color
         highlightColor:
@@ -407,10 +407,10 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
                 child: Text('ค้นหา', style: styleHead),
               ),
-              Container(width: 140.0, child: txtsearch()),
+              Container(width: 135.0, child: txtsearch()),
               searchButon,
               SizedBox(
                 width: 3,

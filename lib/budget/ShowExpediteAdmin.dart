@@ -244,12 +244,12 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+            contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
             filled: true,
             fillColor: Colors.yellowAccent.shade100,
             hintText: "ค้นหา",
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
+                OutlineInputBorder(borderRadius: BorderRadius.circular(4.0))),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -312,20 +312,20 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
-      iconSize: 40,
+      iconSize: 30,
     );
 
     final searchButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(20.0),
-      color: Colors.greenAccent.shade700,
+      color: Colors.purpleAccent.shade700,
       child: MaterialButton(
         //minWidth: MediaQuery.of(context).size.width,
         minWidth: 70,
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         //highlightColor: Colors.amber, //on press button change color
         highlightColor:
-            Colors.greenAccent.shade400, //on press button change color
+            Colors.purpleAccent.shade200, //on press button change color
         onPressed: () {
           //Navigator.of(context).pop();
           //MessageDialog dlg = new MessageDialog();
@@ -407,7 +407,20 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
               SizedBox(
                 width: 5,
               ),
-              ddlYearNew,
+              Container(
+                margin: EdgeInsets.all(3),
+                width: 80,
+                height: 33,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1),
+                ),
+                child: Center(
+                  // Center the DropdownButton horizontally
+                  child: ddlYearNew,
+                ),
+              ),
             ],
           ),
           Row(
@@ -416,7 +429,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
                 padding: const EdgeInsets.all(4.0),
                 child: Text('ค้นหา', style: styleHead),
               ),
-              Container(width: 140.0, child: txtsearch()),
+              Container(width: 160.0, child: txtsearch()),
               searchButon,
               SizedBox(
                 width: 3,

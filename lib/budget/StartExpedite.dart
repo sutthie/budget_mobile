@@ -140,17 +140,25 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     // setState(() {
     //   txtAmout.text = amout.toString();
     // });
-    txtAmout.text = "0";
+    txtAmout.text = "0.00";
+    //_focus.requestFocus();
+    //FocusScope.of(context).requestFocus(_focus);
   }
 
   @override
   void dispose() {
+    //_focus.dispose();
     super.dispose();
+  }
+
+  _ShowBudgetDetailState() {
+    //_focus.requestFocus();
   }
 
   @override
   Widget build(BuildContext context) {
     //_focus.requestFocus();
+    //var widthTextFiled = MediaQuery.of(context).size.width * 0.6;
 //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',

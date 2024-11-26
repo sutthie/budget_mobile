@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'package:budget_mobile/budget/ReceiveExpedite.dart';
+import 'package:budget_mobile/budget/ShowReceiveExpedite.dart';
 import 'package:budget_mobile/budget/ShowStartBook.dart';
 import 'package:budget_mobile/models/BookUnit.dart';
 import 'package:flutter/material.dart';
+import '../MainPageAdmin.dart';
 import '../global/MySQLService.dart';
 import '../global/size_config.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
-import '../global/GetYearBudget.dart';
+//import '../global/GetYearBudget.dart';
 import 'package:flutter_money/flutter_money.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
@@ -29,12 +32,15 @@ class SendTbStatusBetweenUnit extends StatefulWidget {
   final String id_exp_spen;
   final String id_job;
   final String sel_year;
+  final String id_status;
 
-  const SendTbStatusBetweenUnit(
-      {super.key,
-      required this.id_exp_spen,
-      required this.id_job,
-      required this.sel_year});
+  const SendTbStatusBetweenUnit({
+    super.key,
+    required this.id_exp_spen,
+    required this.id_job,
+    required this.id_status,
+    required this.sel_year,
+  });
 
   @override
   _SendTbStatusBetweenUnitState createState() =>
@@ -54,6 +60,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
   late String sent_to;
   String txt_sent_to = "";
   String url = "";
+  String uid = "0";
 
   File? _file;
   String FileNameOriginal = "";
@@ -122,7 +129,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
 
 //==========set==fullname=====
   String fullname = ""; // for response person
-
+  late String mobile;
 // ==== set year====
   int yearNow = 0;
 
@@ -140,15 +147,18 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
       //txtResponse.text = fullname + " " + login.get("unitname");
       txtSender.text = fullname;
       txtUnitName.text = login.get("unitname");
+      mobile = login.get("mobile");
+      uid = login.get("uid");
     });
 
     msg = ResponseMessage();
     mydb = MySQLDB();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
-    txtYear.text = yearNow.toString();
+    // GetYearBudget yb = new GetYearBudget();
+    // yearNow = yb.getYearBudget();
+    // txtYear.text = yearNow.toString();
+    txtYear.text = widget.sel_year;
 
     //=====init UNIT Name==============
     sent_to = "0";
@@ -658,7 +668,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
     }
 
 //=======widget button===========
-    final saveButton = Material(
+    final sentButton = Material(
       elevation: 3.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Colors.deepPurple,
@@ -705,6 +715,19 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
             }
             print("file : " + FileName);
 
+//============update tbs_status current before sent==============
+            mydb.UpdateStatusBeforSent(widget.id_status).then((json_value) {
+              //print(json_value);
+
+              if (json_value != '') {
+                final jsonRes = json.decode(json_value);
+                if (jsonRes != null) {
+                  print(jsonRes['result'] + " | " + jsonRes["msg"]);
+                }
+              }
+            });
+//=============================================================
+
             mydb.SendTbStatusBetweenUnit(
               txtYear.text,
               txtBookNo.text,
@@ -722,7 +745,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
               txtETC.text,
               txtResponseOriginal.text,
               txtSender.text,
-              login.get('mobile'),
+              mobile,
             ).then((String result) {
               var ret = json.decode(result);
 
@@ -760,16 +783,16 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
 
               msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
 
-              // GetExpUserSend.php for show last start 10 send
-              // final oneSecond = Duration(seconds: 1);
-              // Future.delayed(oneSecond * 2, () {
-              //   Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => ShowStartBook(),
-              //     ),
-              //   );
-              // });
+              final oneSecond = Duration(seconds: 1);
+              Future.delayed(oneSecond * 2, () {
+                //Navigator.pushReplacementNamed(context, '/showReceiveExpedite');
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShowReceiveExpedite(uid),
+                  ),
+                );
+              });
             });
           }
         },
@@ -818,7 +841,16 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
         onPressed: () {
           //Navigator.of(context).pop();
           //ShowStartBook.routeName,
-          Navigator.popAndPushNamed(context, ShowStartBook.routeName);
+          if (uid == '30') {
+            //  Navigator.pushReplacement(context, MainPageAdmin.routeName as Route<Object?>);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainPageAdmin(),
+              ),
+            );
+          } else
+            Navigator.popAndPushNamed(context, ShowStartBook.routeName);
         },
         child: Text("ย้อนกลับ",
             textAlign: TextAlign.center,
@@ -927,7 +959,11 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text('รายละเอียดงบที่บันทึก', style: styleHeadPurple4),
+                child: Text('รายละเอียดงบที่บันทึก',
+                    style: styleHeadPurple4.copyWith(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0)),
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -938,12 +974,14 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
                         style: styleHeadPurple4.copyWith(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 13.0)),
-                    Text(' $yearNow',
+                            fontSize: 12.0)),
+
+                    //Text(' $yearNow',
+                    Text(' ${widget.sel_year}',
                         style: styleHeadPurple4.copyWith(
                             color: Colors.blue[900],
                             fontWeight: FontWeight.bold,
-                            fontSize: 13.0)),
+                            fontSize: 12.0)),
                   ],
                 ),
               ),
@@ -1313,13 +1351,15 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
                   ],
                 ),
               ),
+              Text('เฉพาะ doc,docx,xls,xlsx,ppt,pptx,pdf,jpeg,jpg,png !!!',
+                  textAlign: TextAlign.end, style: styleSmalless(yellow)),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: selFileButton,
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: saveButton,
+                child: sentButton,
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),

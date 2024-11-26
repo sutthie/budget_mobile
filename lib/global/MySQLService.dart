@@ -83,81 +83,90 @@ class MySQLDB {
 
     var ret;
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: jsonLogin);
+    try {
+      final response = await http.post(Uri.parse(url),
+          headers: {"Accept": "application/json"}, body: jsonLogin);
 
-    log("response.body : " +
-        response.body.trim()); // check the status code for the result
+      log("response.body : " +
+          response.body.trim()); // check the status code for the result
 
-    if (response.statusCode == 200) {
-      String dat = response.body.trim();
+      if (response.statusCode == 200) {
+        String dat = response.body.trim();
 
-      if (dat != "") {
-        // check data return
-        String aid;
-        String userid;
-        String status;
-        String token;
-        String firstname;
-        String lastname;
-        String uid;
+        if (dat != "") {
+          // check data return
+          String aid;
+          String userid;
+          String status;
+          String token;
+          String firstname;
+          String lastname;
+          String uid;
+          String mobile;
 
-        try {
-          var acc = json.decode(dat);
-          aid = acc["aid"];
-          userid = acc["userid"];
-          firstname = acc["firstname"]; // user , admin
-          lastname = acc["lastname"];
-          status = acc["status"];
-          uid = acc["Uint"];
-          //uid = acc["Uint"] ?? "";
-          token = "";
-        } catch (e) {
-          log("error :" + e.toString());
+          try {
+            var acc = json.decode(dat);
+            aid = acc["aid"];
+            userid = acc["userid"];
+            firstname = acc["firstname"]; // user , admin
+            lastname = acc["lastname"];
+            status = acc["status"];
+            uid = acc["Uint"];
+            mobile = acc["mobile"];
+            //uid = acc["Uint"] ?? "";
+            token = "";
+          } catch (e) {
+            log("error :" + e.toString());
 
-          return "";
-        }
-        //========Create Token==================
+            return "";
+          }
+          //========Create Token==================
 
-        url = "http://$url_node/get_token/" + userid;
-        try {
-          final response = await http.post(Uri.parse(url));
+          url = "http://$url_node/get_token/" + userid;
+          try {
+            final response = await http.post(Uri.parse(url));
 
-          if (response.statusCode == 200) {
-            log("response.body : " + response.body);
+            if (response.statusCode == 200) {
+              log("response.body : " + response.body);
 
-            //if (response.body == "") return "";
-            token = response.body;
+              //if (response.body == "") return "";
+              token = response.body;
 
-            log("UserID : $userid ; Token : $token");
-            //======================================
-            ret = {
-              "aid": aid,
-              "userid": userid,
-              "fullname": firstname + " " + lastname,
-              "status": status,
-              "token": token,
-              "uid": uid
-            };
+              log("UserID : $userid ; Token : $token");
+              //======================================
+              ret = {
+                "aid": aid,
+                "userid": userid,
+                "fullname": firstname + " " + lastname,
+                "status": status,
+                "token": token,
+                "uid": uid,
+                "mobile": mobile
+              };
 
-            //return ret.toString();
-            return json.encode(ret);
-          } else
+              //return ret.toString();
+              return json.encode(ret);
+            } else
+              //token = "";
+              return "";
+          } catch (e) {
+            log("error :" + e.toString());
             //token = "";
             return "";
-        } catch (e) {
-          log("error :" + e.toString());
+          }
+        }
+        if (response.statusCode != 200) {
+          log("error :" + response.statusCode.toString());
           //token = "";
           return "";
-        }
+        } else
+          return "";
+      } else {
+        return "";
       }
-      if (response.statusCode != 200) {
-        log("error :" + response.statusCode.toString());
-        //token = "";
-        return "";
-      } else
-        return "";
-    } else {
+    } catch (e) {
+      log("error :" + e.toString());
+      //token = "";
       return "";
     }
   }
