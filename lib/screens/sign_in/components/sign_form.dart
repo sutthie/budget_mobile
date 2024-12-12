@@ -112,7 +112,7 @@ class _SignFormState extends State<SignForm> {
 
                     print("Result Authen : ${msg}");
 
-                    KeyboardUtil.hideKeyboard(context);
+                    //KeyboardUtil.hideKeyboard(context);
                     Navigator.pushNamed(context, LoginFalseScreen.routeName);
                   } else {
                     //msg = "Login Success!!!";
@@ -161,7 +161,7 @@ class _SignFormState extends State<SignForm> {
                     // print("Token : " + Token);
 
                     // if all are valid then go to success screen
-                    KeyboardUtil.hideKeyboard(context);
+                    //KeyboardUtil.hideKeyboard(context);
                     Navigator.pushNamed(context, LoginSuccessScreen.routeName);
                   }
                 });

@@ -16,7 +16,7 @@ import 'package:budget_mobile/styles/TextStyle.dart';
 import '../global/DateTimes.dart';
 import '../global/ManageLogin.dart';
 import '../upload/UploadFileBudget.dart';
-import 'ShowExpUserStart.dart';
+import 'ShowStartBook.dart';
 import '../widget_share/SnackBarMsg.dart';
 //import 'ShowExpUserStart.dart.bak';
 
@@ -64,6 +64,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   double amout = 0.00;
   String sel_type_job = "กรุณาเลือกประเภทงาน";
   String txt_unit = "";
+  String unitName = "";
   //String uid = "";
 
   //late String? unitNow;
@@ -102,6 +103,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 // ==== set year====
   int yearNow = 0;
 
+  _ShowBudgetDetailState() {}
+
   @override
   void initState() {
     super.initState();
@@ -114,6 +117,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       fullname = login.get('fullname');
       txt_unit = login.get("uid");
       txtResponse.text = fullname + " " + login.get("unitname");
+      unitName = login.get("unitname");
     });
 
     msg = ResponseMessage();
@@ -138,17 +142,52 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     // setState(() {
     //   txtAmout.text = amout.toString();
     // });
-    txtAmout.text = "0";
+    txtAmout.text = "0.00";
+
+    //_focus.requestFocus();
+    //FocusScope.of(context).requestFocus(_focus);
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    // if (!_focus.hasFocus) {
+    //   _focus.requestFocus();
+    //   print("Focus requested!");
+    // }
+
+    //   FocusScope.of(context).requestFocus(_focus);
+    // });
+
+    _focus.addListener(() {
+      print("Focus Node Status: ${_focus.hasFocus}");
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Request focus after the context is fully available.
+    //_focus.requestFocus();
+    //FocusScope.of(context).requestFocus(_focus);
+    //FocusScope.of(context).unfocus();
+    //SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
   @override
   void dispose() {
+    // _focus.removeListener(() {
+    //   print("Focus Node Listener Removed");
+    // });
+
+    _focus.dispose();
+    txtTitle.dispose();
+    txtAmout.dispose();
+    txtBookNo.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     //_focus.requestFocus();
+    //var widthTextFiled = MediaQuery.of(context).size.width * 0.6;
 //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
@@ -170,58 +209,6 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     );
 
     //======define widget=======
-    // final txtyear = TextField(
-    //   controller: txtYear,
-    //   style: styleLabel,
-    //   //autofocus: true,
-    //   //focusNode: _focus,
-
-    //   minLines: 1, // Display at least 5 lines
-    //   maxLines: null,
-    //   decoration: InputDecoration(
-    //       contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    //       filled: true,
-    //       //filled : false,
-    //       fillColor: Colors.green.shade800,
-    //       //hintText: "ชื่องบ",
-    //       border:
-    //           OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-    //   onSubmitted: (v) {
-    //     //_fieldFocusChange(context, _focus, _nextFocus);
-    //   },
-    // );
-
-    // final txt_hide_idexpspen = TextField(
-    //   controller: txtIdExpSpen,
-    // );
-
-    // final txt_hide_unit = TextField(
-    //   controller: txtUnit,
-    // );
-
-    // final txt_hide_bookdate = TextField(
-    //   controller: txtHideDate,
-    // );
-
-    // final txt_unit_docno = TextField(
-    //   style: styleLabel,
-    //   //autofocus: true,
-    //   //focusNode: _focus,
-    //   controller: txtBookNo,
-    //   minLines: 1, // Display at least 5 lines
-    //   maxLines: null,
-    //   decoration: InputDecoration(
-    //       contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-    //       filled: true,
-    //       //filled : false,
-    //       fillColor: Colors.green.shade800,
-    //       //hintText: "ชื่องบ",
-    //       border:
-    //           OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-    //   onSubmitted: (v) {
-    //     //_fieldFocusChange(context, _focus, _nextFocus);
-    //   },
-    // );
 
     final txtlistname = TextField(
       style: styleLabel,
@@ -246,15 +233,20 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     );
 
     final txttitle = TextField(
+      //key: ValueKey("my_text_field"),
+      // inputFormatters: [], // Can help stabilize input connection
+      // keyboardType: TextInputType.text,
+      // autocorrect: false,
+      // enableSuggestions: false,
       style: styleInput,
-      autofocus: true,
+      //autofocus: true,
       focusNode: _focus,
       //enabled: true,
       // minLines: 1, // Display at least 5 lines
       // maxLines: null,
       controller: txtTitle,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
           filled: true,
           fillColor: Colors.white,
           hintText: "ชื่อเรื่อง",
@@ -264,7 +256,17 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //   //_fieldFocusChange(context, _focus, _nextFocus);
       // },
       // onTap: () {
-      //   _focus.requestFocus();
+      //   //_focus.requestFocus();
+      //   FocusScope.of(context).requestFocus(_focus);
+      //   SystemChannels.textInput.invokeMethod('TextInput.show');
+      // },
+      // onTapOutside: (event) {
+      //   // ปิด Focus เมื่อแตะนอก TextField
+      //   _focus.unfocus();
+      // },
+      // onEditingComplete: () {
+      //   // จัดการเมื่อแก้ไขเสร็จ
+      //   _focus.unfocus();
       // },
     );
 
@@ -393,74 +395,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       },
     );
 
-    //======widget ddl=================
-    /*
-    Widget ddlUnit(udata) {
-      return FutureBuilder<List<UnitName>?>(
-          future: udata,
-          //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            //return Center(child: CircularProgressIndicator());
-            else
-              return DropdownButton<String>(
-                //focusNode: ddlNode,
-                //autofocus: true,
-                //isExpanded: true,
-                borderRadius: BorderRadius.circular(10),
-                items: snapshot.data
-                    ?.map((item) => DropdownMenuItem<String>(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(item.uint_name,
-                                style: TextStyle(
-                                  //backgroundColor: white,
-                                  decoration: TextDecoration.underline,
-                                  color: blue,
-                                  //backgroundColor: lightgreen
-                                )),
-                          ),
-                          value: item.uint,
-                        ))
-                    .toList(),
-                value: unitNow,
-                //value: "",
-                //value: null,
-                //value: sel_unit,
-                onChanged: (un) {
-                  setState(() {
-                    //sel_unit = un!;
-                    unitNow = un!;
-                  });
+//======widget ddl=================
 
-                  //var msg = new ResponseMessage();
-                  //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
-                },
-                //isExpanded: true,
-                hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
-                disabledHint: Text("Disabled"),
-                elevation: 8,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
-                //style: Theme.of(context).textTheme.labelMedium,
-                //style: Theme.of(context).textTheme.bodyText2,
-                //dropdownColor: Colors.white,
-                dropdownColor: lightpurple2,
-                //focusColor: Colors.yellow.shade100,
-                icon: Icon(Icons.arrow_drop_down_circle),
-                iconDisabledColor: Colors.red,
-                iconEnabledColor: Colors.blue,
-                iconSize: 35,
-              );
-          });
-    }
-*/
-//==========DDL================================
     final ddlTypeJob = DropdownButton(
       borderRadius: BorderRadius.circular(10),
       value: sel_type_job,
@@ -570,8 +506,6 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               txtYear.text.isEmpty ||
               txtIdExpSpen.text.isEmpty) // add years , id_exp_spen
           {
-            //txtHideDate.text = now.ConvDateThaiToDateDB(txtDate.text);
-
             // if (_file != null) {
             //   FileName = _file!.path;
             //   FileName = FileName.replaceAll(RegExp(r'.*/'), '');
@@ -585,7 +519,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
           } else {
             //=======================save===========================================
 
-            txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
+            //txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
+            String dateDB = now.ConvDateThaiToDateDB(txtDate.text);
+            print("date format db : " + dateDB);
+
             String fmtCommaStr = "r'[\,]";
             RegExp fmtCommaRegExp = RegExp(fmtCommaStr);
             //const fmtMoneyDisp = "r'^(\d+)(?:\.|\,)\d{0,2}";
@@ -611,11 +548,13 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               //txtAmout.text,
               FileName,
               fmt,
-              txtDate.text,
+              dateDB,
+              //txtDate.text,
               ddlSecret.value.toString(),
               ddlAcc.value.toString(),
               txtResponse.text,
               txt_unit,
+              unitName,
               //unitNow.toString(), // send to other unit
               sel_type_job,
             ).then((String result) {
@@ -628,25 +567,39 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                 msgStr = "บันทึกเรียบร้อยแล้ว";
                 print("Status Insert : $msgStr");
 
-                //==============upload file=======================
-                // if (_file == null) {
-                //   snackMsg.showSnackBarMsg(
-                //       "Please Select FileName for Upload!!!", context);
-                // } else {
-                //   upc.UploadFile(_file).then((value) {
-                //     print(value);
-                //   });
-                // }
+                //create QR CODE by PHP in budget1 send url from ret["msg"]
+                String id_exp_spen = ret["msg"];
+
+                mydb.SentURLQRCODE(id_exp_spen, "budget1").then((value) {
+                  print("Value Return : \n" + value);
+
+                  //   int ret = int.parse(value);
+                  //   if (ret == 0) {
+                  //     print('Error Create QR Code !!!');
+                  //   } else
+                  //     print('Create QR Code Complete !!!');
+                });
+
                 if (_file != null) {
-                  upc.UploadFileToServer(_file, "budget1").then((value) {
-                    //print(value);
-                    var ret = json.decode(result);
-                    if (ret["result"] == true) {
-                      print("Upload File Successful \n FileName : " +
-                          ret["message"]);
+                  //upc.UploadFileToServer(_file, "budget1").then((value) {
+                  upc.UploadFToSrvAddProp(
+                    _file,
+                    "budget1",
+                    txtIdExpSpen.text,
+                  ).then((value) {
+                    print("return upload msg : \n" + value);
+
+                    if (value != "") {
+                      var ret = json.decode(value);
+
+                      if (ret["result"] == true) {
+                        print("Upload File Successful \n FileName : " +
+                            ret["msg"]);
+                      } else {
+                        print("Error Upload File \n FileName : " + ret["msg"]);
+                      }
                     } else {
-                      print(
-                          "Error Upload File \n FileName : " + ret["message"]);
+                      print("Error Upload File");
                     }
                   });
                 }
@@ -655,19 +608,19 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
 
               // GetExpUserSend.php for show last start 10 send
-              final oneSecond = Duration(seconds: 1);
-              Future.delayed(oneSecond * 2, () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowExpUserStart(),
-                  ),
-                );
-              });
+              // final oneSecond = Duration(seconds: 1);
+              // Future.delayed(oneSecond * 2, () {
+              //   Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ShowStartBook(),
+              //     ),
+              //   );
+              // });
             });
           }
         },
-        child: Text("เริ่มส่ง",
+        child: Text("บันทึก",
             textAlign: TextAlign.center,
             style: styleInput.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -862,35 +815,6 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                 ],
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(4.0),
-            //   child:
-            //   Row(
-            //     children: [
-            //       Padding(
-            //         padding: const EdgeInsets.all(4.0),
-            //         child: Text(
-            //           'เลือกหน่วยรับ',
-            //           style: styleHead,
-            //         ),
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.all(4.0),
-            //         child: Container(
-            //           //width: 250,
-            //           child: Padding(
-            //             padding: const EdgeInsets.all(2.0),
-            //             child: ddlUnit(unitList),
-            //           ),
-            //           decoration: BoxDecoration(
-            //             borderRadius: BorderRadius.circular(10),
-            //             color: lightpurple2,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Row(
               children: [
                 Padding(

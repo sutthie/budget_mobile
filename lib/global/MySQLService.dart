@@ -1224,7 +1224,8 @@ class MySQLDB {
 
   //==============Send to Create QRCODE =====================================
   Future<String> SentURLQRCODE(String id_exp_spen, String site) async {
-    String url = "http://$ipAddress/$site/qrcode/getURLFromFlutter.php";
+    String url =
+        "http://$ipAddress/$site/qrcode/getURLFromFlutter.php"; // it is in qrcode in website target
 
     var Dat = <String, dynamic>{};
     Dat['id_exp_spen'] = id_exp_spen;

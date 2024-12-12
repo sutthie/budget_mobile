@@ -246,7 +246,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+            contentPadding: EdgeInsets.fromLTRB(10.0, 2.0, 2.0, 2.0),
             filled: true,
             fillColor: Colors.yellowAccent.shade100,
             hintText: "ค้นหา",

@@ -89,8 +89,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   // ddl type_job
 
 // define FocusNode
-  final FocusNode _focus = FocusNode();
-  //final FocusNode _focusDate = FocusNode();
+  final FocusNode _focus_title = FocusNode();
+  final FocusNode _focus_addr_book = FocusNode();
+  final FocusNode _focus_amout = FocusNode();
+  final FocusNode _focus_date = FocusNode();
+
+  //final FocusNode _focus_ddlSecret = FocusNode();
 
   //const currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
   static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
@@ -102,6 +106,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
 // ==== set year====
   int yearNow = 0;
+
+  _ShowBudgetDetailState() {}
 
   @override
   void initState() {
@@ -140,19 +146,45 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     // setState(() {
     //   txtAmout.text = amout.toString();
     // });
-    txtAmout.text = "0.00";
+    //txtAmout.text = "0";
+
     //_focus.requestFocus();
     //FocusScope.of(context).requestFocus(_focus);
+
+    // _focus.addListener(() {
+    //   print("Focus Node Status: ${_focus.hasFocus}");
+    // });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Request focus after the context is fully available.
+    //_focus.requestFocus();
+    //FocusScope.of(context).requestFocus(_focus);
+    //FocusScope.of(context).unfocus();
+    //SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
   @override
   void dispose() {
-    //_focus.dispose();
-    super.dispose();
-  }
+    // _focus.removeListener(() {
+    //   print("Focus Node Listener Removed");
+    // });
 
-  _ShowBudgetDetailState() {
-    //_focus.requestFocus();
+// dispose focus
+    _focus_title.dispose();
+    _focus_addr_book.dispose();
+    _focus_amout.dispose();
+    _focus_date.dispose();
+    //_focus_ddlSecret.dispose();
+
+// dispose Text Controller
+    txtTitle.dispose();
+    txtAmout.dispose();
+    txtBookNo.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -204,33 +236,74 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     );
 
     final txttitle = TextField(
+      //key: ValueKey("my_text_field"),
+      // inputFormatters: [], // Can help stabilize input connection
+      // keyboardType: TextInputType.text,
+      // autocorrect: false,
+      // enableSuggestions: false,
       style: styleInput,
       autofocus: true,
-      focusNode: _focus,
+      focusNode: _focus_title,
       //enabled: true,
       // minLines: 1, // Display at least 5 lines
       // maxLines: null,
       controller: txtTitle,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
           filled: true,
           fillColor: Colors.white,
           hintText: "ชื่อเรื่อง",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
-      // onSubmitted: (v) {
-      //   //_fieldFocusChange(context, _focus, _nextFocus);
-      // },
+      onSubmitted: (v) {
+        //_fieldFocusChange(context, _focus, _nextFocus);
+        _focus_addr_book.requestFocus();
+      },
       // onTap: () {
-      //   _focus.requestFocus();
+      //   //_focus.requestFocus();
+      //   FocusScope.of(context).requestFocus(_focus);
+      //   SystemChannels.textInput.invokeMethod('TextInput.show');
       // },
+      // onTapOutside: (event) {
+      //   // ปิด Focus เมื่อแตะนอก TextField
+      //   _focus.unfocus();
+      // },
+      // onEditingComplete: () {
+      //   // จัดการเมื่อแก้ไขเสร็จ
+      //   _focus.unfocus();
+      // },
+    );
+
+    final txt_addr_book = TextField(
+      style: styleInput,
+      //autofocus: true,
+      //focusNode: focusNode,
+      focusNode: _focus_addr_book,
+      controller: txtBookNo,
+      //keyboardType: TextInputType.number,
+      // inputFormatters: [
+      //   //FilteringTextInputFormatter.digitsOnly,
+      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+      //   currencyFormatter,
+      // ],
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          filled: true,
+          fillColor: Colors.white,
+          hintText: "ที่ของหนังสือ",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+      onSubmitted: (v) {
+        //_fieldFocusChange(context, _focus, _nextFocus);
+        _focus_amout.requestFocus();
+      },
     );
 
     final txt_amout = TextField(
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      //focusNode: _focus,
+      focusNode: _focus_amout,
       controller: txtAmout,
       keyboardType: TextInputType.number,
       // inputFormatters: [
@@ -248,32 +321,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
         print(money);
       },
-      // onSubmitted: (v) {
-      //   //_fieldFocusChange(context, _focus, _nextFocus);
-      // },
-    );
-
-    final txtbookno = TextField(
-      style: styleInput,
-      //autofocus: true,
-      //focusNode: focusNode,
-      //focusNode: _focus,
-      controller: txtBookNo,
-      //keyboardType: TextInputType.number,
-      // inputFormatters: [
-      //   //FilteringTextInputFormatter.digitsOnly,
-      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-      //   currencyFormatter,
-      // ],
-      decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "ที่ของหนังสือ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
       onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
+        _focus_date.requestFocus();
       },
     );
 
@@ -281,7 +330,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
-      //focusNode: _focusDate,
+      focusNode: _focus_date,
       controller: txtDate,
       //keyboardType: TextInputType.number,
       // inputFormatters: [
@@ -321,7 +370,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
         });
       },
       onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
+        //_focus_ddlSecret.requestFocus();
       },
     );
 
@@ -332,7 +381,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //focusNode: _focus,
       controller: txtResponse,
       readOnly: true,
-      keyboardType: TextInputType.none,
+      //keyboardType: TextInputType.none,
       //keyboardType: TextInputType.number,
       // inputFormatters: [
       //   //FilteringTextInputFormatter.digitsOnly,
@@ -352,32 +401,29 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     );
 
 //======widget ddl=================
-
-    final ddlTypeJob = DropdownButton(
+    final ddlSecret = DropdownButton(
+      //focusNode: _focus_ddlSecret,
       borderRadius: BorderRadius.circular(10),
-      value: sel_type_job,
-      items: itemTypeJob.map((item) {
-        //int index = itemTypeJob.indexOf(item);
-        return DropdownMenuItem<String>(
+      value: sel_secret,
+      items: itemSecret.map((item) {
+        int index = itemSecret.indexOf(item);
+        return DropdownMenuItem<int>(
           child: Text('$item'),
-          value: item,
-          //value: index,
+          value: index,
         );
       }).toList(),
       onChanged: (value) {
         setState(() {
-          sel_type_job = value!;
+          sel_secret = value!;
         });
       },
       //hint: Text("เลือกปีงบประมาณ"),
       disabledHint: Text("Disabled"),
       elevation: 8,
       style: TextStyle(
-          color: Colors.green.shade900,
-          fontSize: 16,
-          fontWeight: FontWeight.bold),
+          color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
       //style: styleLabel,
-      dropdownColor: Colors.grey.shade200,
+      dropdownColor: Colors.yellow.shade100,
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
@@ -412,34 +458,36 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       iconSize: 35,
     );
 
-    final ddlSecret = DropdownButton(
+    final ddlTypeJob = DropdownButton(
       borderRadius: BorderRadius.circular(10),
-      value: sel_secret,
-      items: itemSecret.map((item) {
-        int index = itemSecret.indexOf(item);
-        return DropdownMenuItem<int>(
+      value: sel_type_job,
+      items: itemTypeJob.map((item) {
+        //int index = itemTypeJob.indexOf(item);
+        return DropdownMenuItem<String>(
           child: Text('$item'),
-          value: index,
+          value: item,
+          //value: index,
         );
       }).toList(),
       onChanged: (value) {
         setState(() {
-          sel_secret = value!;
+          sel_type_job = value!;
         });
       },
       //hint: Text("เลือกปีงบประมาณ"),
       disabledHint: Text("Disabled"),
       elevation: 8,
       style: TextStyle(
-          color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
+          color: Colors.green.shade900,
+          fontSize: 16,
+          fontWeight: FontWeight.bold),
       //style: styleLabel,
-      dropdownColor: Colors.yellow.shade100,
+      dropdownColor: Colors.grey.shade200,
       icon: Icon(Icons.arrow_drop_down_circle),
       iconDisabledColor: Colors.red,
       iconEnabledColor: Colors.blue,
       iconSize: 35,
     );
-
 //=======widget button===========
     final saveButton = Material(
       elevation: 5.0,
@@ -484,7 +532,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
             //const fmtMoneyDisp = "r'^(\d+)(?:\.|\,)\d{0,2}";
 
             //String fmt = txtAmout.text.replaceAll(RegExp(r'[\,]+'), '');
-            String fmt = txtAmout.text.replaceAll(fmtCommaRegExp, '');
+            String fmtAmout = txtAmout.text.replaceAll(fmtCommaRegExp, '');
 
             // cut only filename
             if (_file != null) {
@@ -503,7 +551,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               txtBookNo.text,
               //txtAmout.text,
               FileName,
-              fmt,
+              fmtAmout,
               dateDB,
               //txtDate.text,
               ddlSecret.value.toString(),
@@ -525,22 +573,21 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
                 //create QR CODE by PHP in budget1 send url from ret["msg"]
                 String id_exp_spen = ret["msg"];
-
-                mydb.SentURLQRCODE(id_exp_spen, "budget1").then((value) {
-                  print("Value Return : \n" + value);
-
-                  //   int ret = int.parse(value);
-                  //   if (ret == 0) {
-                  //     print('Error Create QR Code !!!');
-                  //   } else
-                  //     print('Create QR Code Complete !!!');
+                // create QRCODE in website budget
+                mydb.SentURLQRCODE(id_exp_spen, Budget_Site).then((value) {
+                  int ret = int.parse(value);
+                  if (ret == 0) {
+                    print('Error Create QR Code !!!');
+                  } else {
+                    print("Create QRCode OK=>id_exp_spen : " + id_exp_spen);
+                  }
                 });
 
                 if (_file != null) {
                   //upc.UploadFileToServer(_file, "budget1").then((value) {
                   upc.UploadFToSrvAddProp(
                     _file,
-                    "budget1",
+                    Budget_Site,
                     txtIdExpSpen.text,
                   ).then((value) {
                     print("return upload msg : \n" + value);
@@ -564,19 +611,19 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
 
               // GetExpUserSend.php for show last start 10 send
-              // final oneSecond = Duration(seconds: 1);
-              // Future.delayed(oneSecond * 2, () {
-              //   Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => ShowStartBook(),
-              //     ),
-              //   );
-              // });
+              final oneSecond = Duration(seconds: 1);
+              Future.delayed(oneSecond * 5, () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShowStartBook(),
+                  ),
+                );
+              });
             });
           }
         },
-        child: Text("เริ่มส่ง",
+        child: Text("บันทึก",
             textAlign: TextAlign.center,
             style: styleInput.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -662,149 +709,152 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       ),
       backgroundColor: Colors.lightBlueAccent,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text('รายละเอียดงบที่บันทึก', style: styleHead),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('ประจำปีงบประมาณ',
-                      style: styleHead.copyWith(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0)),
-                  Text(' $yearNow',
-                      style: styleHead.copyWith(
-                          color: Colors.blue[900],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0)),
-                ],
+        child: Form(
+          //key: _formKey,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text('รายละเอียดงบที่บันทึก', style: styleHead),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: txtlistname,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: txttitle,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: txtbookno,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: txt_amout,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: txtdate,
-            ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('ประจำปีงบประมาณ',
+                        style: styleHead.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0)),
+                    Text(' $yearNow',
+                        style: styleHead.copyWith(
+                            color: Colors.blue[900],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0)),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: txtlistname,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: txttitle,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: txt_addr_book,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: txt_amout,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: txtdate,
+              ),
 
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Text(_file?.path ?? '', style: styleHeadWhite3),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: selFileButton,
-            ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text(_file?.path ?? '', style: styleHeadWhite3),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: selFileButton,
+              ),
 
-            //hidden TextField
-            //Visibility(visible: false, child: txt_hide_bookdate),
+              //hidden TextField
+              //Visibility(visible: false, child: txt_hide_bookdate),
 
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        'เลือกชั้นความลับ',
+                        style: styleHead,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.yellow.shade100,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ddlSecret,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        'เลือกความเร่งด่วน',
+                        style: styleHead,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey.shade200,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ddlAcc,
+                          )),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      'เลือกชั้นความลับ',
+                      'เลือกประเภทงาน',
                       style: styleHead,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.yellow.shade100,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ddlSecret,
-                        )),
+                      child: ddlTypeJob,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      'เลือกความเร่งด่วน',
-                      style: styleHead,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.shade200,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: ddlAcc,
-                        )),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: txt_response_person,
               ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    'เลือกประเภทงาน',
-                    style: styleHead,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Container(
-                    child: ddlTypeJob,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: txt_response_person,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: saveButton,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: backButton,
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: saveButton,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: backButton,
+              ),
+            ],
+          ),
         ),
       ),
     );
