@@ -179,15 +179,13 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                                     // msg.Alert(context, "รหัสงบ",
                                     //     '${spen.id_exp_spen}');
 
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => StartExpedite(
-                                    //       id_exp_spen: '${spen.id_exp_spen}',
-                                    //     ),
-                                    //     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
-                                    //   ),
-                                    // );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReceiveExpedite(tbstatus: tbs),
+                                      ),
+                                    );
                                   },
                                   child: Text(
                                       'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real} \nผู้ส่ง : ${tbs.sender}',
