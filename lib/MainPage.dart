@@ -24,12 +24,18 @@ class MainPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               alignment: Alignment.center,
-              constraints: const BoxConstraints.expand(
-                  height: 100, width: 400), // protect over width
-              child: Image.asset(
-                "assets/images/budget-banner.jpg",
-                //fit: BoxFit.cover,
-                fit: BoxFit.fitWidth,
+              constraints: const BoxConstraints.expand(height: 100, width: 400),
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(10), // Add border radius here
+              ),
+              child: ClipRRect(
+                // Clip the image to match the container's border radius
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  "assets/images/budget-banner.jpg",
+                  fit: BoxFit.fitWidth,
+                ),
               ),
             ),
           ),

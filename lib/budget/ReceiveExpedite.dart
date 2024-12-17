@@ -721,7 +721,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('ชื่องบ', style: styleHead3)),
                     Container(
                         child: txt_list_exp_spen,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
                         //width: 350,
                         ),
                   ],
@@ -737,7 +737,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('ชื่องาน', style: styleHead3)),
                     Container(
                         child: txt_title,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
                         //width: 350,
                         ),
                   ],
@@ -753,7 +753,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('จำนวนเงิน', style: styleHead3)),
                     Container(
                         child: txt_amout,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
                         //width: 350,
                         ),
                   ],
@@ -770,7 +770,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         child: Text('ที่ของหนังสือ', style: styleHead3)),
                     Container(
                         child: txt_doc_unit_no,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -788,7 +788,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         child: Text('หน่วยที่ส่ง', style: styleHead3)),
                     Container(
                         child: txt_unit_send,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -806,7 +806,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         child: Text('วันที่หนังสือ', style: styleHead3)),
                     Container(
                         child: txt_date_send,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -824,7 +824,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         child: Text('วัน/เวลา ส่งมา', style: styleHead3)),
                     Container(
                         child: txt_date_send_real,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -841,7 +841,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('สถานะ', style: styleHead3)),
                     Container(
                         child: txt_status,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -858,7 +858,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('เลขที่รับ', style: styleHead3)),
                     Container(
                         child: txt_no_doc_rx,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -877,7 +877,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         child: Text('สถานะการปฏิบัติ', style: styleHead3)),
                     Container(
                         child: txt_status_rx,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -894,7 +894,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('หมายเหตุ', style: styleHead3)),
                     Container(
                         child: txt_etc,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -911,7 +911,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('ผู้รับ', style: styleHead3)),
                     Container(
                         child: txt_response_person, //txt_response_person,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),
@@ -928,7 +928,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                         width: 80, child: Text('แฟ้มแนบ', style: styleHead3)),
                     Container(
                         child: txt_doc_unit,
-                        width: MediaQuery.of(context).size.width * 0.75
+                        width: MediaQuery.of(context).size.width * 0.7
 
                         //width: 350,
                         ),

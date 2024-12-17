@@ -7,6 +7,9 @@ import '../../styles/colors.dart';
 
 class LoginFalseScreen extends StatelessWidget {
   static String routeName = "/login_false";
+  final String errMsg;
+
+  LoginFalseScreen({required this.errMsg});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +33,37 @@ class LoginFalseScreen extends StatelessWidget {
             height: SizeConfig.screenHeight * 0.4, // 40%
           ),
           SizedBox(height: SizeConfig.screenHeight * 0.08),
-          Text(
-            "Login False",
-            style: TextStyle(
-              fontSize: getProportionateScreenWidth(30),
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          //Column(
+          //mainAxisAlignment: MainAxisAlignment.center,
+          //crossAxisAlignment: CrossAxisAlignment.center,
+
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              width: 300,
+              height: 100,
+              //constraints: BoxConstraints.expand(height: 100, width: 300),
+              /*  width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+                      height: MediaQuery.of(context).size.height * 0.5, // 50% of screen height */
+              //color: white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                "Login False :\n${(errMsg != '') ? 'Connection False !!!\nตรวจสอบเครือข่ายเน็ตเวิร์คด้วย' : 'ตรวจสอบความถูกต้อง UserName/Password'}",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(20),
+                  fontWeight: FontWeight.bold,
+                  //backgroundColor: Colors.white,
+                  color: Colors.red,
+                ),
+              ),
             ),
           ),
+
+          // var value = condition1 ? (condition2 ? valueA : valueB) : valueC;
           Spacer(),
           SizedBox(
             width: SizeConfig.screenWidth * 0.6,

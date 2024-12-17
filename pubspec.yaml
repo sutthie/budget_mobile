@@ -48,6 +48,7 @@ dependencies:
   simple_radio_group: ^1.0.0
   flutter_qr_bar_scanner: ^3.0.2
   flutter_money: ^0.0.3
+  currency_formatter: ^2.0.0
   file_picker: ^6.1.1
   dio: ^5.4.0
   flutter_cached_pdfview: ^0.4.2

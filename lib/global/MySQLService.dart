@@ -167,7 +167,12 @@ class MySQLDB {
     } catch (e) {
       log("error :" + e.toString());
       //token = "";
-      return "";
+
+      //return "{errMsg : " + e.toString() + "}";
+
+      ret = {"errMsg": e.toString()};
+
+      return json.encode(ret);
     }
   }
 
@@ -1099,7 +1104,30 @@ class MySQLDB {
     }
   }
 
-//=====================tbl_status=======================
+//=====================Chk Income Job in ChkIncomeJob.php =======================
+  Future<String> getStatusInCome(String uid, String years) async {
+    String url = "http://$ipAddress/phpFlutterBudget/ChkIncomeJob.php";
+
+    final response =
+        await http.post(Uri.parse(url), body: {"uid": uid, "years": years});
+    if (response.statusCode == 200) {
+      log("return response : " + response.body.trim());
+
+      if (response.body.trim() != "0") {
+        return response.body.trim();
+      } else {
+        return "0";
+      }
+
+      //return 1;
+      //return ret;
+    } else {
+      log("return Error Get Income Job Count");
+      return "0";
+    }
+  }
+
+  //=====================tbl_status=======================
   Future<String> getStatusMsg(id_msg) async {
     String url = "http://$ipAddress/phpFlutterBudget/get_msg_status_detail.php";
 

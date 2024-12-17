@@ -113,13 +113,44 @@ class _SignFormState extends State<SignForm> {
                     print("Result Authen : ${msg}");
 
                     //KeyboardUtil.hideKeyboard(context);
-                    Navigator.pushNamed(context, LoginFalseScreen.routeName);
+                    //Navigator.pushNamed(context, LoginFalseScreen.routeName);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginFalseScreen(
+                          errMsg: '',
+                        ),
+                      ),
+                    );
                   } else {
                     //msg = "Login Success!!!";
-
                     //print("Result Authen : ${msg}");
 
                     var dat = json.decode(result.trim());
+                    //check if data return not blank
+                    // but need show error from coneection
+                    //return "{errMsg : " + e.toString() + "}";
+                    if (dat["errMsg"] != null) {
+                      if (dat["errMsg"] != "") {
+                        // Navigator.pushNamed(context, LoginFalseScreen.routeName,
+                        //   arguments: <String, String>{
+                        //     'errMsg': dat["errMsg"],
+                        //   },
+                        // );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginFalseScreen(
+                              errMsg: dat["errMsg"],
+                            ),
+                          ),
+                        );
+
+                        return;
+                      }
+                    }
+
                     // from Node.js Server
                     //   ret = {
                     //   "aid": aid,

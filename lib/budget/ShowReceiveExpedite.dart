@@ -1,4 +1,5 @@
 import 'package:budget_mobile/models/TBStatusSearch.dart';
+import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 //import 'Dialog.dart';
 import '../global/MySQLService.dart';
@@ -156,7 +157,8 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: Text('${tbs.title} | ${tbs.doc_unit_no}',
-                                  style: const TextStyle(fontSize: 14.0)),
+                                  style:
+                                      TextStyle(fontSize: 14.0, color: black)),
                             )),
                       ),
                     ],
@@ -189,7 +191,8 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                                   },
                                   child: Text(
                                       'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real} \nผู้ส่ง : ${tbs.sender}',
-                                      style: TextStyle(fontSize: 12))),
+                                      style: TextStyle(
+                                          fontSize: 12, color: purple))),
                             )),
                       ),
                     ],
@@ -380,14 +383,14 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.fromLTRB(2, 0, 1, 0),
                 child: Text('เลือกปีงบประมาณ', style: styleHead),
               ),
               SizedBox(
-                width: 5,
+                width: 3,
               ),
               Container(
-                margin: EdgeInsets.all(3),
+                margin: EdgeInsets.all(2),
                 width: 75,
                 height: 33,
                 decoration: BoxDecoration(
@@ -402,25 +405,31 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
               ),
             ],
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                child: Text('ค้นหา', style: styleHead),
+          Container(
+            height: 35,
+            child: Container(
+              height: 35,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(2, 0, 1, 0),
+                    child: Text('ค้นหา', style: styleHead),
+                  ),
+                  Container(width: 135.0, child: txtsearch()),
+                  searchButon,
+                  SizedBox(
+                    width: 3,
+                  ),
+                  backButon,
+                  SizedBox(
+                    width: 3,
+                  ),
+                  ResetButon
+                  //ddlYear,
+                  //txtsearch,
+                ],
               ),
-              Container(width: 135.0, child: txtsearch()),
-              searchButon,
-              SizedBox(
-                width: 3,
-              ),
-              backButon,
-              SizedBox(
-                width: 3,
-              ),
-              ResetButon
-              //ddlYear,
-              //txtsearch,
-            ],
+            ),
           ),
 
           /* Row(
