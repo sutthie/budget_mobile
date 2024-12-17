@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, file_names
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../global/MySQLService.dart';
@@ -7,8 +6,7 @@ import '../global/globalVar.dart';
 import '../global/DateTimes.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'package:flutter_money/flutter_money.dart';
-
+import 'package:currency_formatter/currency_formatter.dart';
 import '../styles/TextStyle.dart';
 
 class EditExpDetail extends StatefulWidget {
@@ -1352,11 +1350,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       txtStRx.text = result.st_rx;
       txtStMalloc.text = result.st_malloc.toString();
 
-      MoneyFormatterOutput fo = FlutterMoney(amount: result.mborder).output;
-      txtMBorder.text = fo.nonSymbol;
+      String format_money =
+          CurrencyFormatter.format(result.mborder, thBahtSettings);
 
-      fo = FlutterMoney(amount: result.malloc).output;
-      txtMalloc.text = fo.nonSymbol;
+      txtMBorder.text = format_money;
+
+      format_money = CurrencyFormatter.format(result.malloc, thBahtSettings);
+
+      txtMalloc.text = format_money;
     });
 
     _focus.requestFocus();

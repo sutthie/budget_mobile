@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_money/flutter_money.dart';
+import 'package:currency_formatter/currency_formatter.dart';
 import '../global/MySQLService.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
@@ -1147,14 +1147,18 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         txtListName.text = result.list_exp_spen;
         txtMemo.text = result.memo_th;
 
-        MoneyFormatterOutput fo = FlutterMoney(amount: result.mborder).output;
-        txtMBorder.text = fo.nonSymbol;
+        String format_money =
+            CurrencyFormatter.format(result.mborder, thBahtSettings);
+
+        txtMBorder.text = format_money;
+
         //txtMBorder.text = fo.symbolOnRight.toString();
         //txtMBorder.text = result.mborder.toString();
         //txtMalloc.text = result.malloc.toString();
 
-        fo = FlutterMoney(amount: result.malloc).output;
-        txtMalloc.text = fo.nonSymbol.toString();
+        format_money = CurrencyFormatter.format(result.malloc, thBahtSettings);
+        txtMalloc.text = format_money;
+
         //txtMalloc.text = fo.symbolOnRight.toString();
 
         txtIdList.text = result.idlist.toString();
@@ -1170,8 +1174,8 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         txtUnitOper.text = result.unit_oper.toString();
         txtBudType.text = result.bud_type.toString();
 
-        fo = FlutterMoney(amount: result.mpay).output;
-        txtMpay.text = fo.nonSymbol.toString();
+        format_money = CurrencyFormatter.format(result.mpay, thBahtSettings);
+        txtMpay.text = format_money;
         //txtMpay.text = result.mpay.toString();
 
         txtBpay_n.text = result.bpay_n.toString();
@@ -1179,8 +1183,8 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         txtCpay.text = result.cpay.toString();
         txtDpay.text = result.dpay.toString();
 
-        fo = FlutterMoney(amount: result.spay).output;
-        txtSpay.text = fo.nonSymbol.toString();
+        format_money = CurrencyFormatter.format(result.spay, thBahtSettings);
+        txtSpay.text = format_money;
         //txtSpay.text = result.spay.toString();
 
         txtSpay_n.text = result.spay_n.toString();

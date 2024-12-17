@@ -10,7 +10,7 @@ import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'package:flutter_money/flutter_money.dart';
+import 'package:currency_formatter/currency_formatter.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';

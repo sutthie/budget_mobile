@@ -44,11 +44,10 @@ dependencies:
   confirm_dialog: ^1.0.1
   hive_flutter: ^1.1.0
   jwt_decoder: ^2.0.1
-  intl: ^0.17.0
+  intl: ^0.19.0
   simple_radio_group: ^1.0.0
   flutter_qr_bar_scanner: ^3.0.2
-  flutter_money: ^0.0.3
-  currency_formatter: ^2.0.0
+  currency_formatter: ^2.2.1
   file_picker: ^6.1.1
   dio: ^5.4.0
   flutter_cached_pdfview: ^0.4.2

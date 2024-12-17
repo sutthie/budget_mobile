@@ -13,7 +13,7 @@ import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 //import '../global/GetYearBudget.dart';
-import 'package:flutter_money/flutter_money.dart';
+import 'package:currency_formatter/currency_formatter.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';
@@ -180,8 +180,10 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
         txtDateOriginal.text =
             now.ConvertDateThaiNow(DateTime.parse(result.unit_date_no));
 
-        MoneyFormatterOutput fo = FlutterMoney(amount: result.amout).output;
-        txtAmout.text = fo.nonSymbol;
+        String format_money =
+            CurrencyFormatter.format(result.amout, thBahtSettings);
+
+        txtAmout.text = format_money;
 
         //txtUnitName.text = result.id_use_int.toString();
 
