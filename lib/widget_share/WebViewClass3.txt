@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
+class WebViewClass3 extends StatelessWidget {
+  final String url;
+
+  WebViewClass3({required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    return WebviewScaffold(
+      appBar: AppBar(title: Text('WebView Page')),
+      url: url,
+      userAgent: 'Fake', // Set a user agent if needed
+      clearCookies: false, // Adjust as necessary
+      clearCache: false, // Adjust as necessary
+      hidden: true, // Hide the WebView initially
+      appCacheEnabled: true, // Enable app cache
+      supportMultipleWindows: true, // Allow multiple windows
+    );
+  }
+}

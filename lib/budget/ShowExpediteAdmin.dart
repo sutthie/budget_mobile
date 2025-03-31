@@ -1,0 +1,480 @@
+import 'package:flutter/material.dart';
+//import 'Dialog.dart';
+import '../global/ManageLogin.dart';
+import '../models/Expedite.dart';
+import '../global/MySQLService.dart';
+import '../global/globalVar.dart';
+import '../global/ResponseMessage.dart';
+import '../global/GetYearBudget.dart';
+import 'EditExpDetail.dart';
+
+var login;
+
+class ShowExpediteAdmin extends StatefulWidget {
+  @override
+  _GetBudgetState createState() => _GetBudgetState();
+}
+
+class _GetBudgetState extends State<ShowExpediteAdmin>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  //String cond = "";
+
+  // ====declare var========
+  late Future<List<Expedite>?>? datList = null;
+
+  //==========dropdown init======
+  // Default Drop Down Item.
+  //String dropdownValue = '2565';
+  // To show Selected Item in Text.
+  String selyear = "";
+
+// init year now
+  GetYearBudget yb = new GetYearBudget();
+  late String yearNow;
+
+  //String yearNow = DateTime.now().year.toInt() + 543;
+  late List<String> listyear;
+
+  var id_exp_spen;
+
+  Future<List<Expedite>?> getDataList(String txtsearch, String ddlyear) {
+    MySQLDB mydb = new MySQLDB();
+    return mydb.getExpSearch(txtsearch, ddlyear);
+  }
+
+  // void getDropDownItem() {
+  //   setState(() {
+  //     //selyear = dropdownValue;
+  //     selyear = yearNow;
+  //   });
+  // }
+
+  //=====Controller Text===========
+  final txtSearch = TextEditingController();
+
+  _GetBudgetState() {
+    ManageLogin _login = ManageLogin();
+    _login.DefineBox().then((box) {
+      login = box;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+
+// init data
+    yearNow = yb.getYearBudget().toString();
+    selyear = yearNow;
+
+    listyear = [
+      for (var i = int.parse(yearNow) - 5; i <= int.parse(yearNow); i++)
+        i.toString()
+    ];
+
+    //getDropDownItem();
+    datList = getDataList(txtSearch.text.trim(), selyear);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle styleHead = TextStyle(
+      fontFamily: 'Montserrat',
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.purple,
+    );
+
+    TextStyle styleLabel = TextStyle(
+      fontFamily: 'Montserrat',
+      fontSize: 16.0,
+      color: Colors.blue,
+      fontWeight: FontWeight.bold,
+      //decorationColor: Colors.yellowAccent.shade100,
+      backgroundColor: Colors.white,
+    );
+
+    TextStyle styleInput = TextStyle(
+      fontFamily: 'Montserrat',
+      fontSize: 16.0,
+      color: Colors.black,
+    );
+
+//Create ListView using data get from service
+    Widget listExpenWidget(context, snapshot) {
+      //final String idExpSpen = "";
+      if (snapshot.data != null && snapshot.data.length > 0) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+            Expedite spen = snapshot.data[index];
+
+            return GestureDetector(
+              onTap: () {
+                //msgBox(context, '${acc.userid}');
+                idExpSpen = '${spen.id_exp_spen}';
+                //msgBox(context, '${spen.list_exp_spen}');
+                //Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditExpDetail(
+                      id_exp_spen: '${spen.id_exp_spen}',
+                    ),
+                    //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
+                  ),
+                );
+              },
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.98,
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            elevation: 8,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text('${spen.list_exp_spen}',
+                                  style: const TextStyle(fontSize: 16.0)),
+                            )),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.98,
+                        child: Card(
+                            color: Colors.blue[200],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            elevation: 8,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    // var msg = new ResponseMessage();
+                                    // msg.Alert(context, "รหัสงบ",
+                                    //     '${spen.id_exp_spen}');
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditExpDetail(
+                                          id_exp_spen: '${spen.id_exp_spen}',
+                                        ),
+                                        //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('รหัสงบ : ${spen.id_exp_spen}',
+                                      style: TextStyle(fontSize: 14))),
+                            )),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      } else
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text(
+            "ไม่พบข้อมูลใดๆ กดปุ่ม Reset",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+              backgroundColor: Colors.grey.shade100,
+
+              //letterSpacing: 2.0,
+            ),
+          ),
+        );
+    }
+
+// call from Body Part in Scaffold
+// Main Display ListView call listExpenWidget for create ListView
+    Widget listListExspenWidget(data) {
+      return FutureBuilder(
+        future: data,
+        builder: (context, tbDBSnap) {
+          switch (tbDBSnap.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            default:
+              if (tbDBSnap.hasError) {
+                print('Error: ${tbDBSnap.error}');
+                return Text('ไม่พบข้อมูล');
+              } else {
+                if (tbDBSnap.hasData) {
+                  return listExpenWidget(context, tbDBSnap);
+                } else {
+                  return Text('ไม่พบข้อมูล');
+                }
+              }
+          }
+        },
+      );
+    }
+
+    //======define widget=======
+    // ignore: unused_local_variable
+    /*     final txtsearch = TextField(
+          style: styleInput,
+          //autofocus: true,
+          //focusNode: focusNode,
+          //focusNode: _focus,
+          controller: txtSearch,
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              filled: true,
+              fillColor: Colors.white,
+              //hintText: "ชื่องบ",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+          onSubmitted: (v) {
+            //_fieldFocusChange(context, _focus, _nextFocus);
+          },
+        ); */
+
+    Widget txtsearch() {
+      return TextField(
+        style: styleInput,
+        //autofocus: true,
+        controller: txtSearch,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
+            filled: true,
+            fillColor: Colors.yellowAccent.shade100,
+            hintText: "ค้นหา",
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(4.0))),
+        onSubmitted: (v) {
+          //_fieldFocusChange(context, _focus, _nextFocus);
+        },
+      );
+    }
+
+    // final ddlYear = DropdownButton<String>(
+    //   value: dropdownValue,
+    //   icon: const Icon(Icons.arrow_downward),
+    //   iconSize: 24,
+    //   elevation: 16,
+    //   style: styleLabel,
+    //   underline: Container(
+    //     height: 2,
+    //     color: Colors.deepPurpleAccent,
+    //   ),
+    //   onChanged: (String newValue) {
+    //     setState(() {
+    //       dropdownValue = newValue;
+    //     });
+    //   },
+    //   items: <String>['2561', '2562', '2563', '2564', '2565']
+    //       .map<DropdownMenuItem<String>>((String value) {
+    //     return DropdownMenuItem<String>(
+    //       value: value,
+    //       child: Text(value),
+    //     );
+    //   }).toList(),
+    // );
+
+    final ddlYearNew = DropdownButton(
+      value: yearNow,
+      items: listyear.map((String item) {
+        return DropdownMenuItem<String>(
+          child: Text(' $item '),
+          value: item,
+        );
+      }).toList(),
+      onChanged: (value) {
+        selyear = value!;
+        //if not found alert no found
+        datList = getDataList(txtSearch.text.trim(), selyear);
+
+        ResponseMessage resp = new ResponseMessage();
+
+        datList!.then((ret_value) {
+          if (ret_value == null) {
+            resp.Alert(context, "ไม่พบข้อมูล", "ไม่พบข้อมูลของปีที่เลือก !!!");
+          }
+          setState(() {
+            yearNow = value;
+          });
+        });
+      },
+      //hint: Text("เลือกปีงบประมาณ"),
+      disabledHint: Text("Disabled"),
+      elevation: 8,
+      //style: TextStyle(color: Colors.green, fontSize: 16),
+      style: styleLabel,
+      icon: Icon(Icons.arrow_drop_down_circle),
+      iconDisabledColor: Colors.red,
+      iconEnabledColor: Colors.blue,
+      iconSize: 30,
+    );
+
+    final searchButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(20.0),
+      color: Colors.purpleAccent.shade700,
+      child: MaterialButton(
+        //minWidth: MediaQuery.of(context).size.width,
+        minWidth: 60,
+        padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+        //highlightColor: Colors.amber, //on press button change color
+        highlightColor:
+            Colors.purpleAccent.shade200, //on press button change color
+        onPressed: () {
+          //Navigator.of(context).pop();
+          //MessageDialog dlg = new MessageDialog();
+          //dlg.msgBox(context, txtSearch.text);
+          //cond = txtSearch.text;
+          setState(() {
+            datList = getDataList(txtSearch.text.trim(), yearNow.toString());
+          });
+        },
+        child: Text("ค้นหา",
+            textAlign: TextAlign.center,
+            style: styleInput.copyWith(color: Colors.white, fontSize: 14
+                //fontWeight: FontWeight.bold
+                )),
+      ),
+    );
+
+    final backButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(20.0),
+      color: Colors.blue,
+      child: MaterialButton(
+        //minWidth: MediaQuery.of(context).size.width,
+        minWidth: 60,
+        padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+        highlightColor: Colors.amber, //on press button change color
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text("หน้าหลัก",
+            textAlign: TextAlign.center,
+            style: styleInput.copyWith(color: Colors.white, fontSize: 14
+                //fontWeight: FontWeight.bold
+                )),
+      ),
+    );
+
+    final ResetButon = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(20.0),
+      color: Colors.redAccent,
+      child: MaterialButton(
+        //minWidth: MediaQuery.of(context).size.width,
+        minWidth: 60,
+        padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+        highlightColor: Colors.amber, //on press button change color
+        onPressed: () {
+          //Navigator.of(context).pop();
+          txtSearch.text = "";
+          setState(() {
+            yearNow = yb.getYearBudget().toString();
+            datList = getDataList("", yearNow.toString());
+          });
+        },
+        child: Text("Reset",
+            textAlign: TextAlign.center,
+            style: styleInput.copyWith(color: Colors.white, fontSize: 14
+                //fontWeight: FontWeight.bold
+                )),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "บริหารข้อมูลงบประมาณ(Admin)",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      backgroundColor: Colors.lightBlueAccent,
+      body: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('เลือกปีงบประมาณ', style: styleHead),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Container(
+                  margin: EdgeInsets.all(3),
+                  width: 80,
+                  height: 33,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(width: 1),
+                  ),
+                  child: Center(
+                    // Center the DropdownButton horizontally
+                    child: ddlYearNew,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text('ค้นหา', style: styleHead),
+                ),
+                Container(width: 160.0, child: txtsearch()),
+                SizedBox(
+                  width: 3,
+                ),
+                searchButon,
+                SizedBox(
+                  width: 3,
+                ),
+                backButon,
+                SizedBox(
+                  width: 3,
+                ),
+                ResetButon
+                //ddlYear,
+                //txtsearch,
+              ],
+            ),
+
+            /* Row(
+                  children: [
+                    searchButon,
+                  ],
+                ), */
+            Flexible(fit: FlexFit.tight, child: listListExspenWidget(datList)),
+          ],
+        ),
+      ),
+    );
+  }
+}

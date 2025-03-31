@@ -1,0 +1,113 @@
+// ignore_for_file: prefer_const_constructors, file_names
+
+import 'package:flutter/material.dart';
+import '../chat/ChatPerson.dart';
+import '../admin/ShowAcc.dart';
+import '../screens/advert/AdvertScreen.dart';
+import '../screens/sign_in/sign_in_screen.dart';
+
+//draw side menu
+class SideMenuLeft extends StatelessWidget {
+  const SideMenuLeft({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: [
+          DrawerHeader(
+            child: const Center(
+              child: Text(
+                'MainMenu',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.access_alarm),
+            title: const Text('หน้าหลัก'),
+            onTap: () => {
+              //Navigator.of(context).pop()
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AdvertScreen(),
+                ),
+              ),
+            },
+          ),
+
+          // ListTile(
+          //   leading: const Icon(Icons.border_color),
+          //   title: const Text('จำหน่ายออนไลน์2(Test)'),
+          //   onTap: () => {
+          //     //Navigator.of(context).pop()
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => ShoppingListView(),
+          //       ),
+          //     ),
+          //   },
+          // ),
+          ListTile(
+            leading: const Icon(Icons.border_color),
+            title: const Text('ข้อมูลแอคเค้าท์'),
+            onTap: () => {
+              //Navigator.of(context).pop()
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShowAccount(),
+                ),
+              ),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.chat),
+            title: const Text('คุยกัน'),
+            onTap: () => {
+              //Navigator.of(context).pop()
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPerson(
+                    title: '',
+                  ),
+                ),
+              ),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Login เข้าระบบ'),
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignInScreen(),
+                ),
+              ),
+            },
+          ),
+          /* ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Test List Page'),
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TestListPage(),
+                ),
+              ),
+            },
+          ), */
+        ],
+      ),
+    );
+  }
+}

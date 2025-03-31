@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class fileUtilSample extends StatefulWidget {
+  @override
+  fileUtilSampleState createState() => fileUtilSampleState();
+}
+
+class fileUtilSampleState extends State<fileUtilSample> {
+  late String _localPath;
+  late bool _permissionReady;
+  late TargetPlatform? platform;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      print('android');
+      platform = TargetPlatform.android;
+    } else {
+      platform = TargetPlatform.iOS;
+    }
+    _prepareSaveDir();
+  }
+
+  Future<void> _prepareSaveDir() async {
+    _localPath = (await _findLocalPath())!;
+    final savedDir = Directory(_localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String?> _findLocalPath() async {
+    if (platform == TargetPlatform.android) {
+      return "/sdcard/download/";
+    } else {
+      var directory = await getApplicationDocumentsDirectory();
+      return directory.path + Platform.pathSeparator + 'Download';
+    }
+  }
+
+  Future<bool> _checkPermission() async {
+    if (platform == TargetPlatform.android) {
+      final status = await Permission.storage.status;
+      if (status != PermissionStatus.granted) {
+        final result = await Permission.storage.request();
+        if (result == PermissionStatus.granted) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> _downloadFile() async {
+    _permissionReady = await _checkPermission();
+    if (_permissionReady) {
+      try {
+        await Dio().download(
+          "http://10.130.230.64/budget1/Follow/doc/5754_ข้าราชการไทยยุคใหม่เข้า รพเอกชน ได้แล้ว.pdf", // Replace with your file URL
+          _localPath +
+              "/" +
+              "5754_ข้าราชการไทยยุคใหม่เข้า รพเอกชน ได้แล้ว.pdf", // Replace with desired local file path
+        );
+        print("Download Completed.");
+      } catch (e) {
+        print("Download Failed.\n\n" + e.toString());
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Test Download File',
+          style: TextStyle(color: Colors.white),
+        ),
+        //backgroundColor: Colors.redAccent,
+      ),
+      backgroundColor: Colors.lightBlueAccent,
+      body: Container(
+        child: Center(
+          child: IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              _downloadFile();
+            },
+            //constraints: const BoxConstraints(minHeight: 65, minWidth: 65),
+            icon: const Icon(
+              Icons.file_copy,
+              color: Colors.red,
+              size: 60,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,81 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+// #docregion platform_imports
+// Import for Android features.
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+// Import for iOS features.
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+// #enddocregion platform_imports
+
+class WebViewClass4 extends StatefulWidget {
+  final String url; // Initial URL to load
+
+  const WebViewClass4({Key? key, required this.url}) : super(key: key);
+
+  @override
+  _WebViewClass4State createState() => _WebViewClass4State();
+}
+
+class _WebViewClass4State extends State<WebViewClass4> {
+  WebViewFlutterController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewFlutterController(
+      initialUrl: widget.url,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('WebView Example'),
+      ),
+      body: WebView(
+        controller: _controller!,
+        javascriptMode: JavascriptMode.unrestricted, // (Optional)
+        navigationDelegate: (NavigationRequest request) {
+          // Handle internal and external navigation:
+          if (request.url.startsWith(widget.url)) {
+            // Allow navigation within the initial domain
+            return NavigationDecision.navigate;
+          } else {
+            // Handle external links (optional):
+            // 1. Open in external browser (platform-specific):
+            if (Platform.isAndroid) {
+              _launchUrlInWebView(request.url);
+            } else {
+              launchUrl(request.url);
+            }
+            // 2. Or prevent navigation within the web view:
+            // return NavigationDecision.prevent;
+          }
+        },
+      ),
+    );
+  }
+
+  // Helper method to open URL in web view (Android-specific):
+  _launchUrlInWebView(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      const method = 'android.intent.action.VIEW';
+      await MethodChannel('launch_url').invokeMethod(method, url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+}
