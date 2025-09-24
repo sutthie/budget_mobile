@@ -19,10 +19,10 @@ class EditExpDetail extends StatefulWidget {
 }
 
 class _ShowBudgetDetailState extends State<EditExpDetail> {
-// =====declare object===========
+  // =====declare object===========
   late MySQLDB mydb;
   late ResponseMessage msg;
-//=====Controller Text===========
+  //=====Controller Text===========
   final txtIdList = TextEditingController();
   final txtIdExpSpen = TextEditingController();
   final txtListName = TextEditingController();
@@ -77,19 +77,20 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
   final txtStRx = TextEditingController();
   final txtStMalloc = TextEditingController();
 
-//===== define FocusNode=======
+  //===== define FocusNode=======
   final FocusNode _focus = FocusNode();
   final FocusNode _focusDayStart = FocusNode();
   final FocusNode _focusDayStop = FocusNode();
 
-//=======defind variable==================
+  //=======defind variable==================
   late DateTimes now = DateTimes();
   String DateString = "";
-//======const ===========================
+  //======const ===========================
   ////currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
   static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
-  final currencyFormatter =
-      FilteringTextInputFormatter.allow(RegExp(currencyRegExp));
+  final currencyFormatter = FilteringTextInputFormatter.allow(
+    RegExp(currencyRegExp),
+  );
 
   // ==== set caption to Text====
   int yearNow = 0;
@@ -113,7 +114,7 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
 
   @override
   Widget build(BuildContext context) {
-//====TextStyle========
+    //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 18.0,
@@ -121,8 +122,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       color: Colors.purple,
     );
 
-    TextStyle styleHead3 =
-        styleCustom("", 16.0, Colors.redAccent.shade700, true);
+    TextStyle styleHead3 = styleCustom(
+      "",
+      16.0,
+      Colors.redAccent.shade700,
+      true,
+    );
 
     TextStyle styleInput = const TextStyle(
       fontFamily: 'Montserrat',
@@ -131,9 +136,7 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
     );
 
     //======define widget=======
-    final txt_id_list = TextField(
-      controller: txtIdList,
-    );
+    final txt_id_list = TextField(controller: txtIdList);
 
     final txt_id_exp_spen = TextField(
       style: styleInput,
@@ -144,13 +147,13 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: Colors.white,
-          hintText: "รหัสงบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: Colors.white,
+        hintText: "รหัสงบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         _focus.requestFocus();
       },
@@ -168,13 +171,13 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: Colors.white,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: Colors.white,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -187,12 +190,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       //focusNode: _focus,
       controller: txtMemo,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -206,16 +209,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       controller: txtMBorder,
       textAlign: TextAlign.right,
       keyboardType: TextInputType.number,
-      inputFormatters: [
-        currencyFormatter,
-      ],
+      inputFormatters: [currencyFormatter],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "กรอบวงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "กรอบวงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -235,12 +236,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -259,12 +260,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_daystart = TextField(
       style: styleInput,
@@ -273,12 +274,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       focusNode: _focusDayStart,
       controller: txtDaystart,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วันที่เริ่ม",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วันที่เริ่ม",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         DateTime dt = DateTime.now();
         int dn = dt.year - 5;
@@ -287,11 +288,11 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         DateTime yend = DateTime(dn);
 
         showDatePicker(
-                context: context,
-                initialDate: now.DateTimeNow(),
-                firstDate: ystart,
-                lastDate: yend)
-            .then((value) {
+          context: context,
+          initialDate: now.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
           if (value != null) {
             setState(() {
               DateString = now.ConvertDateThaiNow(value);
@@ -312,12 +313,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       focusNode: _focusDayStop,
       controller: txtDaystop,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วันที่สิ้นสุด",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วันที่สิ้นสุด",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         DateTime dt = DateTime.now();
         int dn = dt.year - 5;
@@ -326,11 +327,11 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         DateTime yend = DateTime(dn);
 
         showDatePicker(
-                context: context,
-                initialDate: now.DateTimeNow(),
-                firstDate: ystart,
-                lastDate: yend)
-            .then((value) {
+          context: context,
+          initialDate: now.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
           if (value != null) {
             setState(() {
               DateString = now.ConvertDateThaiNow(value);
@@ -358,12 +359,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_field_work = TextField(
       style: styleInput,
@@ -378,12 +379,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_exp_type = TextField(
       style: styleInput,
@@ -398,12 +399,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_int_group = TextField(
       style: styleInput,
@@ -418,12 +419,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_use = TextField(
       style: styleInput,
@@ -438,12 +439,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_oper = TextField(
       style: styleInput,
@@ -458,12 +459,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_bud_type = TextField(
@@ -479,12 +480,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_mpay = TextField(
@@ -501,12 +502,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_bpay_n = TextField(
       style: styleInput,
@@ -522,12 +523,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_bpay = TextField(
       style: styleInput,
@@ -543,12 +544,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_cpay = TextField(
       style: styleInput,
@@ -564,12 +565,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_dpay = TextField(
       style: styleInput,
@@ -585,12 +586,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_spay = TextField(
       style: styleInput,
@@ -606,12 +607,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_spay_n = TextField(
       style: styleInput,
@@ -627,12 +628,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_opay = TextField(
       style: styleInput,
@@ -648,12 +649,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_tpay = TextField(
       style: styleInput,
@@ -669,12 +670,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_tlpay = TextField(
       style: styleInput,
@@ -690,12 +691,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_stpay = TextField(
       style: styleInput,
@@ -711,12 +712,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_balan = TextField(
       style: styleInput,
@@ -732,12 +733,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_years = TextField(
       style: styleInput,
@@ -752,12 +753,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m10 = TextField(
       style: styleInput,
@@ -773,12 +774,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m11 = TextField(
       style: styleInput,
@@ -794,12 +795,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m12 = TextField(
       style: styleInput,
@@ -815,12 +816,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum1 = TextField(
       style: styleInput,
@@ -836,12 +837,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m01 = TextField(
       style: styleInput,
@@ -857,12 +858,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m02 = TextField(
       style: styleInput,
@@ -878,12 +879,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m03 = TextField(
       style: styleInput,
@@ -899,12 +900,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum2 = TextField(
       style: styleInput,
@@ -920,12 +921,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m04 = TextField(
       style: styleInput,
@@ -941,12 +942,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m05 = TextField(
       style: styleInput,
@@ -962,12 +963,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m06 = TextField(
       style: styleInput,
@@ -983,12 +984,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum3 = TextField(
       style: styleInput,
@@ -1004,12 +1005,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m07 = TextField(
       style: styleInput,
@@ -1025,12 +1026,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m08 = TextField(
       style: styleInput,
@@ -1046,12 +1047,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m09 = TextField(
       style: styleInput,
@@ -1067,12 +1068,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum4 = TextField(
       style: styleInput,
@@ -1088,12 +1089,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_stwork = TextField(
       style: styleInput,
@@ -1108,12 +1109,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_whocreate = TextField(
       style: styleInput,
@@ -1128,12 +1129,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_createtime = TextField(
       style: styleInput,
@@ -1148,12 +1149,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_whouse = TextField(
       style: styleInput,
@@ -1168,12 +1169,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_lastaccess = TextField(
       style: styleInput,
@@ -1188,12 +1189,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_chk = TextField(
       style: styleInput,
@@ -1208,12 +1209,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_st_rx = TextField(
       style: styleInput,
@@ -1228,12 +1229,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_st_malloc = TextField(
       style: styleInput,
@@ -1248,12 +1249,12 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final saveButton = Material(
@@ -1267,10 +1268,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         onPressed: () {
           //Navigator.of(context).pop();
         },
-        child: Text("บันทึก",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "บันทึก",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -1285,10 +1290,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -1350,8 +1359,10 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       txtStRx.text = result.st_rx;
       txtStMalloc.text = result.st_malloc.toString();
 
-      String format_money =
-          CurrencyFormatter.format(result.mborder, thBahtSettings);
+      String format_money = CurrencyFormatter.format(
+        result.mborder,
+        thBahtSettings,
+      );
 
       txtMBorder.text = format_money;
 
@@ -1381,16 +1392,22 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('ประจำปี',
-                        style: styleHead.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
-                    Text(' $yearNow',
-                        style: styleHead.copyWith(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
+                    Text(
+                      'ประจำปี',
+                      style: styleHead.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      ' $yearNow',
+                      style: styleHead.copyWith(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -1412,13 +1429,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 95,
-                        child: Text('Id_Exp_Spen', style: styleHead3)),
+                      width: 95,
+                      child: Text('Id_Exp_Spen', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_id_exp_spen,
-                        width: MediaQuery.of(context).size.width * 0.70
-                        //width: 350,
-                        ),
+                      child: txt_id_exp_spen,
+                      width: MediaQuery.of(context).size.width * 0.70,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1429,12 +1447,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ชื่องบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ชื่องบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txtlistname,
-                        width: MediaQuery.of(context).size.width * 0.75
-                        //width: 350,
-                        ),
+                      child: txtlistname,
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1445,13 +1465,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('รหัสอักษร', style: styleHead3)),
+                      width: 80,
+                      child: Text('รหัสอักษร', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_memo_th,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_memo_th,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1469,11 +1491,11 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                       //         "", 16.0, Colors.redAccent.shade700, true))
                     ),
                     Container(
-                        child: txt_mborder,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_mborder,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1484,13 +1506,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('จัดสรร', style: styleHead3)),
+                      width: 80,
+                      child: Text('จัดสรร', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_malloc,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_malloc,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1501,13 +1525,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('สถานะงาน', style: styleHead3)),
+                      width: 80,
+                      child: Text('สถานะงาน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_status,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_status,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1518,13 +1544,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('วันเริ่ม', style: styleHead3)),
+                      width: 80,
+                      child: Text('วันเริ่ม', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_daystart,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_daystart,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1535,14 +1563,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('วันสิ้นสุด', style: styleHead3)),
+                      width: 80,
+                      child: Text('วันสิ้นสุด', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_daystop,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_daystop,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1553,14 +1582,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('รหัสงบ บก.', style: styleHead3)),
+                      width: 80,
+                      child: Text('รหัสงบ บก.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_code_bud_rtarf,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_code_bud_rtarf,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1571,13 +1601,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('สายงาน', style: styleHead3)),
+                      width: 80,
+                      child: Text('สายงาน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_field_work,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_field_work,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1588,13 +1620,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ประเภทงบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ประเภทงบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_exp_type,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_exp_type,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1605,13 +1639,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('กลุ่มงาน', style: styleHead3)),
+                      width: 80,
+                      child: Text('กลุ่มงาน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_int_group,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_int_group,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1622,13 +1658,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ประเภทงบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ประเภทงบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_bud_type,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_bud_type,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1639,13 +1677,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('หน่วยใช้', style: styleHead3)),
+                      width: 80,
+                      child: Text('หน่วยใช้', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_unit_use,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_unit_use,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1656,14 +1696,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 85,
-                        child: Text('หน่วยปฏิบัติ', style: styleHead3)),
-                    Container(
-                        child: txt_unit_oper,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      width: 85,
+                      child: Text('หน่วยปฏิบัติ', style: styleHead3),
+                    ),
+                    Expanded(
+                      child: txt_unit_oper,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1674,14 +1714,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('เงินสั่งจ่าย', style: styleHead3)),
+                      width: 80,
+                      child: Text('เงินสั่งจ่าย', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_mpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_mpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1692,14 +1733,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 105,
-                        child: Text('ขอใช้ไม่มีรหัส', style: styleHead3)),
-                    Container(
-                        child: txt_bpay_n,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      width: 105,
+                      child: Text('ขอใช้ไม่มีรหัส', style: styleHead3),
+                    ),
+                    Expanded(
+                      child: txt_bpay_n,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1710,14 +1751,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 85,
-                        child: Text('ขอใช้มีรหัส', style: styleHead3)),
-                    Container(
-                        child: txt_bpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      width: 85,
+                      child: Text('ขอใช้มีรหัส', style: styleHead3),
+                    ),
+                    Expanded(
+                      child: txt_bpay,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1728,13 +1769,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ผูกพัน', style: styleHead3)),
+                      width: 80,
+                      child: Text('ผูกพัน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_cpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_cpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1745,13 +1788,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('วางเบิก', style: styleHead3)),
+                      width: 80,
+                      child: Text('วางเบิก', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_dpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_dpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1762,13 +1807,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('เบิกจ่าย', style: styleHead3)),
+                      width: 80,
+                      child: Text('เบิกจ่าย', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_spay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_spay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1779,14 +1826,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('เบิกจ่ายไม่มีรหัส', style: styleHead3)),
+                      width: 90,
+                      child: Text('เบิกจ่ายไม่มีรหัส', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_spay_n,
-                        width: MediaQuery.of(context).size.width * 0.72
+                      child: txt_spay_n,
+                      width: MediaQuery.of(context).size.width * 0.72,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1797,7 +1845,9 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('OPAY', style: styleHead3)),
+                      width: 80,
+                      child: Text('OPAY', style: styleHead3),
+                    ),
                     Container(
                       child: txt_opay,
                       width: MediaQuery.of(context).size.width * 0.75,
@@ -1814,13 +1864,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('TPAY', style: styleHead3)),
+                      width: 80,
+                      child: Text('TPAY', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_tpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_tpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1831,13 +1883,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('TLPAY', style: styleHead3)),
+                      width: 80,
+                      child: Text('TLPAY', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_tlpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_tlpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1848,13 +1902,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ส่งคืน', style: styleHead3)),
+                      width: 80,
+                      child: Text('ส่งคืน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_stpay,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_stpay,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1865,13 +1921,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('คงเหลือ', style: styleHead3)),
+                      width: 80,
+                      child: Text('คงเหลือ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_balan,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_balan,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1882,13 +1940,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ปีงบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ปีงบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_years,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_years,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1899,13 +1959,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('งบ ต.ค.', style: styleHead3)),
+                      width: 80,
+                      child: Text('งบ ต.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m10,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m10,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1916,13 +1978,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('งบ พ.ย.', style: styleHead3)),
+                      width: 80,
+                      child: Text('งบ พ.ย.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m11,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m11,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1933,13 +1997,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('งบ ธ.ค.', style: styleHead3)),
+                      width: 80,
+                      child: Text('งบ ธ.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m12,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m12,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1950,14 +2016,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ยอดรวมไตรมาสที่ 1', style: styleHead3)),
+                      width: 90,
+                      child: Text('ยอดรวมไตรมาสที่ 1', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_sum1,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_sum1,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1968,14 +2035,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('แผนเบิกเดือน ม.ค.', style: styleHead3)),
+                      width: 90,
+                      child: Text('แผนเบิกเดือน ม.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m01,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_m01,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -1986,14 +2054,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('แผนเบิกเดือน ก.พ.', style: styleHead3)),
+                      width: 90,
+                      child: Text('แผนเบิกเดือน ก.พ.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m02,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_m02,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2004,14 +2073,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('แผนเบิกเดือน มี.ค.', style: styleHead3)),
+                      width: 90,
+                      child: Text('แผนเบิกเดือน มี.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m03,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_m03,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2022,14 +2092,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ยอดรวมไตรมาสที่ 2', style: styleHead3)),
+                      width: 90,
+                      child: Text('ยอดรวมไตรมาสที่ 2', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_sum2,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_sum2,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2040,14 +2111,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('แผนเบิกเดือน เม.ย.', style: styleHead3)),
+                      width: 90,
+                      child: Text('แผนเบิกเดือน เม.ย.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m04,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_m04,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2058,14 +2130,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('แผนเบิกเดือน พ.ค.', style: styleHead3)),
+                      width: 80,
+                      child: Text('แผนเบิกเดือน พ.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m05,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m05,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2076,14 +2149,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('งบเดือน มิ.ย.', style: styleHead3)),
+                      width: 80,
+                      child: Text('งบเดือน มิ.ย.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m06,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m06,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2094,14 +2168,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ยอดรวมไตรมาสที่ 3', style: styleHead3)),
+                      width: 80,
+                      child: Text('ยอดรวมไตรมาสที่ 3', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_sum3,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_sum3,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2112,14 +2187,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('แผนเบิกเดือน ก.ค.', style: styleHead3)),
+                      width: 80,
+                      child: Text('แผนเบิกเดือน ก.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m07,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m07,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2130,14 +2206,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('แผนเบิกเดือน ส.ค.', style: styleHead3)),
+                      width: 80,
+                      child: Text('แผนเบิกเดือน ส.ค.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m08,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m08,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2148,14 +2225,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('แผนเบิกเดือน ก.ย.', style: styleHead3)),
+                      width: 80,
+                      child: Text('แผนเบิกเดือน ก.ย.', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_m09,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_m09,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2166,14 +2244,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ยอดรวมไตรมาสที่ 4', style: styleHead3)),
+                      width: 90,
+                      child: Text('ยอดรวมไตรมาสที่ 4', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_sum4,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_sum4,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2184,14 +2263,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('สถานะการปฏิบัติ', style: styleHead3)),
+                      width: 90,
+                      child: Text('สถานะการปฏิบัติ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_stwork,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_stwork,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2202,14 +2282,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('รหัสผู้สร้าง', style: styleHead3)),
+                      width: 90,
+                      child: Text('รหัสผู้สร้าง', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_whocreate,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_whocreate,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2220,14 +2301,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('วัน-เวลา ที่สร้าง', style: styleHead3)),
+                      width: 90,
+                      child: Text('วัน-เวลา ที่สร้าง', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_createtime,
-                        width: MediaQuery.of(context).size.width * 0.73
+                      child: txt_createtime,
+                      width: MediaQuery.of(context).size.width * 0.73,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2238,14 +2320,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ใครรับผิดชอบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ใครรับผิดชอบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_whouse,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_whouse,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2256,14 +2339,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('วัน-เวลา ปรับปรุง', style: styleHead3)),
+                      width: 80,
+                      child: Text('วัน-เวลา ปรับปรุง', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_lastaccess,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_lastaccess,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2274,14 +2358,14 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 100,
-                        child:
-                            Text('หน่วยงานใดกำลังปฏิบัติ', style: styleHead3)),
+                      width: 100,
+                      child: Text('หน่วยงานใดกำลังปฏิบัติ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_unit_chk,
-                        width: MediaQuery.of(context).size.width * 0.70
-                        //width: 350,
-                        ),
+                      child: txt_unit_chk,
+                      width: MediaQuery.of(context).size.width * 0.70,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2292,14 +2376,15 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('สถานะการปฏิบัติ', style: styleHead3)),
+                      width: 80,
+                      child: Text('สถานะการปฏิบัติ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_st_rx,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_st_rx,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -2310,25 +2395,20 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('สถานะจัดสรร', style: styleHead3)),
+                      width: 80,
+                      child: Text('สถานะจัดสรร', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_st_malloc,
-                        width: MediaQuery.of(context).size.width * 0.75
+                      child: txt_st_malloc,
+                      width: MediaQuery.of(context).size.width * 0.75,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: saveButton,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: backButton,
-              ),
+              Padding(padding: const EdgeInsets.all(4.0), child: saveButton),
+              Padding(padding: const EdgeInsets.all(4.0), child: backButton),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import '../../../components/socal_card.dart';
 // import 'package:bfriendapp/constants.dart'; // style: headingStyle
@@ -11,12 +12,13 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.lightBlue.shade50,
+        color: lightpurple,
         child: SizedBox(
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20)),
+              horizontal: getProportionateScreenWidth(20),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -43,10 +45,7 @@ class Body extends StatelessWidget {
                         icon: "assets/icons/facebook-2.svg",
                         press: () {},
                       ),
-                      SocalCard(
-                        icon: "assets/icons/twitter.svg",
-                        press: () {},
-                      ),
+                      SocalCard(icon: "assets/icons/twitter.svg", press: () {}),
                     ],
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
@@ -54,7 +53,7 @@ class Body extends StatelessWidget {
                     'By continuing your confirm that you agree \nwith our Term and Condition',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall,
-                  )
+                  ),
                 ],
               ),
             ),

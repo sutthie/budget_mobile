@@ -1,3 +1,9 @@
 {
-    "cmake.sourceDirectory": "D:/Developer/Project/Budget/SourceCode/release/budget_mobile/windows/flutter"
+    "cmake.sourceDirectory": "D:/Developer/Project/Budget/SourceCode/release/budget_mobile/windows/flutter",
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "variant": "cpp"
+    }
 }

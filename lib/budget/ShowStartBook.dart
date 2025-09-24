@@ -35,8 +35,8 @@ class _GetBudgetState extends State<ShowStartBook>
   // To show Selected Item in Text.
   String selyear = "";
   String uid = "0";
-  //late String uid;
-// init year now
+  late String status;
+  // init year now
   GetYearBudget yb = new GetYearBudget();
   late int yearNow;
 
@@ -48,7 +48,10 @@ class _GetBudgetState extends State<ShowStartBook>
   late List<int> listyear;
 
   Future<List<BookUnit>?> getDataList(
-      String txtsearch, String ddlyear, String id_use_int) {
+    String txtsearch,
+    String ddlyear,
+    String id_use_int,
+  ) {
     Future<List<BookUnit>?> dat;
     MySQLDB mydb = new MySQLDB();
     dat = mydb.getBookStartSearchUnit(txtsearch, ddlyear, id_use_int);
@@ -70,6 +73,9 @@ class _GetBudgetState extends State<ShowStartBook>
     ManageLogin _login = ManageLogin();
     login = await _login.DefineBox();
     uid = login.get("uid");
+    status = login.get("status").toString();
+
+    //datList =
 
     tmplist = getDataList(txtSearch.text.trim(), selyear, uid);
 
@@ -114,7 +120,7 @@ class _GetBudgetState extends State<ShowStartBook>
       color: Colors.black,
     );
 
-//Create ListView using data get from service
+    //Create ListView using data get from service
     Widget listBookWidget(context, snapshot) {
       //final String idExpSpen = "";
       if (snapshot.data != null && snapshot.data.length > 0) {
@@ -137,20 +143,21 @@ class _GetBudgetState extends State<ShowStartBook>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
                             child: Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text('${book.title}',
-                                    style: const TextStyle(
-                                      fontSize: 12.0,
-                                    )),
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(
+                                '${book.title}',
+                                style: const TextStyle(fontSize: 12.0),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -159,91 +166,101 @@ class _GetBudgetState extends State<ShowStartBook>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            color: Colors.blue[200],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: GestureDetector(
-                                  onTap: () {},
-                                  child: Column(
+                          color: Colors.blue[200],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(
+                                            'ที่หนังสือ : ${book.doc_unit_no} | วันที่ : ${dateF} ',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              //fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'จำนวนเงิน : ${FormatMoney.setFormat(book.amout)} บาท',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            //fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Row(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Text(
-                                                  'ที่หนังสือ : ${book.doc_unit_no} | วันที่ : ${dateF} ',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    //fontWeight: FontWeight.bold
-                                                  )),
+                                      // Text('สถานะ : ${book.send}',
+                                      //     style: TextStyle(
+                                      //         fontSize: 18,
+                                      //         fontWeight: FontWeight.bold)),
+                                      if (book.send == '0')
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                            2.0,
+                                            0,
+                                            0,
+                                            0,
+                                          ),
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  WidgetStateProperty.all(
+                                                    Colors.indigo,
+                                                  ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                                'จำนวนเงิน : ${FormatMoney.setFormat(book.amout)} บาท',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  //fontWeight: FontWeight.bold
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          // Text('สถานะ : ${book.send}',
-                                          //     style: TextStyle(
-                                          //         fontSize: 18,
-                                          //         fontWeight: FontWeight.bold)),
-                                          if (book.send == '0')
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      2.0, 0, 0, 0),
-                                              child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                        WidgetStateProperty.all(
-                                                            Colors.indigo)),
-                                                child: Text(
-                                                  "ส่ง",
-                                                  style: styleHeadYellow3,
+                                            child: Text(
+                                              "ส่ง",
+                                              style: styleHeadYellow3,
+                                            ),
+                                            onPressed: () {
+                                              //
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (
+                                                        context,
+                                                      ) => StartExpediteUser(
+                                                        id_exp_spen:
+                                                            book.id_exp_spen,
+                                                        id_job:
+                                                            book.id_job
+                                                                .toString(),
+                                                        sel_year: selyear,
+                                                      ),
                                                 ),
-                                                onPressed: () {
-                                                  //
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          StartExpediteUser(
-                                                              id_exp_spen: book
-                                                                  .id_exp_spen,
-                                                              id_job: book
-                                                                  .id_job
-                                                                  .toString(),
-                                                              sel_year:
-                                                                  selyear),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                        ],
-                                      ),
+                                              );
+                                            },
+                                          ),
+                                        ),
                                     ],
-                                  )),
-                            )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -274,26 +291,27 @@ class _GetBudgetState extends State<ShowStartBook>
         );
     }
 
-// call from Body Part in Scaffold
-// Main Display ListView call listExpenWidget for create ListView
+    // call from Body Part in Scaffold
+    // Main Display ListView call listExpenWidget for create ListView
     Widget BookWidget(data) {
       return FutureBuilder(
-          //future: mydb.getExpSearch("", years),
-          future: data,
-          builder: (context, tbDBSnap) {
-            switch (tbDBSnap.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              /* case ConnectionState.done:
+        //future: mydb.getExpSearch("", years),
+        future: data,
+        builder: (context, tbDBSnap) {
+          switch (tbDBSnap.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            /* case ConnectionState.done:
             return */
-              default:
-                if (tbDBSnap.hasError)
-                  return new Text('Error: ${tbDBSnap.error}');
-                else
-                  return listBookWidget(context, tbDBSnap);
-            }
-          });
+            default:
+              if (tbDBSnap.hasError)
+                return new Text('Error: ${tbDBSnap.error}');
+              else
+                return listBookWidget(context, tbDBSnap);
+          }
+        },
+      );
     }
 
     Widget txtsearch() {
@@ -302,12 +320,12 @@ class _GetBudgetState extends State<ShowStartBook>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
-            filled: true,
-            fillColor: Colors.yellowAccent.shade100,
-            hintText: "ค้นหา",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
+          contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
+          filled: true,
+          fillColor: Colors.yellowAccent.shade100,
+          hintText: "ค้นหา",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2.0)),
+        ),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -316,12 +334,10 @@ class _GetBudgetState extends State<ShowStartBook>
 
     final ddlYearNew = DropdownButton(
       value: yearNow,
-      items: listyear.map((int item) {
-        return DropdownMenuItem<int>(
-          child: Text('$item'),
-          value: item,
-        );
-      }).toList(),
+      items:
+          listyear.map((int item) {
+            return DropdownMenuItem<int>(child: Text('$item'), value: item);
+          }).toList(),
       onChanged: (value) {
         selyear = value.toString();
         //if not found alert no found
@@ -349,7 +365,7 @@ class _GetBudgetState extends State<ShowStartBook>
       iconSize: 30,
     );
 
-//======widget button==========
+    //======widget button==========
     final searchButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(20.0),
@@ -373,11 +389,15 @@ class _GetBudgetState extends State<ShowStartBook>
             datList = getDataList(txtSearch.text.trim(), selyear, uid);
           });
         },
-        child: Text("ค้นหา",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "ค้นหา",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -392,15 +412,28 @@ class _GetBudgetState extends State<ShowStartBook>
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
           //Navigator.of(context).pop();
-//  Navigator.of(context).pushNamedAndRemoveUntil(MainPage.routeName, (Route<dynamic> route) => false);
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/mainpage', (Route<dynamic> route) => false);
+          //  Navigator.of(context).pushNamedAndRemoveUntil(MainPage.routeName, (Route<dynamic> route) => false);
+          if (status == "1") {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/mainpageadmin',
+              (Route<dynamic> route) => false,
+            );
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/mainpage',
+              (Route<dynamic> route) => false,
+            );
+          }
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -421,20 +454,21 @@ class _GetBudgetState extends State<ShowStartBook>
             datList = getDataList("", yearNow.toString(), uid);
           });
         },
-        child: Text("Reset",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Reset",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "งบประมาณประจำปี",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text("งบประมาณประจำปี", style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.lightBlueAccent,
       body: Column(
@@ -445,9 +479,7 @@ class _GetBudgetState extends State<ShowStartBook>
                 padding: const EdgeInsets.all(4.0),
                 child: Text('เลือกปีงบประมาณ', style: styleHead),
               ),
-              SizedBox(
-                width: 5,
-              ),
+              SizedBox(width: 5),
               Container(
                 margin: EdgeInsets.all(3),
                 width: 75,
@@ -473,7 +505,7 @@ class _GetBudgetState extends State<ShowStartBook>
               Container(width: 135.0, child: txtsearch()),
               searchButon,
               ResetButon,
-              backButon
+              backButon,
               //ddlYear,
               //txtsearch,
             ],

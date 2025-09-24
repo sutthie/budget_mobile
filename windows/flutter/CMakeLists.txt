@@ -5,9 +5,31 @@ set(EPHEMERAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ephemeral")
 
 # Configuration provided via flutter tool.
 include(${EPHEMERAL_DIR}/generated_config.cmake)
+if (EXISTS "${EPHEMERAL_DIR}/cmake_utils.cmake")
+  include(${EPHEMERAL_DIR}/cmake_utils.cmake)
+endif()
 
 # TODO: Move the rest of this into files in ephemeral. See
 # https://github.com/flutter/flutter/issues/57146.
+
+# Fallback: Some older or trimmed setups may not have cmake_utils.cmake (or it
+# wasn't generated). Define apply_standard_settings if it's missing so builds
+# don't fail with: "Unknown CMake command \"apply_standard_settings\"".
+if (NOT COMMAND apply_standard_settings)
+  function(APPLY_STANDARD_SETTINGS TARGET)
+    target_compile_features(${TARGET} PUBLIC cxx_std_17)
+    # Match Flutter's standard Windows warnings & exception settings.
+    if (MSVC)
+      target_compile_options(${TARGET} PRIVATE /W4 /WX /wd"4100")
+      target_compile_options(${TARGET} PRIVATE /EHsc)
+      target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
+      target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
+    else()
+      target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+      target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
+    endif()
+  endfunction()
+endif()
 set(WRAPPER_ROOT "${EPHEMERAL_DIR}/cpp_client_wrapper")
 
 # Set fallback configurations for older versions of the flutter tool.

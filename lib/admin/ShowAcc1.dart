@@ -499,7 +499,9 @@ Widget listAccountWidget(context, snapshot) {
             children: [
               Row(
                 children: [
-                  Expanded(
+                  Container(
+                    //height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width * 0.99,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
@@ -518,7 +520,8 @@ Widget listAccountWidget(context, snapshot) {
               ),
               Row(
                 children: [
-                  Expanded(
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.99,
                     child: Card(
                       color: Colors.blue[200],
                       shape: RoundedRectangleBorder(
@@ -529,6 +532,10 @@ Widget listAccountWidget(context, snapshot) {
                         padding: const EdgeInsets.all(4.0),
                         child: GestureDetector(
                           onTap: () {
+                            // var msg = new ResponseMessage();
+                            // msg.Alert(
+                            //     context, "รหัสผ่าน", '${acc.passwords}');
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(

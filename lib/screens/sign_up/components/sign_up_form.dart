@@ -41,7 +41,7 @@ class _SignUpFormState extends State<SignUpForm> {
   bool remember = false;
   final List<String?> errors = [];
 
-// TextField password hidden text or show text
+  // TextField password hidden text or show text
   bool pwdText = true; // true=hidden
   bool pwdTextConfirm = true;
 
@@ -64,72 +64,71 @@ class _SignUpFormState extends State<SignUpForm> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now().subtract(new Duration(days: 180)),
-      //firstDate: DateTime(2023, 1),
-      //lastDate: DateTime(2023, 6),    year,month
-      //lastDate: DateTime(2025),
       lastDate: DateTime(DateTime.now().year + 2),
-      //lastDate: DateTime.now().add(new Duration(days: 7)),
       helpText: 'Select a date',
     );
-    if (newDate != null) {
+    if (newDate != null && mounted) {
       setState(() {
-        //dates = newDate.toString();
-        // _publicDate.value = TextEditingValue(
-        //     text: DateFormat('yyyy-MM-dd').format(newDate).toString());
         _publicDate.value = TextEditingValue(
-            text: DateFormat('dd-MM-yyyy').format(newDate).toString());
-        //dates = _publicDate.value.toString();
+          text: DateFormat('dd-MM-yyyy').format(newDate).toString(),
+        );
       });
     }
   }
 
   Future<void> _cupertinoDialog() async {
+    if (!mounted) return;
     switch (await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: const Text('Welcome'),
-            content: const Text('Cupertino Dialog, Is it nice?'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                onPressed: () {
-                  _formKey.currentState!.reset();
-                  Navigator.pop(context, 'Yes');
-                },
-                child: const Text('Yes'),
-              ),
-              CupertinoDialogAction(
-                onPressed: () {
-                  Navigator.pop(context, 'No');
-                },
-                child: const Text('No'),
-              ),
-            ],
-          );
-        })) {
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Welcome'),
+          content: const Text('Cupertino Dialog, Is it nice?'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              onPressed: () {
+                if (mounted) _formKey.currentState!.reset();
+                Navigator.pop(context, 'Yes');
+              },
+              child: const Text('Yes'),
+            ),
+            CupertinoDialogAction(
+              onPressed: () {
+                Navigator.pop(context, 'No');
+              },
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    )) {
       case 'Yes':
-        //showSnackBar(context, 'Clear TextFormField!', 'Yes');
-        _formKey.currentState!.reset();
+        if (mounted) _formKey.currentState!.reset();
         break;
       case 'No':
-        //showSnackBar(context, 'Cancel Clear TextFormField', 'No');
         break;
     }
   }
 
   void addError({String? error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error) && mounted)
       setState(() {
         errors.add(error);
       });
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
+    if (errors.contains(error) && mounted)
       setState(() {
         errors.remove(error);
       });
   }
+
+  var textInputStyle = TextStyle(
+    color: Colors.blueAccent.shade700,
+    fontWeight: FontWeight.normal,
+    fontSize: 20.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -152,29 +151,29 @@ class _SignUpFormState extends State<SignUpForm> {
           buildDateFormField(),
           SizedBox(height: getProportionateScreenHeight(9)),
           Card(
-              //color: Colors.blue.shade50,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Colors.black45,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              elevation: 3, //mirror
-              child: Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            //color: Colors.blue.shade50,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.black45),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            elevation: 3, //mirror
+            child: Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.person),
-                          SizedBox(width: 5),
-                          Text('เพศ'),
-                        ],
-                      ),
-                      Row(children: [buildSexFormField()]),
+                      Icon(Icons.person),
+                      SizedBox(width: 5),
+                      Text('เพศ'),
                     ],
-                  ))),
+                  ),
+                  Row(children: [buildSexFormField()]),
+                ],
+              ),
+            ),
+          ),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
@@ -192,7 +191,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 print(dates);
                 print(sex);
 
-// add new account
+                // add new account
 
                 Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }
@@ -213,6 +212,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   buildSexFormField() {
     return SimpleRadioGroup<String>(
+      // Removed unsupported 'textStyle' parameter
       onChanged: (newValue) {
         sex = newValue;
         print(sex);
@@ -226,11 +226,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
-      options: const [
-        "ชาย",
-        "หญิง",
-        "ไม่ระบุ",
-      ],
+      options: const ["ชาย", "หญิง", "ไม่ระบุ"],
     );
   }
   // Widget buildSexFormField() {
@@ -266,6 +262,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildDateFormField() {
     return TextFormField(
+      style: textInputStyle,
       controller: _publicDate,
       onSaved: (newValue) => dates = newValue,
       decoration: InputDecoration(
@@ -337,6 +334,7 @@ class _SignUpFormState extends State<SignUpForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
+      style: textInputStyle,
     );
   }
 
@@ -345,9 +343,10 @@ class _SignUpFormState extends State<SignUpForm> {
       //obscureText: true,
       //controller: _title,
       //autovalidateMode: AutovalidateMode.always,
+      style: textInputStyle,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
+        FilteringTextInputFormatter.digitsOnly,
       ],
       onSaved: (newValue) => tel = newValue,
       onChanged: (value) {
@@ -387,6 +386,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConformPassFormField() {
     return TextFormField(
+      style: textInputStyle,
       obscureText: pwdTextConfirm,
       onSaved: (newValue) => conform_password = newValue,
       onChanged: (value) {
@@ -434,6 +434,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      style: textInputStyle,
       obscureText: pwdText,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
@@ -461,7 +462,7 @@ class _SignUpFormState extends State<SignUpForm> {
           borderSide: new BorderSide(color: Colors.blue, width: 2.0),
           borderRadius: new BorderRadius.circular(25.7),
         ),
-        labelText: "Password",
+        labelText: "Password(6 ตัวอักษรขึ้นไป)",
         hintText: "ป้อนรหัสผ่าน",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -481,6 +482,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      style: textInputStyle,
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
@@ -521,6 +523,7 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildAddressFormField() {
     return TextFormField(
       //obscureText: true,
+      style: textInputStyle,
       maxLines: 3,
       onSaved: (newValue) => address = newValue,
       onChanged: (value) {

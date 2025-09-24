@@ -29,7 +29,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
   // To show Selected Item in Text.
   String selyear = "";
 
-// init year now
+  // init year now
   GetYearBudget yb = new GetYearBudget();
   late String yearNow;
 
@@ -65,13 +65,13 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
     super.initState();
     _controller = AnimationController(vsync: this);
 
-// init data
+    // init data
     yearNow = yb.getYearBudget().toString();
     selyear = yearNow;
 
     listyear = [
       for (var i = int.parse(yearNow) - 5; i <= int.parse(yearNow); i++)
-        i.toString()
+        i.toString(),
     ];
 
     //getDropDownItem();
@@ -108,7 +108,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
       color: Colors.black,
     );
 
-//Create ListView using data get from service
+    //Create ListView using data get from service
     Widget listExpenWidget(context, snapshot) {
       //final String idExpSpen = "";
       if (snapshot.data != null && snapshot.data.length > 0) {
@@ -127,9 +127,9 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditExpDetail(
-                      id_exp_spen: '${spen.id_exp_spen}',
-                    ),
+                    builder:
+                        (context) =>
+                            EditExpDetail(id_exp_spen: '${spen.id_exp_spen}'),
                     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
                   ),
                 );
@@ -139,51 +139,59 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
                   Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.98,
+                        width: MediaQuery.of(context).size.width * 0.97,
                         child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              '${spen.list_exp_spen}',
+                              style: const TextStyle(fontSize: 16.0),
                             ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text('${spen.list_exp_spen}',
-                                  style: const TextStyle(fontSize: 16.0)),
-                            )),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.98,
+                        width: MediaQuery.of(context).size.width * 0.97,
                         child: Card(
-                            color: Colors.blue[200],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    // var msg = new ResponseMessage();
-                                    // msg.Alert(context, "รหัสงบ",
-                                    //     '${spen.id_exp_spen}');
+                          color: Colors.blue[200],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // var msg = new ResponseMessage();
+                                // msg.Alert(context, "รหัสงบ",
+                                //     '${spen.id_exp_spen}');
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditExpDetail(
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => EditExpDetail(
                                           id_exp_spen: '${spen.id_exp_spen}',
                                         ),
-                                        //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
-                                      ),
-                                    );
-                                  },
-                                  child: Text('รหัสงบ : ${spen.id_exp_spen}',
-                                      style: TextStyle(fontSize: 14))),
-                            )),
+                                    //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'รหัสงบ : ${spen.id_exp_spen}',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -209,8 +217,8 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
         );
     }
 
-// call from Body Part in Scaffold
-// Main Display ListView call listExpenWidget for create ListView
+    // call from Body Part in Scaffold
+    // Main Display ListView call listExpenWidget for create ListView
     Widget listListExspenWidget(data) {
       return FutureBuilder(
         future: data,
@@ -261,12 +269,12 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
-            filled: true,
-            fillColor: Colors.yellowAccent.shade100,
-            hintText: "ค้นหา",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(4.0))),
+          contentPadding: EdgeInsets.fromLTRB(8.0, 2.0, 2.0, 2.0),
+          filled: true,
+          fillColor: Colors.yellowAccent.shade100,
+          hintText: "ค้นหา",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
+        ),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -299,12 +307,13 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
 
     final ddlYearNew = DropdownButton(
       value: yearNow,
-      items: listyear.map((String item) {
-        return DropdownMenuItem<String>(
-          child: Text(' $item '),
-          value: item,
-        );
-      }).toList(),
+      items:
+          listyear.map((String item) {
+            return DropdownMenuItem<String>(
+              child: Text(' $item '),
+              value: item,
+            );
+          }).toList(),
       onChanged: (value) {
         selyear = value!;
         //if not found alert no found
@@ -352,11 +361,15 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
             datList = getDataList(txtSearch.text.trim(), yearNow.toString());
           });
         },
-        child: Text("ค้นหา",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "ค้นหา",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -372,11 +385,15 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("หน้าหลัก",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "หน้าหลัก",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -397,11 +414,15 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
             datList = getDataList("", yearNow.toString());
           });
         },
-        child: Text("Reset",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Reset",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -423,9 +444,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
                   padding: const EdgeInsets.all(4.0),
                   child: Text('เลือกปีงบประมาณ', style: styleHead),
                 ),
-                SizedBox(
-                  width: 5,
-                ),
+                SizedBox(width: 5),
                 Container(
                   margin: EdgeInsets.all(3),
                   width: 80,
@@ -448,19 +467,16 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
                   padding: const EdgeInsets.all(4.0),
                   child: Text('ค้นหา', style: styleHead),
                 ),
-                Container(width: 160.0, child: txtsearch()),
-                SizedBox(
-                  width: 3,
-                ),
+                // Constrain the TextField width inside the Row so InputDecorator
+                // has a finite maxWidth. Expanded will give it the remaining
+                // horizontal space and prevent the unbounded width assertion.
+                Expanded(child: txtsearch()),
+                SizedBox(width: 3),
                 searchButon,
-                SizedBox(
-                  width: 3,
-                ),
+                SizedBox(width: 3),
                 backButon,
-                SizedBox(
-                  width: 3,
-                ),
-                ResetButon
+                SizedBox(width: 3),
+                ResetButon,
                 //ddlYear,
                 //txtsearch,
               ],

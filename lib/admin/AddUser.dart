@@ -59,7 +59,7 @@ class _AddUserState extends State<AddUser> {
     super.dispose();
   }
 
-//=========================================
+  //=========================================
   TextStyle styleHead = const TextStyle(
     fontFamily: 'Montserrat',
     fontSize: 20.0,
@@ -82,68 +82,74 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     //======define widget=======
-//======define ddl widget=======
+    //======define ddl widget=======
     Widget ddlUnit(udata) {
       return FutureBuilder<List<UnitName>?>(
-          future: udata,
-          //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            //return Center(child: CircularProgressIndicator());
-            else
-              return DropdownButton<String>(
-                focusNode: ddlNode,
-                autofocus: true,
-                //isExpanded: true,
-                borderRadius: BorderRadius.circular(10),
-                items: snapshot.data
-                    ?.map((item) => DropdownMenuItem<String>(
+        future: udata,
+        //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return CircularProgressIndicator();
+          //return Center(child: CircularProgressIndicator());
+          else
+            return DropdownButton<String>(
+              focusNode: ddlNode,
+              autofocus: true,
+              //isExpanded: true,
+              borderRadius: BorderRadius.circular(10),
+              items:
+                  snapshot.data
+                      ?.map(
+                        (item) => DropdownMenuItem<String>(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(item.uint_name,
-                                style: TextStyle(
-                                  //backgroundColor: white,
-                                  decoration: TextDecoration.underline,
-                                  color: blue,
-                                  //backgroundColor: lightgreen
-                                )),
+                            child: Text(
+                              item.uint_name,
+                              style: TextStyle(
+                                //backgroundColor: white,
+                                decoration: TextDecoration.underline,
+                                color: blue,
+                                //backgroundColor: lightgreen
+                              ),
+                            ),
                           ),
                           value: item.uint,
-                        ))
-                    .toList(),
-                value: unitNow,
-                //value: "",
-                //value: null,
-                onChanged: (un) {
-                  setState(() {
-                    unitNow = un.toString();
-                  });
-                  // ignore: unused_local_variable
-                  var msg = new ResponseMessage();
-                  //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
-                },
-                //isExpanded: true,
-                hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
-                disabledHint: Text("Disabled"),
-                elevation: 8,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
-                //style: Theme.of(context).textTheme.labelMedium,
-                //style: Theme.of(context).textTheme.bodyText2,
-                //dropdownColor: Colors.white,
-                dropdownColor: lightyellow2,
-                //focusColor: Colors.yellow.shade100,
-                icon: Icon(Icons.arrow_drop_down_circle),
-                iconDisabledColor: Colors.red,
-                iconEnabledColor: Colors.blue,
-                iconSize: 30,
-              );
-          });
+                        ),
+                      )
+                      .toList(),
+              value: unitNow,
+              //value: "",
+              //value: null,
+              onChanged: (un) {
+                setState(() {
+                  unitNow = un.toString();
+                });
+                // ignore: unused_local_variable
+                var msg = new ResponseMessage();
+                //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
+              },
+              //isExpanded: true,
+              hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
+              disabledHint: Text("Disabled"),
+              elevation: 8,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.brown,
+              ),
+              //style: Theme.of(context).textTheme.labelMedium,
+              //style: Theme.of(context).textTheme.bodyText2,
+              //dropdownColor: Colors.white,
+              dropdownColor: lightyellow2,
+              //focusColor: Colors.yellow.shade100,
+              icon: Icon(Icons.arrow_drop_down_circle),
+              iconDisabledColor: Colors.red,
+              iconEnabledColor: Colors.blue,
+              iconSize: 30,
+            );
+        },
+      );
     }
 
     final userField = TextField(
@@ -153,12 +159,12 @@ class _AddUserState extends State<AddUser> {
       focusNode: _focus,
       controller: txtUser,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "UserName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "UserName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onSubmitted: (v) {
         _fieldFocusChange(context, _focus, _nextFocus1);
       },
@@ -171,12 +177,12 @@ class _AddUserState extends State<AddUser> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "Password (อย่างน้อย 6 ตัวอักษร)",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onSubmitted: (v) {
         _fieldFocusChange(context, _nextFocus1, _nextFocus2);
       },
@@ -194,12 +200,12 @@ class _AddUserState extends State<AddUser> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "FirstName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "FirstName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onSubmitted: (v) {
         _fieldFocusChange(context, _nextFocus2, _nextFocus3);
       },
@@ -217,12 +223,12 @@ class _AddUserState extends State<AddUser> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "LastName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "LastName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onSubmitted: (v) {
         _fieldFocusChange(context, _nextFocus3, _nextFocus4);
       },
@@ -241,12 +247,12 @@ class _AddUserState extends State<AddUser> {
       style: styleNormal,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "Mobile",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "Mobile",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onSubmitted: (v) {
         _fieldFocusChange(context, _nextFocus4, _nextFocusBSave);
       },
@@ -289,16 +295,24 @@ class _AddUserState extends State<AddUser> {
           } else if (chk1 == true) {
             chk2 = txtMobile.text.trim().contains(new RegExp(r'^\d{10}$'));
             if (chk2 == false) {
-              amsg.Alert(context, "กรอกข้อมูลผิดรูปแบบ",
-                  "กรุณากรอกเบอร์โทรให้ถูกต้อง");
+              amsg.Alert(
+                context,
+                "กรอกข้อมูลผิดรูปแบบ",
+                "กรุณากรอกเบอร์โทรให้ถูกต้อง",
+              );
               FocusScope.of(context).requestFocus(_nextFocus4);
             } else {
               //====== check login=============
               MySQLDB mysql = MySQLDB();
 
-              mysql.AddUserJson(unitNow!, txtUser.text, txtPwd.text,
-                      txtFirstName.text, txtLastName.text, txtMobile.text)
-                  .then((String result) {
+              mysql.AddUserJson(
+                unitNow!,
+                txtUser.text,
+                txtPwd.text,
+                txtFirstName.text,
+                txtLastName.text,
+                txtMobile.text,
+              ).then((String result) {
                 var ret = json.decode(result);
 
                 String msg = "";
@@ -315,19 +329,21 @@ class _AddUserState extends State<AddUser> {
                 Future.delayed(oneSecond * 2, () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ShowAccount(),
-                    ),
+                    MaterialPageRoute(builder: (context) => ShowAccount()),
                   );
                 });
               });
             }
           }
         },
-        child: Text("บันทึก",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "บันทึก",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
     //================================
@@ -351,10 +367,14 @@ class _AddUserState extends State<AddUser> {
           //FocusScope.of(context).requestFocus(_focus);
           //FocusScope.of(context).requestFocus(_nextFocus2);
         },
-        child: Text("Reset",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "Reset",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -369,10 +389,14 @@ class _AddUserState extends State<AddUser> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
     //===================================
@@ -383,10 +407,7 @@ class _AddUserState extends State<AddUser> {
       backgroundColor: Colors.cyan[200],
       appBar: AppBar(
         //title: Text(widget.title),
-        title: Text(
-          'สร้างรายการผู้ใช้ใหม่',
-          style: styleHeadWhite4,
-        ),
+        title: Text('สร้างรายการผู้ใช้ใหม่', style: styleHeadWhite4),
       ),
       body: Container(
         //width: MediaQuery.of(context).size.width * 0.3,
@@ -396,10 +417,7 @@ class _AddUserState extends State<AddUser> {
           children: [
             Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Text(
-                'กรุณาป้อนข้อมูล',
-                style: styleHead,
-              ),
+              child: Text('กรุณาป้อนข้อมูล', style: styleHead),
             ),
             const SizedBox(height: 3.0),
             Padding(
@@ -433,7 +451,10 @@ class _AddUserState extends State<AddUser> {
   }
 
   _fieldFocusChange(
-      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    BuildContext context,
+    FocusNode currentFocus,
+    FocusNode nextFocus,
+  ) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }

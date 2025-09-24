@@ -13,19 +13,20 @@ import '../models/UnitName.dart';
 
 class MySQLDB {
   FocusChange(
-      /* How to Use from current focus to next focus */
-      BuildContext context,
-      FocusNode currentFocus,
-      FocusNode nextFocus) {
+    /* How to Use from current focus to next focus */
+    BuildContext context,
+    FocusNode currentFocus,
+    FocusNode nextFocus,
+  ) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-//=========================================================
+  //=========================================================
   Future<String> chkLogin(String uid, String pwd) async {
     String url = "http://$ipAddress/FlutterBudget/FlutterLogin.php/";
     String querystring = "?userid=$uid&password=$pwd";
-//  String qs = urlEncode(text: querystring);
+    //  String qs = urlEncode(text: querystring);
 
     String uriStr = url + querystring;
     //print("uriStr : " + uriStr);
@@ -44,7 +45,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<int> chkLoginJson(String uid, String pwd) async {
     String url = "http://$ipAddress/FlutterBudget/FlutterLoginJson.php";
 
@@ -54,16 +55,20 @@ class MySQLDB {
 
     var jsonLogin = json.encode(loginDat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: jsonLogin);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: jsonLogin,
+    );
 
-    print("response.body : " +
-        response.body.trim()); // check the status code for the result
+    print(
+      "response.body : " + response.body.trim(),
+    ); // check the status code for the result
 
     if (response.statusCode == 200) {
       var ret = json.decode(response.body.trim());
 
-// check data return
+      // check data return
       //print("ret['result'] : " + ret["result"]);
 
       return ret["result"];
@@ -72,16 +77,18 @@ class MySQLDB {
     }
   }
 
-// ========random hex==================
+  // ========random hex==================
   String generateRandomHex(int length) {
     final random = Random.secure(); // Use secure random for better randomness
     final values = List<int>.generate(
-        length, (i) => random.nextInt(16)); // 0-15 (0x0 - 0xF)
+      length,
+      (i) => random.nextInt(16),
+    ); // 0-15 (0x0 - 0xF)
 
     return values.map((value) => value.toRadixString(16)).join();
   }
 
-//=========================================================
+  //=========================================================
   Future<String> chkLoginToken(String uid, String pwd) async {
     String url = "http://$ipAddress/FlutterBudget/FlutterLoginV2.php";
 
@@ -94,11 +101,15 @@ class MySQLDB {
     var ret;
 
     try {
-      final response = await http.post(Uri.parse(url),
-          headers: {"Accept": "application/json"}, body: jsonLogin);
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Accept": "application/json"},
+        body: jsonLogin,
+      );
 
-      print("response.body : " +
-          response.body.trim()); // check the status code for the result
+      print(
+        "response.body : " + response.body.trim(),
+      ); // check the status code for the result
 
       if (response.statusCode == 200) {
         String dat = response.body.trim();
@@ -134,7 +145,7 @@ class MySQLDB {
           }
 
           //========Create Token==================
-// start php : php -S 10.130.230.21:80
+          // start php : php -S 10.130.230.21:80
           String url = "http://$ipAddress/FlutterBudget/token/create_token.php";
 
           var loginDat = <String, dynamic>{};
@@ -148,8 +159,9 @@ class MySQLDB {
           try {
             final response = await http.post(Uri.parse(url), body: jsonLogin);
 
-            print("response.body : " +
-                response.body.trim()); // check the status code for the result
+            print(
+              "response.body : " + response.body.trim(),
+            ); // check the status code for the result
 
             if (response.statusCode == 200) {
               if (response.body.trim() != "") {
@@ -201,8 +213,8 @@ class MySQLDB {
     }
   }
 
-//=========================================================
-// start php : php -S 10.130.230.21:80
+  //=========================================================
+  // start php : php -S 10.130.230.21:80
 
   Future<String> VerifyTokenExpireBearer(String token, String secretkey) async {
     String ret = "";
@@ -217,10 +229,7 @@ class MySQLDB {
 
     String url = "http://$ipAddress/FlutterBudget/token/verify_token.php";
 
-    final response = await http.post(
-      Uri.parse(url),
-      body: jsonDat,
-    );
+    final response = await http.post(Uri.parse(url), body: jsonDat);
 
     if (response.statusCode == 200) {
       print("response : " + response.body.trim());
@@ -235,7 +244,7 @@ class MySQLDB {
       return ret;
   }
 
-//=========================================================
+  //=========================================================
   Future<String> CheckTokenExpirePost(String token) async {
     String status = "";
     String url = "http://$url_node/check_token_expire/" + token;
@@ -265,7 +274,7 @@ class MySQLDB {
     return json.encode(ret);
   }
 
-//=========================================================
+  //=========================================================
   FutureOr<String> CheckTokenExpireBearer(String token) async {
     //bool status;
     //String data = "";
@@ -288,9 +297,15 @@ class MySQLDB {
     return ret;
   }
 
-//=========================================================
-  Future<String> AddUserJson(String unitNow, String uid, String pwd,
-      String firstname, String lastname, String mobile) async {
+  //=========================================================
+  Future<String> AddUserJson(
+    String unitNow,
+    String uid,
+    String pwd,
+    String firstname,
+    String lastname,
+    String mobile,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/AddUser.php";
 
     var Dat = <String, dynamic>{};
@@ -303,17 +318,19 @@ class MySQLDB {
 
     var datAdd = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datAdd);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datAdd,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -332,7 +349,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<String> UpdateUser(Dat) async {
     String url = "http://$ipAddress/FlutterBudget/UpdateUser.php";
 
@@ -345,17 +362,19 @@ class MySQLDB {
 
     var datUpdate = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datUpdate);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datUpdate,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
 
       ret = json.decode(response.body.trim());
       // check data return
@@ -373,7 +392,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<String> DeleteUser(Dat) async {
     String url = "http://$ipAddress/FlutterBudget/DeleteAccount.php";
 
@@ -386,17 +405,19 @@ class MySQLDB {
 
     var datUpdate = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datUpdate);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datUpdate,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
 
       ret = json.decode(response.body.trim());
       // check data return
@@ -414,7 +435,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<Account>> getDataAccount() async {
     String url = "http://$ipAddress/FlutterBudget/FlutterGetAccount.php";
 
@@ -425,9 +446,10 @@ class MySQLDB {
       final items =
           json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-      List<Account> studentList = items.map<Account>((json) {
-        return Account.fromJson(json);
-      }).toList();
+      List<Account> studentList =
+          items.map<Account>((json) {
+            return Account.fromJson(json);
+          }).toList();
 
       return studentList;
     } else {
@@ -435,22 +457,23 @@ class MySQLDB {
     }
   }
 
-//==============Book Unit=====================================
+  //==============Book Unit=====================================
   Future<String> AddBookUnit(
-      String Years,
-      String Id_exp_spen,
-      String List_exp_spen,
-      String TitleStr,
-      String BookNo,
-      String Doc_unit,
-      String Money,
-      String Dates,
-      String Secret_class,
-      String Speed_class,
-      String Response,
-      String Units,
-      String UnitName,
-      String TypeJob) async {
+    String Years,
+    String Id_exp_spen,
+    String List_exp_spen,
+    String TitleStr,
+    String BookNo,
+    String Doc_unit,
+    String Money,
+    String Dates,
+    String Secret_class,
+    String Speed_class,
+    String Response,
+    String Units,
+    String UnitName,
+    String TypeJob,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/AddBookUnit.php";
 
     var Dat = <String, dynamic>{};
@@ -471,17 +494,19 @@ class MySQLDB {
 
     var datAdd = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datAdd);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datAdd,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -500,8 +525,8 @@ class MySQLDB {
     }
   }
 
-//==============table Status=====================================
-/* txtYear.text,
+  //==============table Status=====================================
+  /* txtYear.text,
              txtBookNo.text,
              txtListName.text,
              txtTitle.text,
@@ -562,17 +587,19 @@ class MySQLDB {
 
     var datAdd = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datAdd);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datAdd,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -591,20 +618,21 @@ class MySQLDB {
     }
   }
 
-//============Update Status BeforSent .php====================
+  //============Update Status BeforSent .php====================
   Future<String> UpdateStatusBeforSent(String id_status) async {
     String url = "http://$ipAddress/FlutterBudget/UpdateStatusBeforSent.php";
 
-    final response = await http.post(Uri.parse(url),
-        //headers: {"Accept": "application/json"},
-        body: {"id_status": id_status});
+    final response = await http.post(
+      Uri.parse(url),
+      //headers: {"Accept": "application/json"},
+      body: {"id_status": id_status},
+    );
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -620,7 +648,7 @@ class MySQLDB {
     }
   }
 
-//===================SendTbStatusBetweenUnit===============
+  //===================SendTbStatusBetweenUnit===============
   Future<String> SendTbStatusBetweenUnit(
     //send first from original to other unit
     String years,
@@ -665,17 +693,19 @@ class MySQLDB {
 
     var datAdd = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datAdd);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datAdd,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -694,7 +724,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<Expedite>?> getDataExpedite() async {
     String url = "http://$ipAddress/FlutterBudget/FlutterGetExpedite.php";
 
@@ -709,9 +739,10 @@ class MySQLDB {
         print("ไม่พบงบประมาณใดๆ!!!");
         expList = null;
       } else {
-        expList = items.map<Expedite>((json) {
-          return Expedite.fromJson(json);
-        }).toList();
+        expList =
+            items.map<Expedite>((json) {
+              return Expedite.fromJson(json);
+            }).toList();
       }
       return expList;
     } else {
@@ -719,20 +750,23 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<Expedite>?> getExpSearch(String cond, String years) async {
     String url = "http://$ipAddress/FlutterBudget/GetExpSearch.php";
 
-    final response =
-        await http.post(Uri.parse(url), body: {"cond": cond, "years": years});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "years": years},
+    );
     if (response.statusCode == 200) {
       if (response.body.trim() != "") {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<Expedite> expList = items.map<Expedite>((json) {
-          return Expedite.fromJson(json);
-        }).toList();
+        List<Expedite> expList =
+            items.map<Expedite>((json) {
+              return Expedite.fromJson(json);
+            }).toList();
 
         return expList;
       } else {
@@ -743,13 +777,18 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<Expedite>?> getExpSearchUnit(
-      String cond, String years, String uid) async {
+    String cond,
+    String years,
+    String uid,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/GetExpSearchUnit.php";
 
-    final response = await http
-        .post(Uri.parse(url), body: {"cond": cond, "years": years, "uid": uid});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "years": years, "uid": uid},
+    );
     if (response.statusCode == 200) {
       //print(response.body);
 
@@ -757,9 +796,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<Expedite> expList = items.map<Expedite>((json) {
-          return Expedite.fromJson(json);
-        }).toList();
+        List<Expedite> expList =
+            items.map<Expedite>((json) {
+              return Expedite.fromJson(json);
+            }).toList();
 
         return expList;
       } else {
@@ -770,7 +810,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<Expedite?> getExpDetail(String idExpSpen) async {
     Expedite exp;
     String url = "http://$ipAddress/FlutterBudget/GetExpDetail.php";
@@ -792,36 +832,45 @@ class MySQLDB {
           String idExpSpen = jsonRes[0]["id_exp_spen"];
           String listExpSpen = jsonRes[0]["list_exp_spen"];
           String memoTh = jsonRes[0]["memo_th"];
-          double mBorder = jsonRes[0]["mborder"] == null
-              ? 0.00
-              : double.parse(jsonRes[0]["mborder"]);
-          double mAlloc = jsonRes[0]["malloc"] == null
-              ? 0.00
-              : double.parse(jsonRes[0]["malloc"]);
+          double mBorder =
+              jsonRes[0]["mborder"] == null
+                  ? 0.00
+                  : double.parse(jsonRes[0]["mborder"]);
+          double mAlloc =
+              jsonRes[0]["malloc"] == null
+                  ? 0.00
+                  : double.parse(jsonRes[0]["malloc"]);
           int status = int.parse(jsonRes[0]["status"]);
           String daystart = jsonRes[0]["daystart"];
           String daystop = jsonRes[0]["daystop"];
-          String code_bud_rtarf = (jsonRes[0]["code_bud_rtarf"] == null)
-              ? ''
-              : jsonRes[0]["code_bud_rtarf"];
-          int field_work = (jsonRes[0]["field_work"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["field_work"]);
-          int exp_type = (jsonRes[0]["exp_type"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["exp_type"]);
-          int int_group = (jsonRes[0]["int_group"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["int_group"]);
-          int unit_use = (jsonRes[0]["unit_use"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["unit_use"]);
-          int unit_oper = (jsonRes[0]["unit_oper"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["unit_oper"]);
-          int bud_type = (jsonRes[0]["bud_type"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["bud_type"]);
+          String code_bud_rtarf =
+              (jsonRes[0]["code_bud_rtarf"] == null)
+                  ? ''
+                  : jsonRes[0]["code_bud_rtarf"];
+          int field_work =
+              (jsonRes[0]["field_work"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["field_work"]);
+          int exp_type =
+              (jsonRes[0]["exp_type"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["exp_type"]);
+          int int_group =
+              (jsonRes[0]["int_group"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["int_group"]);
+          int unit_use =
+              (jsonRes[0]["unit_use"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["unit_use"]);
+          int unit_oper =
+              (jsonRes[0]["unit_oper"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["unit_oper"]);
+          int bud_type =
+              (jsonRes[0]["bud_type"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["bud_type"]);
           double mpay = double.parse(jsonRes[0]["mpay"]);
           double bpay_n = double.parse(jsonRes[0]["bpay_n"]);
           double bpay = double.parse(jsonRes[0]["bpay"]);
@@ -852,25 +901,30 @@ class MySQLDB {
           double m09 = double.parse(jsonRes[0]["m09"]);
           double sum4 = double.parse(jsonRes[0]["sum4"]);
           String stwork = jsonRes[0]["stwork"];
-          int whocreate = (jsonRes[0]["whocreate"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["whocreate"]);
-          String createtime = (jsonRes[0]["createtime"] == null)
-              ? ''
-              : jsonRes[0]["createtime"];
-          int whouse = (jsonRes[0]["whouse"] == null)
-              ? 0
-              : int.parse(jsonRes[0]["whouse"]);
-          String lastaccess = (jsonRes[0]["lastaccess"] == null)
-              ? ''
-              : jsonRes[0]["lastaccess"];
+          int whocreate =
+              (jsonRes[0]["whocreate"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["whocreate"]);
+          String createtime =
+              (jsonRes[0]["createtime"] == null)
+                  ? ''
+                  : jsonRes[0]["createtime"];
+          int whouse =
+              (jsonRes[0]["whouse"] == null)
+                  ? 0
+                  : int.parse(jsonRes[0]["whouse"]);
+          String lastaccess =
+              (jsonRes[0]["lastaccess"] == null)
+                  ? ''
+                  : jsonRes[0]["lastaccess"];
           String unit_chk =
               (jsonRes[0]["unit_chk"] == null) ? '' : jsonRes[0]["unit_chk"];
           String st_rx =
               (jsonRes[0]["st_rx"] == null) ? '' : jsonRes[0]["st_rx"];
-          double st_malloc = (jsonRes[0]["st_malloc"] == null)
-              ? 0.00
-              : double.parse(jsonRes[0]["st_malloc"]);
+          double st_malloc =
+              (jsonRes[0]["st_malloc"] == null)
+                  ? 0.00
+                  : double.parse(jsonRes[0]["st_malloc"]);
 
           exp = Expedite(
             idlist: idlist,
@@ -942,7 +996,7 @@ class MySQLDB {
     }
   }
 
-//==============================================
+  //==============================================
 
   Future<List<UnitName>?> getDataUnit() async {
     String url = "http://$ipAddress/FlutterBudget/GetUnitName.php";
@@ -956,9 +1010,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<UnitName> unitList = items.map<UnitName>((json) {
-          return UnitName.fromJson(json);
-        }).toList();
+        List<UnitName> unitList =
+            items.map<UnitName>((json) {
+              return UnitName.fromJson(json);
+            }).toList();
 
         //print(unitList.toString());
         UnitName un = new UnitName(uint: "0", uint_name: "เลือกหน่วยงาน");
@@ -973,14 +1028,14 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<UnitName>?> getUnitList() {
     Future<List<UnitName>?> tmplist;
     tmplist = getDataUnit();
     return tmplist;
   }
 
-//=========================================================
+  //=========================================================
   Future<Object?> fetchData(String query) async {
     String url = "http://$ipAddress/FlutterBudget/FlutterGetData.php";
 
@@ -989,8 +1044,11 @@ class MySQLDB {
 
     var jsonQuery = json.encode(queryCom);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: jsonQuery);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: jsonQuery,
+    );
 
     if (response.statusCode == 200) {
       var ret = json.decode(response.body.trim());
@@ -1002,7 +1060,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<Account?> getAccDetail(String aid) async {
     Account acc;
     String url = "http://$ipAddress/FlutterBudget/GetAccDetail.php";
@@ -1031,16 +1089,17 @@ class MySQLDB {
               (jsonRes["login"] == null) ? 0 : int.parse(jsonRes["login"]);
 
           acc = new Account(
-              aid: aid,
-              userid: userid,
-              passwords: password,
-              firstname: firstname,
-              lastname: lastname,
-              mobile: mobile,
-              uid: uid,
-              pic: pic,
-              login: login,
-              uses: uses);
+            aid: aid,
+            userid: userid,
+            passwords: password,
+            firstname: firstname,
+            lastname: lastname,
+            mobile: mobile,
+            uid: uid,
+            pic: pic,
+            login: login,
+            uses: uses,
+          );
 
           return acc;
         } else {
@@ -1056,7 +1115,7 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
 
   Future<List<Account>?> getAccSearch(String cond, String uid) async {
     if (uid == "0") {
@@ -1065,8 +1124,10 @@ class MySQLDB {
 
     String url = "http://$ipAddress/FlutterBudget/GetAccSearch.php";
 
-    final response =
-        await http.post(Uri.parse(url), body: {"cond": cond, "uid": uid});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "uid": uid},
+    );
     if (response.statusCode == 200) {
       //print(response.body.trim());
 
@@ -1074,9 +1135,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<Account> accList = items.map<Account>((json) {
-          return Account.fromJson(json);
-        }).toList();
+        List<Account> accList =
+            items.map<Account>((json) {
+              return Account.fromJson(json);
+            }).toList();
 
         print(accList.toString());
 
@@ -1089,12 +1151,14 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<BookUnit>?> getBookStartSearch(String cond, String years) async {
     String url = "http://$ipAddress/FlutterBudget/GetBookStartSearch.php";
 
-    final response =
-        await http.post(Uri.parse(url), body: {"cond": cond, "years": years});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "years": years},
+    );
     if (response.statusCode == 200) {
       //print(response.body);
 
@@ -1102,9 +1166,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<BookUnit> bookList = items.map<BookUnit>((json) {
-          return BookUnit.fromJson(json);
-        }).toList();
+        List<BookUnit> bookList =
+            items.map<BookUnit>((json) {
+              return BookUnit.fromJson(json);
+            }).toList();
 
         return bookList;
       } else {
@@ -1115,13 +1180,18 @@ class MySQLDB {
     }
   }
 
-//=========================================================
+  //=========================================================
   Future<List<BookUnit>?> getBookStartSearchUnit(
-      String cond, String years, String uid) async {
+    String cond,
+    String years,
+    String uid,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/GetBookStartSearchUnit.php";
 
-    final response = await http
-        .post(Uri.parse(url), body: {"cond": cond, "years": years, "uid": uid});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "years": years, "uid": uid},
+    );
     if (response.statusCode == 200) {
       //print(response.body);
 
@@ -1129,9 +1199,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<BookUnit> bookList = items.map<BookUnit>((json) {
-          return BookUnit.fromJson(json);
-        }).toList();
+        List<BookUnit> bookList =
+            items.map<BookUnit>((json) {
+              return BookUnit.fromJson(json);
+            }).toList();
 
         return bookList;
       } else {
@@ -1146,8 +1217,10 @@ class MySQLDB {
   Future<BookUnit?> getBookIdJob(String id_job, String years) async {
     String url = "http://$ipAddress/FlutterBudget/getBookIdJob.php";
 
-    final response = await http
-        .post(Uri.parse(url), body: {"id_job": id_job, "years": years});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_job": id_job, "years": years},
+    );
     if (response.statusCode == 200) {
       //print(response.body);
 
@@ -1164,12 +1237,14 @@ class MySQLDB {
     }
   }
 
-//=====================Chk Income Job in ChkIncomeJob.php =======================
+  //=====================Chk Income Job in ChkIncomeJob.php =======================
   Future<String> getStatusInCome(String uid, String years) async {
     String url = "http://$ipAddress/FlutterBudget/ChkIncomeJob.php";
 
-    final response =
-        await http.post(Uri.parse(url), body: {"uid": uid, "years": years});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"uid": uid, "years": years},
+    );
     if (response.statusCode == 200) {
       print("return response : " + response.body.trim());
 
@@ -1206,14 +1281,19 @@ class MySQLDB {
     }
   }
 
-//====================== Table Status ================================
+  //====================== Table Status ================================
 
   Future<List<TBStatusSearch>?> GetTBStatusSearch(
-      String cond, String years, String sent_to) async {
+    String cond,
+    String years,
+    String sent_to,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/GetTBStatusSearch.php";
 
-    final response = await http.post(Uri.parse(url),
-        body: {"cond": cond, "years": years, "sent_to": sent_to});
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"cond": cond, "years": years, "sent_to": sent_to},
+    );
     if (response.statusCode == 200) {
       //print(response.body);
 
@@ -1221,9 +1301,10 @@ class MySQLDB {
         final items =
             json.decode(response.body.trim()).cast<Map<String, dynamic>>();
 
-        List<TBStatusSearch> statusList = items.map<TBStatusSearch>((json) {
-          return TBStatusSearch.fromJson(json);
-        }).toList();
+        List<TBStatusSearch> statusList =
+            items.map<TBStatusSearch>((json) {
+              return TBStatusSearch.fromJson(json);
+            }).toList();
 
         return statusList;
       } else {
@@ -1234,8 +1315,8 @@ class MySQLDB {
     }
   }
 
-//===============receive from sender in tbs_status=============================
-// ReceiveExpediteUser(
+  //===============receive from sender in tbs_status=============================
+  // ReceiveExpediteUser(
   // txtNoDocRx.text,
   // txtStatus.text,
   // widget.tbstatus.id_exp_spen,
@@ -1243,13 +1324,14 @@ class MySQLDB {
   // widget.tbstatus.id_status)
 
   Future<String> ReceiveExpediteUser(
-      String no_doc_rx,
-      String status_detail,
-      String id_exp_spen,
-      String id_job,
-      String id_status,
-      String etc,
-      String fullname) async {
+    String no_doc_rx,
+    String status_detail,
+    String id_exp_spen,
+    String id_job,
+    String id_status,
+    String etc,
+    String fullname,
+  ) async {
     String url = "http://$ipAddress/FlutterBudget/ReceiveExpedite.php";
 
     var Dat = <String, dynamic>{};
@@ -1263,17 +1345,19 @@ class MySQLDB {
 
     var datAdd = json.encode(Dat);
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: datAdd);
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: datAdd,
+    );
 
     //print("response.body : " + response.body); // check the status code for the result
 
     var ret;
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body
-              .trim()
-              .toString()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim().toString(),
+      ); // check the status code for the result
       //int ret = int.parse(response.body.trim());
       ret = json.decode(response.body.trim());
       //print("return value : ${ret}");
@@ -1292,7 +1376,7 @@ class MySQLDB {
     }
   }
 
-//======================================================
+  //======================================================
   static Future<String> createTable(String tb) async {
     String url = "http://$ipAddress/FlutterBudget/CreateTable.php";
 
@@ -1318,12 +1402,16 @@ class MySQLDB {
     var Dat = <String, dynamic>{};
     Dat['id_exp_spen'] = id_exp_spen;
 
-    final response = await http.post(Uri.parse(url),
-        headers: {"Accept": "application/json"}, body: json.encode(Dat));
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Accept": "application/json"},
+      body: json.encode(Dat),
+    );
 
     if (response.statusCode == 200) {
-      print("return response : " +
-          response.body.trim()); // check the status code for the result
+      print(
+        "return response : " + response.body.trim(),
+      ); // check the status code for the result
 
       return response.body.trim();
     } else {
@@ -1331,7 +1419,7 @@ class MySQLDB {
     }
   }
 
-//=============Function Delay  ============================================
+  //=============Function Delay  ============================================
 
   void delay(int sec, Function() function1) {
     Future.delayed(Duration(seconds: sec), () {
@@ -1339,10 +1427,22 @@ class MySQLDB {
     });
   }
 
-//==============Redirect SignIn======================================
+  //==============Redirect SignIn======================================
   void redirectSignIn(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        SignInScreen.routeName, (Route<dynamic> route) => false);
+    // Use the global navigatorKey so this can be called from async/delayed
+    // callbacks without depending on a BuildContext that may be deactivated.
+    try {
+      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        SignInScreen.routeName,
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      // As a fallback, attempt to use the provided context.
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        SignInScreen.routeName,
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 }  //=======end class MySQLService=======================
 

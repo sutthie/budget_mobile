@@ -1,15 +1,14 @@
 import 'package:currency_formatter/currency_formatter.dart';
-import 'package:flutter/material.dart';
 
 //library vars;
-const String ipAddSrv = "10.130.228.1"; // flutterBudget
+const String ipAddSrv = "10.130.230.64"; // flutterBudget
 //const String ipAddSrv = "10.130.230.31";
 //const String ipAddSrv = "10.130.230.64";
 //const String ipAddress = "10.130.234.32";
 //const String ipAddress = "172.17.192.1";
 //const String ipAddress = "10.130.230.31"; // local ip addr
-const String ipAddress = "10.130.228.1";
-const String url_node = "10.130.228.1:3000"; //node.js ip addr
+const String ipAddress = "10.130.230.64";
+const String url_node = "10.130.230.64:3000"; //node.js ip addr
 //const String url_node = "10.130.230.64:3000"; //node.js ip addr
 //const String url_node = "http://172.17.192.1:3000";
 //const String url_node = "http://10.130.230.148:3000";
@@ -25,9 +24,6 @@ String CurrentUName = "";
 
 // set for UnitName
 String CurrentUnitName = "";
-
-// Global navigator key so code outside widgets can perform navigation safely
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // String Aid = "";
 // String UserID = "";

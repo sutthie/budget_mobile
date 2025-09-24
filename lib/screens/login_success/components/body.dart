@@ -13,6 +13,7 @@ var login;
 // ignore: must_be_immutable
 class Body extends StatelessWidget {
   late String uid;
+  //late String status;
   //String cnt_work = "";
   late int yearBud;
 
@@ -24,9 +25,14 @@ class Body extends StatelessWidget {
     print("Year Budget : " + yearBud.toString());
 
     ManageLogin _login = ManageLogin();
+    // box.put('status', dat["status"]);
+    // box.put('token', dat["token"]);
     _login.DefineBox().then((box) {
       login = box;
       uid = login.get('uid').toString();
+      //status = login.get('status').toString();
+      // print("UID : " + uid);
+      // print("Status : " + status);
 
       //Get Status Income Job
       MySQLDB mydb = MySQLDB();
@@ -54,10 +60,11 @@ class Body extends StatelessWidget {
       textAlign: TextAlign.center,
       style: styleLabel,
       decoration: InputDecoration(
-          border: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          contentPadding: const EdgeInsets.all(3)),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        contentPadding: const EdgeInsets.all(3),
+      ),
     );
 
     return Column(
@@ -86,10 +93,12 @@ class Body extends StatelessWidget {
           ),
         ),
         Center(
-            child: Container(
-                //alignment: Alignment.center,
-                width: 80,
-                child: TxtField_cntIncome)),
+          child: Container(
+            //alignment: Alignment.center,
+            width: 80,
+            child: TxtField_cntIncome,
+          ),
+        ),
         Spacer(),
         SizedBox(
           width: SizeConfig.screenWidth * 0.6,
@@ -114,9 +123,7 @@ class Body extends StatelessWidget {
               if (login.get('status') == '1')
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => MainPageAdmin(),
-                  ),
+                  MaterialPageRoute(builder: (context) => MainPageAdmin()),
                 );
               else
                 Navigator.pushReplacementNamed(context, MainPage.routeName);

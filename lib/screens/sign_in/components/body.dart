@@ -18,7 +18,8 @@ class Body extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenWidth(20)),
+              horizontal: getProportionateScreenWidth(20),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -27,17 +28,18 @@ class Body extends StatelessWidget {
                     'ยินดีต้อนรับเข้าสู่',
                     style: TextStyle(
                       color: blue,
-                      fontSize: getProportionateScreenWidth(18),
+                      fontSize: getProportionateScreenWidth(20),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     "ระบบติดตามเร่งรัดการใช้จ่ายงบประมาณ สส.ทหาร",
                     style: TextStyle(
-                        color: greendark,
-                        fontSize: getProportionateScreenWidth(16),
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic),
+                      color: greendark,
+                      fontSize: getProportionateScreenWidth(18),
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -46,7 +48,7 @@ class Body extends StatelessWidget {
                       "พิสูจน์สิทธิ์การใช้งาน",
                       textAlign: TextAlign.start,
                       //style: styleMedium(Colors.pink.shade200),
-                      style: styleCustom('', 18.0, brown, false),
+                      style: styleCustom('', 20.0, brown, true),
                     ),
                   ),
                   SizedBox(height: SizeConfig.screenHeight * 0.02),

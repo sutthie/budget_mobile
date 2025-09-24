@@ -42,7 +42,7 @@ class _EditAccDetailState extends State<EditAccDetail> {
   late Future<List<UnitName>?> unitList;
 
   _EditAccDetailState() {
-// init 1 sec
+    // init 1 sec
 
     // initHive Box Name : LoginData
     ManageLogin _login = ManageLogin();
@@ -60,7 +60,7 @@ class _EditAccDetailState extends State<EditAccDetail> {
     //unitNow = login.get('uid');
   }
 
-//=================set Hive for Global Data===================
+  //=================set Hive for Global Data===================
   // await Hive.initFlutter();
   // box = await Hive.openBox('LoginData');
   // box.put('aid', dat["aid"]);
@@ -82,7 +82,7 @@ class _EditAccDetailState extends State<EditAccDetail> {
   //   Token = box.get('token');
   // }
 
-//=====define TextEditingController======
+  //=====define TextEditingController======
   final txtUser = TextEditingController();
   final txtPwd = TextEditingController();
   final txtFirstName = TextEditingController();
@@ -90,7 +90,7 @@ class _EditAccDetailState extends State<EditAccDetail> {
   final txtMobile = TextEditingController();
   // final txtStatus = TextEditingController();
 
-// define FocusNode
+  // define FocusNode
   final FocusNode _focus = FocusNode(); // username
   final FocusNode _nextFocus1 = FocusNode(); //pwd
   final FocusNode _nextFocus2 = FocusNode(); //firstname
@@ -147,13 +147,20 @@ class _EditAccDetailState extends State<EditAccDetail> {
 
   @override
   Widget build(BuildContext context) {
-//====TextStyle========
+    //====TextStyle========
 
     TextStyle styleHead1 = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 18.0,
       fontWeight: FontWeight.bold,
       color: Colors.brown,
+    );
+
+    TextStyle styleHead2 = const TextStyle(
+      fontFamily: 'Montserrat',
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
     );
 
     TextStyle styleNormal = const TextStyle(
@@ -181,64 +188,71 @@ class _EditAccDetailState extends State<EditAccDetail> {
     //======define ddl widget=======
     Widget ddlUnit(udata) {
       return FutureBuilder<List<UnitName>?>(
-          future: udata,
-          //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            //return Center(child: CircularProgressIndicator());
-            else
-              return DropdownButton<String>(
-                focusNode: ddlNode,
-                //isExpanded: true,
-                borderRadius: BorderRadius.circular(10),
-                items: snapshot.data
-                    ?.map((item) => DropdownMenuItem<String>(
+        future: udata,
+        //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return CircularProgressIndicator();
+          //return Center(child: CircularProgressIndicator());
+          else
+            return DropdownButton<String>(
+              focusNode: ddlNode,
+              isExpanded: true,
+              underline: SizedBox.shrink(),
+              borderRadius: BorderRadius.circular(10),
+              items:
+                  snapshot.data
+                      ?.map(
+                        (item) => DropdownMenuItem<String>(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(item.uint_name,
-                                style: TextStyle(
-                                  //backgroundColor: white,
-                                  decoration: TextDecoration.underline,
-                                  color: blue,
-                                  //backgroundColor: lightgreen
-                                )),
+                            child: Text(
+                              item.uint_name,
+                              style: TextStyle(
+                                //backgroundColor: white,
+                                decoration: TextDecoration.underline,
+                                color: Colors.blueAccent.shade700,
+                                //backgroundColor: lightgreen
+                              ),
+                            ),
                           ),
                           value: item.uint,
-                        ))
-                    .toList(),
-                value: unitNow,
-                //value: "",
-                //value: null,
-                onChanged: (un) {
-                  setState(() {
-                    unitNow = un.toString();
-                  });
-                  // ignore: unused_local_variable
-                  var msg = new ResponseMessage();
-                  //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
-                },
-                //isExpanded: true,
-                hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
-                disabledHint: Text("Disabled"),
-                elevation: 8,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
-                //style: Theme.of(context).textTheme.labelMedium,
-                //style: Theme.of(context).textTheme.bodyText2,
-                //dropdownColor: Colors.white,
-                dropdownColor: lightyellow2,
-                //focusColor: Colors.yellow.shade100,
-                icon: Icon(Icons.arrow_drop_down_circle),
-                iconDisabledColor: Colors.red,
-                iconEnabledColor: Colors.blue,
-                iconSize: 30,
-              );
-          });
+                        ),
+                      )
+                      .toList(),
+              value: unitNow,
+              //value: "",
+              //value: null,
+              onChanged: (un) {
+                setState(() {
+                  unitNow = un.toString();
+                });
+                // ignore: unused_local_variable
+                var msg = new ResponseMessage();
+                //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
+              },
+              //isExpanded: true,
+              hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
+              disabledHint: Text("Disabled"),
+              elevation: 8,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.brown,
+              ),
+              //style: Theme.of(context).textTheme.labelMedium,
+              //style: Theme.of(context).textTheme.bodyText2,
+              //dropdownColor: Colors.white,
+              dropdownColor: lightyellow2,
+              //focusColor: Colors.yellow.shade100,
+              icon: Icon(Icons.arrow_drop_down_circle),
+              iconDisabledColor: Colors.red,
+              iconEnabledColor: Colors.blue,
+              iconSize: 30,
+            );
+        },
+      );
     }
 
     final userField = TextField(
@@ -248,12 +262,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       focusNode: _focus,
       controller: txtUser,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "UserName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "UserName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onTap: () {
         //FocusScope.of(context).requestFocus(_focus);
         //_focus.requestFocus();
@@ -271,12 +285,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "Password",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onTap: () {
         //FocusScope.of(context).requestFocus(_nextFocus1);
         //_nextFocus1.requestFocus();
@@ -303,12 +317,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "FirstName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "FirstName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onTap: () {
         //FocusScope.of(context).requestFocus(_focus);
         // _nextFocus2.requestFocus();
@@ -330,12 +344,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "LastName",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "LastName",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onTap: () {
         //FocusScope.of(context).requestFocus(_focus);
         //_nextFocus3.requestFocus();
@@ -357,12 +371,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       //enabled: false,
       style: styleNormal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "Mobile",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "Mobile",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+      ),
       onTap: () {
         //FocusScope.of(context).requestFocus(_focus);
         //_nextFocus4.requestFocus();
@@ -412,8 +426,11 @@ class _EditAccDetailState extends State<EditAccDetail> {
           } else if (chk1 == true) {
             chk2 = txtMobile.text.trim().contains(new RegExp(r'^\d{10}$'));
             if (chk2 == false) {
-              amsg.Alert(context, "กรอกข้อมูลผิดรูปแบบ",
-                  "กรุณากรอกเบอร์โทรให้ถูกต้อง");
+              amsg.Alert(
+                context,
+                "กรอกข้อมูลผิดรูปแบบ",
+                "กรุณากรอกเบอร์โทรให้ถูกต้อง",
+              );
               FocusScope.of(context).requestFocus(_nextFocus4);
             } else {
               //====== check login=============
@@ -445,19 +462,21 @@ class _EditAccDetailState extends State<EditAccDetail> {
                 Future.delayed(oneSecond * 2, () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ShowAccount(),
-                    ),
+                    MaterialPageRoute(builder: (context) => ShowAccount()),
                   );
                 });
               });
             }
           }
         },
-        child: Text("บันทึก",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "บันทึก",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -473,97 +492,105 @@ class _EditAccDetailState extends State<EditAccDetail> {
           //=== show dialog confirm delete===
           showDialog(
             context: context,
-            builder: (BuildContext context) => AlertDialog(
-              title: const Text('ยืนยันการลบ'),
-              content: const Text('กรุณายืนยันการลบ ???'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    //=========delete=============
-// check input
-                    //bool chk = true;
-                    bool chk1 = false;
+            builder:
+                (BuildContext context) => AlertDialog(
+                  title: const Text('ยืนยันการลบ'),
+                  content: const Text('กรุณายืนยันการลบ ???'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        //=========delete=============
+                        // check input
+                        //bool chk = true;
+                        bool chk1 = false;
 
-                    ResponseMessage amsg = new ResponseMessage();
+                        ResponseMessage amsg = new ResponseMessage();
 
-                    // check form
-                    if (widget.aid == '') {
-                      chk1 = false;
-                    } else {
-                      chk1 = true;
-                    }
-
-                    if (chk1 == false) {
-                      amsg.Alert(
-                          context, "ข้อมูลไม่พบ", "กรุณาเลือกข้อมูลให้ครบ!!!");
-                    } else if (chk1 == true) {
-                      //====== check login=============
-                      MySQLDB mysql = MySQLDB();
-
-                      var Dat = <String, dynamic>{};
-                      Dat['aid'] = widget.aid;
-                      Dat['table'] = "account";
-
-                      mysql.DeleteUser(Dat).then((String result) {
-                        var ret = json.decode(result);
-
-                        String msg = "";
-                        if (ret["result"] == "false") {
-                          msg = "ผิดพลาดในการลบ : ${ret["msg"]} ";
-                        } else if (ret["result"] == "true") {
-                          msg = "ลบข้อมูลเรียบร้อยแล้ว";
-
-                          log("Status Delete : $msg");
+                        // check form
+                        if (widget.aid == '') {
+                          chk1 = false;
+                        } else {
+                          chk1 = true;
                         }
 
-                        amsg.Alert(context, "ลบข้อมูล", "ผลคือ : ${msg}");
-
-                        Future.delayed(oneSecond * 2, () {
-                          Navigator.pushReplacement(
+                        if (chk1 == false) {
+                          amsg.Alert(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ShowAccount(),
-                            ),
+                            "ข้อมูลไม่พบ",
+                            "กรุณาเลือกข้อมูลให้ครบ!!!",
                           );
-                        });
-                      });
-                    }
-                    //============================
-                    //Navigator.of(context).pop();
+                        } else if (chk1 == true) {
+                          //====== check login=============
+                          MySQLDB mysql = MySQLDB();
 
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ShowAccount(),
-                    //   ),
-                    // );
+                          var Dat = <String, dynamic>{};
+                          Dat['aid'] = widget.aid;
+                          Dat['table'] = "account";
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ShowAccount(),
-                    //   ),
-                    // );
-                  },
-                  child: const Text('OK'),
+                          mysql.DeleteUser(Dat).then((String result) {
+                            var ret = json.decode(result);
+
+                            String msg = "";
+                            if (ret["result"] == "false") {
+                              msg = "ผิดพลาดในการลบ : ${ret["msg"]} ";
+                            } else if (ret["result"] == "true") {
+                              msg = "ลบข้อมูลเรียบร้อยแล้ว";
+
+                              log("Status Delete : $msg");
+                            }
+
+                            amsg.Alert(context, "ลบข้อมูล", "ผลคือ : ${msg}");
+
+                            Future.delayed(oneSecond * 2, () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ShowAccount(),
+                                ),
+                              );
+                            });
+                          });
+                        }
+                        //============================
+                        //Navigator.of(context).pop();
+
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => ShowAccount(),
+                        //   ),
+                        // );
+
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => ShowAccount(),
+                        //   ),
+                        // );
+                      },
+                      child: const Text('OK'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                  ],
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-              ],
-            ),
           ).then((retval) {
             if (retval != null) {}
           });
           //========================================
         },
-        child: Text("ลบ",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ลบ",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -592,10 +619,14 @@ class _EditAccDetailState extends State<EditAccDetail> {
           //     MaterialPageRoute(builder: (context) => ShowAccount()),
           //     (Route<dynamic> route) => false);
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleNormal.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleNormal.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -606,16 +637,12 @@ class _EditAccDetailState extends State<EditAccDetail> {
       backgroundColor: lightpurple,
       appBar: AppBar(
         //title: Text(widget.title),
-        title: Text(
-          "ปรับปรุงข้อมูลผู้ใช้",
-          style: styleHeadWhite4,
-        ),
+        title: Text("ปรับปรุงข้อมูลผู้ใช้", style: styleHeadWhite4),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.start,
-
           children: [
             Text('รายละเอียด Account', style: styleHeadPurple),
             // Row(
@@ -627,18 +654,11 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100,
-                      child: Text(
-                        'UserId',
-                        style: styleHead1,
-                      )),
-                  SizedBox(
-                    width: 10,
+                    width: 130,
+                    child: Text('UserId', style: styleHead1),
                   ),
-                  SizedBox(
-                    child: userField,
-                    width: 250,
-                  ),
+                  SizedBox(width: 10),
+                  SizedBox(child: userField, width: 200),
                 ],
               ),
             ),
@@ -647,14 +667,11 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100, child: Text('Password', style: styleHead1)),
-                  SizedBox(
-                    width: 10,
+                    width: 130,
+                    child: Text('Password(>=6)', style: styleHead1),
                   ),
-                  SizedBox(
-                    child: passwordField,
-                    width: 250,
-                  ),
+                  SizedBox(width: 10),
+                  SizedBox(child: passwordField, width: 200),
                 ],
               ),
             ),
@@ -663,18 +680,27 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100, child: Text('หน่วยงาน', style: styleHead1)),
-                  SizedBox(
-                    width: 10,
+                    width: 100,
+                    child: Text('หน่วยงาน', style: styleHead1),
                   ),
+                  SizedBox(width: 10),
                   Column(
                     //mainAxisAlignment: MainAxisAlignment.center,
                     //crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        //width: 250,
+                        // Make the visible frame rounded by using BoxDecoration
+                        // instead of the Container `color` property.
+                        // Add padding so the dropdown contents have breathing room.
+                        // Give a fixed width so the DropdownButton (isExpanded=true)
+                        // has bounded constraints and won't cause layout errors.
+                        width: 250,
+                        decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: ddlUnit(unitList),
-                        color: white,
                       ),
                     ],
                   ),
@@ -691,15 +717,11 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100,
-                      child: Text('ยศ ชื่อ-สกุล', style: styleHead1)),
-                  SizedBox(
-                    width: 10,
+                    width: 100,
+                    child: Text('ยศ ชื่อ-สกุล', style: styleHead1),
                   ),
-                  SizedBox(
-                    child: firstnameField,
-                    width: 250,
-                  ),
+                  SizedBox(width: 10),
+                  SizedBox(child: firstnameField, width: 250),
                 ],
               ),
             ),
@@ -708,14 +730,11 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100, child: Text('นามสกุล', style: styleHead1)),
-                  SizedBox(
-                    width: 10,
+                    width: 100,
+                    child: Text('นามสกุล', style: styleHead1),
                   ),
-                  SizedBox(
-                    child: lastnameField,
-                    width: 250,
-                  ),
+                  SizedBox(width: 10),
+                  SizedBox(child: lastnameField, width: 250),
                 ],
               ),
             ),
@@ -724,36 +743,27 @@ class _EditAccDetailState extends State<EditAccDetail> {
               child: Row(
                 children: [
                   Container(
-                      width: 100, child: Text('มือถือ', style: styleHead1)),
-                  SizedBox(
-                    width: 10,
+                    width: 100,
+                    child: Text('มือถือ', style: styleHead1),
                   ),
-                  SizedBox(
-                    child: mobileField,
-                    width: 250,
-                  ),
+                  SizedBox(width: 10),
+                  SizedBox(child: mobileField, width: 250),
                 ],
               ),
             ),
             // Visibility(visible: false, child: textStatus),
             const SizedBox(height: 4.0),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: updateButton,
-            ),
+            Padding(padding: const EdgeInsets.all(4.0), child: updateButton),
             const SizedBox(height: 4.0),
             //login?.get('status') == '1' ? deleteButton : Text(''),
             login?.get('status') == '1'
                 ? Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: deleteButton,
-                  )
+                  padding: const EdgeInsets.all(4.0),
+                  child: deleteButton,
+                )
                 : const SizedBox(height: 4.0),
             const SizedBox(height: 4.0),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: backButon,
-            ),
+            Padding(padding: const EdgeInsets.all(4.0), child: backButon),
           ],
         ),
       ),
@@ -762,7 +772,10 @@ class _EditAccDetailState extends State<EditAccDetail> {
 }
 
 _fieldFocusChange(
-    BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  BuildContext context,
+  FocusNode currentFocus,
+  FocusNode nextFocus,
+) {
   currentFocus.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
 }

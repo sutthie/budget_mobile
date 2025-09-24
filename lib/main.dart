@@ -3,6 +3,7 @@ import '../routes.dart';
 import '../screens/splash/splashScreen.dart';
 import '../styles/theme.dart';
 import 'package:flutter/material.dart';
+import 'global/globalVar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +14,12 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //title: 'BfriendAuto',
       theme: theme(),
+      navigatorKey: navigatorKey,
       // home: SplashScreen(),
       // We use routeName so that we dont need to remember the name
       initialRoute: SplashScreen.routeName,

@@ -77,18 +77,27 @@ class _SignFormState extends State<SignForm> {
               Text(
                 "Remember me",
                 style: TextStyle(
-                    decoration: TextDecoration.underline, color: Colors.blue),
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                  fontSize: 18,
+                ),
               ),
               Spacer(),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
+                onTap:
+                    () => Navigator.pushNamed(
+                      context,
+                      
+                      ForgotPasswordScreen.routeName,
+                    ),
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(
-                      decoration: TextDecoration.underline, color: Colors.red),
+                    decoration: TextDecoration.underline,
+                    color: Colors.red,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           FormError(errors: errors),
@@ -133,9 +142,7 @@ class _SignFormState extends State<SignForm> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginFalseScreen(
-                          errMsg: '',
-                        ),
+                        builder: (context) => LoginFalseScreen(errMsg: ''),
                       ),
                     );
                   } else {
@@ -157,9 +164,9 @@ class _SignFormState extends State<SignForm> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginFalseScreen(
-                              errMsg: dat["errMsg"],
-                            ),
+                            builder:
+                                (context) =>
+                                    LoginFalseScreen(errMsg: dat["errMsg"]),
                           ),
                         );
 
@@ -180,7 +187,7 @@ class _SignFormState extends State<SignForm> {
                     //Email = dat["email"];
                     //Aid = dat["aid"];
 
-//=================set Hive for Global Data===================
+                    //=================set Hive for Global Data===================
                     await Hive.initFlutter();
                     box = await Hive.openBox('LoginData');
                     box.put('aid', dat["aid"]);
@@ -191,7 +198,7 @@ class _SignFormState extends State<SignForm> {
                     box.put('email', dat['email']);
                     box.put('status', dat["status"]);
                     box.put('token', dat["token"]);
-//=================Get Unitname===============================
+                    //=================Get Unitname===============================
                     String uid = dat['uid'];
                     var unit =
                         GetUnitName(); // create obj from class GetUnitName
@@ -200,7 +207,7 @@ class _SignFormState extends State<SignForm> {
                       box.put('unitname', value);
                       CurrentUnitName = value;
                     });
-//============================================================
+                    //============================================================
                     // print("Aid : " + Aid);
                     // print("UserID : " + UserID);
                     // print("Fullname : " + dat["fullname"]);
@@ -223,7 +230,7 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildUserIdFormField() {
     return TextFormField(
       //initialValue: 'test100',
-      initialValue: 'sutthie',
+      //initialValue: 'sutthie',
       keyboardType: TextInputType.text,
       focusNode: focus_userid,
       onFieldSubmitted: (ValueKey) => focus_pwd.requestFocus(),
@@ -247,7 +254,10 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       style: TextStyle(
-          color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20.0),
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0,
+      ),
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -260,7 +270,11 @@ class _SignFormState extends State<SignForm> {
         //   borderRadius: BorderRadius.circular(25.7),
         // ),
         labelText: "UserID",
-        labelStyle: TextStyle(fontSize: 22.0, color: red),
+        labelStyle: TextStyle(
+          fontSize: 24.0,
+          color: red,
+          fontWeight: FontWeight.bold,
+        ),
         hintText: "Enter your UserId",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -273,7 +287,7 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       //initialValue: 'test100',
-      initialValue: 'mtts2517',
+      //initialValue: 'mtts2517',
       focusNode: focus_pwd,
       obscureText: true,
       onSaved: (newValue) => password = newValue,
@@ -296,7 +310,10 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       style: TextStyle(
-          color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 20.0),
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0,
+      ),
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
@@ -305,7 +322,11 @@ class _SignFormState extends State<SignForm> {
           borderRadius: new BorderRadius.circular(22),
         ),
         labelText: "Password",
-        labelStyle: TextStyle(fontSize: 22.0, color: red),
+        labelStyle: TextStyle(
+          fontSize: 24.0,
+          color: red,
+          fontWeight: FontWeight.bold,
+        ),
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
