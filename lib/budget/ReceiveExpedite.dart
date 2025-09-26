@@ -29,13 +29,13 @@ class ReceiveExpedite extends StatefulWidget {
 }
 
 class _ShowBudgetDetailState extends State<ReceiveExpedite> {
-// =====declare object===========
+  // =====declare object===========
   late MySQLDB mydb;
   late ResponseMessage msg;
   String uid = "0";
-// download file attach original
+  // download file attach original
   late OpenUrlBrowser open;
-//=====Controller Text===========
+  //=====Controller Text===========
   final txtIdExpen = TextEditingController();
   final txtListExpen = TextEditingController();
   final txtTitle = TextEditingController();
@@ -53,25 +53,26 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   final txtSender = TextEditingController();
   final txtResponse = TextEditingController();
 
-//===== define FocusNode=======
+  //===== define FocusNode=======
   // final FocusNode _focus = FocusNode();
   final FocusNode _focus_no_doc_rx = FocusNode();
   final FocusNode _focus_status = FocusNode();
   final FocusNode _focus_etc = FocusNode();
 
-//=======defind variable==================
+  //=======defind variable==================
   late DateTimes now = DateTimes();
   String DateString = "";
-//======const ===========================
+  //======const ===========================
   ////currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
   static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
-  final currencyFormatter =
-      FilteringTextInputFormatter.allow(RegExp(currencyRegExp));
+  final currencyFormatter = FilteringTextInputFormatter.allow(
+    RegExp(currencyRegExp),
+  );
 
   // ==== set caption to Text====
   //int yearNow = 0;
 
-// =====set Message==========
+  // =====set Message==========
   String msgStr = "";
 
   _ShowBudgetDetailState() {
@@ -115,7 +116,6 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     txtSender.text = widget.tbstatus.sender;
     txtETC.text = widget.tbstatus.etc;
     txtNoDocRx.text = widget.tbstatus.no_doc_rx;
-
     _focus_no_doc_rx.requestFocus();
   }
 
@@ -126,7 +126,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
   @override
   Widget build(BuildContext context) {
-//====TextStyle========
+    //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 18.0,
@@ -134,8 +134,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       color: Colors.purple,
     );
 
-    TextStyle styleHead3 =
-        styleCustom("", 16.0, Colors.redAccent.shade700, true);
+    TextStyle styleHead3 = styleCustom(
+      "",
+      16.0,
+      Colors.redAccent.shade700,
+      true,
+    );
 
     TextStyle styleInput = const TextStyle(
       fontFamily: 'Montserrat',
@@ -157,13 +161,13 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: lightpurple2,
-          hintText: "รหัสงบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: lightpurple2,
+        hintText: "รหัสงบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       // onTap: () {
       //   _focus.requestFocus();
       // },
@@ -181,13 +185,13 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: lightpurple2,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: lightpurple2,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -202,13 +206,13 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       // minLines: 1, // Display at least 5 lines
       // maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: lightpurple2,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: lightpurple2,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -221,12 +225,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //focusNode: _focus,
       controller: txtDocUnitNo,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -242,16 +246,16 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         //print(txtDocUnit.text);
 
-        String urlPath = 'http://10.130.230.64/budget1/Follow/doc/';
+        String urlPath = 'http://$ipAddress/$Budget_Site/Follow/doc/';
 
         //call launchURL(urlStr, fileName)
         //String fullUrl = urlStr + Uri.encodeComponent(fileName);
@@ -267,15 +271,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //focusNode: focusNode,
       //focusNode: _focus,
       controller: txtUnitSend,
-      //keyboardType: TextInputType.number,
 
+      //keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_date_send = TextField(
@@ -285,12 +289,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       // focusNode: _focusDayStart,
       controller: txtDateSend,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_date_send_real = TextField(
@@ -300,12 +304,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       // focusNode: _focusDayStart,
       controller: txtDateSendReal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_status = TextField(
@@ -321,12 +325,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_no_doc_rx = TextField(
@@ -336,12 +340,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       focusNode: _focus_no_doc_rx,
       controller: txtNoDocRx,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "เลขที่หนังสือรับ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "เลขที่หนังสือรับ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       // onChanged: (val) {
       //   // _focus_no_doc_rx.requestFocus();
       //   if (_focus_no_doc_rx.hasFocus) {
@@ -370,12 +374,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_etc = TextField(
@@ -393,12 +397,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     // final txt_daystart = TextField(
@@ -475,12 +479,12 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       //currencyFormatter,
       //],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightpurple2,
-          hintText: "",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final saveButton = Material(
@@ -506,9 +510,11 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           print("id_use_int : ${widget.tbstatus.id_use_int}");
           print("sent_to : ${widget.tbstatus.sent_to}");
           print(
-              "date_sent_to : ${widget.tbstatus.date_sent_to}"); // time enter by rx unit
+            "date_sent_to : ${widget.tbstatus.date_sent_to}",
+          ); // time enter by rx unit
           print(
-              "date_sent_real : ${widget.tbstatus.date_sent_real}"); // time real by rx unit
+            "date_sent_real : ${widget.tbstatus.date_sent_real}",
+          ); // time real by rx unit
           //print("status : " + txtStatus.text);
           //print("date_rec_rx : ${DateTime.now()}"); // time real by rx unit
 
@@ -527,14 +533,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
             print("date_rec_rx format db : " + date_rec_rx);
 
             mydb.ReceiveExpediteUser(
-                    txtNoDocRx.text,
-                    txtStRX.text,
-                    widget.tbstatus.id_exp_spen,
-                    widget.tbstatus.id_job.toString(),
-                    widget.tbstatus.id_status.toString(),
-                    txtETC.text,
-                    txtResponse.text)
-                .then((String result) {
+              txtNoDocRx.text,
+              txtStRX.text,
+              widget.tbstatus.id_exp_spen,
+              widget.tbstatus.id_job.toString(),
+              widget.tbstatus.id_status.toString(),
+              txtETC.text,
+              txtResponse.text,
+            ).then((String result) {
               var ret = json.decode(result);
 
               if (ret["result"] == "false") {
@@ -564,10 +570,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
           //========================================
         },
-        child: Text("บันทึก",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "บันทึก",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -586,11 +596,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SendTbStatusBetweenUnit(
-                    id_exp_spen: widget.tbstatus.id_exp_spen,
-                    id_job: widget.tbstatus.id_job.toString(),
-                    id_status: widget.tbstatus.id_status.toString(),
-                    sel_year: widget.tbstatus.years),
+                builder:
+                    (context) => SendTbStatusBetweenUnit(
+                      tbstatus: widget.tbstatus,
+                      // id_exp_spen: widget.tbstatus.id_exp_spen,
+                      // id_job: widget.tbstatus.id_job.toString(),
+                      // id_status: widget.tbstatus.id_status.toString(),
+                      // sel_year: widget.tbstatus.years,
+                    ),
               ),
             );
           } else {
@@ -598,10 +611,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
             msg.Alert(context, "Error", msgStr);
           }
         },
-        child: Text("หน้าส่ง",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.yellow, fontWeight: FontWeight.bold)),
+        child: Text(
+          "หน้าส่ง",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.yellow,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -617,17 +634,19 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           if (uid == '30') {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => MainPageAdmin(),
-              ),
+              MaterialPageRoute(builder: (context) => MainPageAdmin()),
             );
           } else
             Navigator.of(context).pop();
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -678,19 +697,23 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('งบประมาณประจำปี',
-                        style: styleHead.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
-                    SizedBox(
-                      width: 5,
+                    Text(
+                      'งบประมาณประจำปี',
+                      style: styleHead.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
                     ),
-                    Text('${widget.tbstatus.years}',
-                        style: styleHead.copyWith(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
+                    SizedBox(width: 5),
+                    Text(
+                      '${widget.tbstatus.years}',
+                      style: styleHead.copyWith(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
                     // Text('$yearNow',
                     //     style: styleHead.copyWith(
                     //         color: Colors.blue[900],
@@ -701,8 +724,10 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
               ),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text('วันที่ปัจจุบัน : ${now.DateThaiNow()}',
-                    style: styleHeadPurple3),
+                child: Text(
+                  'วันที่ปัจจุบัน : ${now.DateThaiNow()}',
+                  style: styleHeadPurple3,
+                ),
               ),
               // Visibility(
               //   visible: false,
@@ -718,12 +743,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ชื่องบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ชื่องบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_list_exp_spen,
-                        width: MediaQuery.of(context).size.width * 0.7
-                        //width: 350,
-                        ),
+                      child: txt_list_exp_spen,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -734,12 +761,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ชื่องาน', style: styleHead3)),
+                      width: 80,
+                      child: Text('ชื่องาน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_title,
-                        width: MediaQuery.of(context).size.width * 0.7
-                        //width: 350,
-                        ),
+                      child: txt_title,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -750,12 +779,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('จำนวนเงิน', style: styleHead3)),
+                      width: 80,
+                      child: Text('จำนวนเงิน', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_amout,
-                        width: MediaQuery.of(context).size.width * 0.7
-                        //width: 350,
-                        ),
+                      child: txt_amout,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -766,14 +797,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ที่ของหนังสือ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ที่ของหนังสือ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_doc_unit_no,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_doc_unit_no,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -784,14 +816,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('หน่วยที่ส่ง', style: styleHead3)),
+                      width: 80,
+                      child: Text('หน่วยที่ส่ง', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_unit_send,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_unit_send,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -802,14 +835,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('วันที่หนังสือ', style: styleHead3)),
+                      width: 80,
+                      child: Text('วันที่หนังสือ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_date_send,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_date_send,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -820,14 +854,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('วัน/เวลา ส่งมา', style: styleHead3)),
+                      width: 80,
+                      child: Text('วัน/เวลา ส่งมา', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_date_send_real,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_date_send_real,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -838,13 +873,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('สถานะ', style: styleHead3)),
+                      width: 80,
+                      child: Text('สถานะ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_status,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_status,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -855,13 +892,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('เลขที่รับ', style: styleHead3)),
+                      width: 80,
+                      child: Text('เลขที่รับ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_no_doc_rx,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_no_doc_rx,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -873,14 +912,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('สถานะการปฏิบัติ', style: styleHead3)),
+                      width: 80,
+                      child: Text('สถานะการปฏิบัติ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_status_rx,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_status_rx,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -891,13 +931,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('หมายเหตุ', style: styleHead3)),
+                      width: 80,
+                      child: Text('หมายเหตุ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_etc,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_etc,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -908,13 +950,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('ผู้รับ', style: styleHead3)),
+                      width: 80,
+                      child: Text('ผู้รับ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_response_person, //txt_response_person,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_response_person, //txt_response_person,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
@@ -925,31 +969,24 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80, child: Text('แฟ้มแนบ', style: styleHead3)),
+                      width: 80,
+                      child: Text('แฟ้มแนบ', style: styleHead3),
+                    ),
                     Container(
-                        child: txt_doc_unit,
-                        width: MediaQuery.of(context).size.width * 0.7
+                      child: txt_doc_unit,
+                      width: MediaQuery.of(context).size.width * 0.7,
 
-                        //width: 350,
-                        ),
+                      //width: 350,
+                    ),
                   ],
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: saveButton,
-              ),
+              Padding(padding: const EdgeInsets.all(4.0), child: saveButton),
 
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: sentButton,
-              ),
+              Padding(padding: const EdgeInsets.all(4.0), child: sentButton),
 
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: backButton,
-              ),
+              Padding(padding: const EdgeInsets.all(4.0), child: backButton),
             ],
           ),
         ),

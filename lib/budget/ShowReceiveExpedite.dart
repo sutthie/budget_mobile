@@ -32,7 +32,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
   // To show Selected Item in Text.
   String selyear = "";
 
-// init year now
+  // init year now
   GetYearBudget yb = new GetYearBudget();
   late int yearNow;
 
@@ -65,9 +65,9 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
     super.initState();
     _controller = AnimationController(vsync: this);
 
-// init data
+    // init data
     yearNow = yb.getYearBudget();
-    listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
+    listyear = [for (var i = yearNow - 5; i <= yearNow + 2; i++) i];
 
     getDropDownItem();
     datList = getDataList(txtSearch.text.trim(), selyear);
@@ -103,7 +103,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
       color: Colors.black,
     );
 
-//Create ListView using data get from service
+    //Create ListView using data get from service
     Widget listTBStatusWidget(context, snapshot) {
       //final String idExpSpen = "";
       if (snapshot.data != null && snapshot.data.length > 0) {
@@ -150,16 +150,18 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              '${tbs.title} | ${tbs.doc_unit_no}',
+                              style: TextStyle(fontSize: 14.0, color: black),
                             ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text('${tbs.title} | ${tbs.doc_unit_no}',
-                                  style:
-                                      TextStyle(fontSize: 14.0, color: black)),
-                            )),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -168,32 +170,35 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            color: Colors.blue[200],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    // var msg = new ResponseMessage();
-                                    // msg.Alert(context, "รหัสงบ",
-                                    //     '${spen.id_exp_spen}');
+                          color: Colors.blue[200],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // var msg = new ResponseMessage();
+                                // msg.Alert(context, "รหัสงบ",
+                                //     '${spen.id_exp_spen}');
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) =>
                                             ReceiveExpedite(tbstatus: tbs),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                      'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real} \nผู้ส่ง : ${tbs.sender}',
-                                      style: TextStyle(
-                                          fontSize: 12, color: purple))),
-                            )),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'หน่วยส่ง: ${tbs.unit_send_name}|วันเวลาส่ง : ${tbs.date_sent_real} \nผู้ส่ง : ${tbs.sender}',
+                                style: TextStyle(fontSize: 12, color: purple),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -219,26 +224,27 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         );
     }
 
-// call from Body Part in Scaffold
-// Main Display ListView call listExpenWidget for create ListView
+    // call from Body Part in Scaffold
+    // Main Display ListView call listExpenWidget for create ListView
     Widget listListExspenWidget(data) {
       return FutureBuilder(
-          //future: mydb.getExpSearch("", years),
-          future: data,
-          builder: (context, tbDBSnap) {
-            switch (tbDBSnap.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              /* case ConnectionState.done:
+        //future: mydb.getExpSearch("", years),
+        future: data,
+        builder: (context, tbDBSnap) {
+          switch (tbDBSnap.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            /* case ConnectionState.done:
             return */
-              default:
-                if (tbDBSnap.hasError)
-                  return new Text('Error: ${tbDBSnap.error}');
-                else
-                  return listTBStatusWidget(context, tbDBSnap);
-            }
-          });
+            default:
+              if (tbDBSnap.hasError)
+                return new Text('Error: ${tbDBSnap.error}');
+              else
+                return listTBStatusWidget(context, tbDBSnap);
+          }
+        },
+      );
     }
 
     Widget txtsearch() {
@@ -247,12 +253,12 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(10.0, 2.0, 2.0, 2.0),
-            filled: true,
-            fillColor: Colors.yellowAccent.shade100,
-            hintText: "ค้นหา",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(2.0))),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 2.0, 2.0, 2.0),
+          filled: true,
+          fillColor: Colors.yellowAccent.shade100,
+          hintText: "ค้นหา",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2.0)),
+        ),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -262,12 +268,10 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
     final ddlYearNew = DropdownButton(
       //borderRadius: BorderRadius.circular(10),
       value: yearNow,
-      items: listyear.map((int item) {
-        return DropdownMenuItem<int>(
-          child: Text('$item'),
-          value: item,
-        );
-      }).toList(),
+      items:
+          listyear.map((int item) {
+            return DropdownMenuItem<int>(child: Text('$item'), value: item);
+          }).toList(),
       onChanged: (value) {
         selyear = value.toString();
         //if not found alert no found
@@ -296,7 +300,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
       iconSize: 30,
     );
 
-//======widget button==========
+    //======widget button==========
     final searchButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(20.0),
@@ -317,11 +321,15 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
             datList = getDataList(txtSearch.text.trim(), yearNow.toString());
           });
         },
-        child: Text("ค้นหา",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "ค้นหา",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -337,11 +345,15 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Back",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Back",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -362,11 +374,15 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
             datList = getDataList("", yearNow.toString());
           });
         },
-        child: Text("Reset",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Reset",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -386,9 +402,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                 padding: const EdgeInsets.fromLTRB(2, 0, 1, 0),
                 child: Text('เลือกปีงบประมาณ', style: styleHead),
               ),
-              SizedBox(
-                width: 3,
-              ),
+              SizedBox(width: 3),
               Container(
                 margin: EdgeInsets.all(2),
                 width: 75,
@@ -417,14 +431,10 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
                   ),
                   Container(width: 135.0, child: txtsearch()),
                   searchButon,
-                  SizedBox(
-                    width: 3,
-                  ),
+                  SizedBox(width: 3),
                   backButon,
-                  SizedBox(
-                    width: 3,
-                  ),
-                  ResetButon
+                  SizedBox(width: 3),
+                  ResetButon,
                   //ddlYear,
                   //txtsearch,
                 ],
