@@ -30,6 +30,7 @@ class Body extends StatelessWidget {
                       color: blue,
                       fontSize: getProportionateScreenWidth(20),
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'ThaisarabunNew',
                     ),
                   ),
                   Text(

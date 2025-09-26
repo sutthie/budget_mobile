@@ -30,11 +30,12 @@ class StartExpediteUser extends StatefulWidget {
   final String id_job;
   final String sel_year;
 
-  const StartExpediteUser(
-      {super.key,
-      required this.id_exp_spen,
-      required this.id_job,
-      required this.sel_year});
+  const StartExpediteUser({
+    super.key,
+    required this.id_exp_spen,
+    required this.id_job,
+    required this.sel_year,
+  });
 
   @override
   _StartExpediteUserState createState() => _StartExpediteUserState();
@@ -59,11 +60,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   String FileName = "";
   UploadFileClass upc = UploadFileClass();
 
-// download file attach original
+  // download file attach original
   late OpenUrlBrowser open;
 
   SnackBarMsg snackMsg = SnackBarMsg();
-//=========data ddl==============
+  //=========data ddl==============
   List<String> itemStatusJob = [
     'กรุณาเลือกสถานะงาน',
     'กรณีปฏิบัติงาน',
@@ -72,9 +73,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     'กรณีเป็นงานฝึกอบรม/สัมมนา',
   ];
 
-  List<String> itemStatusJobDetail = [
-    'กรุณาเลือกรายละเอียดสถานะงาน',
-  ];
+  List<String> itemStatusJobDetail = ['กรุณาเลือกรายละเอียดสถานะงาน'];
 
   //String sel_status_job = "กรุณาเลือกสถานะงาน";
   String sel_status_job = "0";
@@ -89,8 +88,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   List<String> itemSecret = ['ปกติ', 'ลับ', 'ลับมาก', 'ลับที่สุด'];
   List<String> itemAcc = ['ปกติ', 'ด่วน', 'ด่วนมาก', 'ด่วนที่สุด'];
 
-//=====Controller Text===========
-// show only
+  //=====Controller Text===========
+  // show only
   final txtListName = TextEditingController();
   final txtTitle = TextEditingController();
   final txtAmout = TextEditingController();
@@ -109,7 +108,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
   final FocusNode ddlNode = FocusNode(); // ddl unit
 
-// add,edit textfield
+  // add,edit textfield
   final txtDate = TextEditingController();
   final txtETC = TextEditingController();
   // ddl unit
@@ -117,14 +116,14 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   // ddl job status detail
   // text show file upload
 
-// define FocusNode
+  // define FocusNode
   final FocusNode _focus = FocusNode();
   //final FocusNode _focusDate = FocusNode();
 
-//==========set==fullname=====
+  //==========set==fullname=====
   String fullname = ""; // for response person
 
-// ==== set year====
+  // ==== set year====
   int yearNow = 0;
 
   @override
@@ -160,37 +159,42 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     txtDate.text = DateString; // show date send set to now
     //=====tbl_book_unit====
     mydb
-        .getBookIdJob(widget.id_job,
-            widget.sel_year) //.getBookIdJob(widget.id_job, yearNow.toString())
+        .getBookIdJob(
+          widget.id_job,
+          widget.sel_year,
+        ) //.getBookIdJob(widget.id_job, yearNow.toString())
         .then((BookUnit? result) {
-      if (result != null) {
-        txtTitle.text = result.title;
-        txtBookNo.text = result.doc_unit_no;
+          if (result != null) {
+            txtTitle.text = result.title;
+            txtBookNo.text = result.doc_unit_no;
 
-// convert date from DB to thai date
-        txtDateOriginal.text =
-            now.ConvertDateThaiNow(DateTime.parse(result.unit_date_no));
+            // convert date from DB to thai date
+            txtDateOriginal.text = now.ConvertDateThaiNow(
+              DateTime.parse(result.unit_date_no),
+            );
 
-        String format_money =
-            CurrencyFormatter.format(result.amout, thBahtSettings);
+            String format_money = CurrencyFormatter.format(
+              result.amout,
+              thBahtSettings,
+            );
 
-        txtAmout.text = format_money;
+            txtAmout.text = format_money;
 
-        //txtUnitName.text = result.id_use_int.toString();
+            //txtUnitName.text = result.id_use_int.toString();
 
-        //txtAcc.text = result.speed_class.toString();
-        txtAcc.text = itemAcc[result.speed_class];
+            //txtAcc.text = result.speed_class.toString();
+            txtAcc.text = itemAcc[result.speed_class];
 
-        //txtSecret.text = result.secret_class.toString();
-        txtSecret.text = itemSecret[result.secret_class];
-        txtTypeJob.text = result.type_job;
+            //txtSecret.text = result.secret_class.toString();
+            txtSecret.text = itemSecret[result.secret_class];
+            txtTypeJob.text = result.type_job;
 
-        txtResponseOriginal.text = result.response_person;
-        setState(() {
-          FileNameOriginal = result.doc_unit;
+            txtResponseOriginal.text = result.response_person;
+            setState(() {
+              FileNameOriginal = result.doc_unit;
+            });
+          }
         });
-      }
-    });
 
     open = OpenUrlBrowser();
   }
@@ -215,13 +219,13 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: lightyellow2,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: lightyellow2,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -236,12 +240,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       // maxLines: null,
       controller: txtTitle,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "ชื่อเรื่อง",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "ชื่อเรื่อง",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       // onSubmitted: (v) {
       //   //_fieldFocusChange(context, _focus, _nextFocus);
       // },
@@ -261,12 +265,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "จำนวนเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "จำนวนเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onChanged: (value) {
         String money = "";
 
@@ -290,12 +294,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "ที่ของหนังสือ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "ที่ของหนังสือ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -306,12 +310,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       readOnly: true,
       controller: txtDateOriginal,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "วันที่ของหนังสือ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "วันที่ของหนังสือ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txtdate = TextField(
@@ -327,12 +331,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "วันที่ตั้งเรื่อง",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "วันที่ตั้งเรื่อง",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         DateTime dt = DateTime.now();
         int dn = dt.year - 5;
@@ -341,11 +345,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
         DateTime yend = DateTime(dn);
 
         showDatePicker(
-                context: context,
-                initialDate: now.DateTimeNow(),
-                firstDate: ystart,
-                lastDate: yend)
-            .then((value) {
+          context: context,
+          initialDate: now.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
           if (value != null) {
             setState(() {
               DateString = now.ConvertDateThaiNow(value);
@@ -367,11 +371,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       controller: txtAcc,
       readOnly: true,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_secret = TextField(
@@ -379,11 +383,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       controller: txtSecret,
       readOnly: true,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_type_job = TextField(
@@ -391,11 +395,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       controller: txtTypeJob,
       readOnly: true,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_unitname = TextField(
@@ -403,11 +407,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       controller: txtUnitName,
       readOnly: true,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_etc = TextField(
@@ -417,11 +421,11 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+      ),
     );
 
     final txt_response_original = TextField(
@@ -439,12 +443,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          //hintText: "ผู้รับผิดชอบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        //hintText: "ผู้รับผิดชอบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -465,12 +469,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          //hintText: "ผู้รับผิดชอบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        //hintText: "ผู้รับผิดชอบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -483,29 +487,30 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(10.0))),
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+      ),
     );
 
-//==========DDL================================
+    //==========DDL================================
     final ddlStatusJob = DropdownButton(
       borderRadius: BorderRadius.circular(10),
       value: sel_status_job,
       //value: '0',
-      items: itemStatusJob.map((item) {
-        int index = itemStatusJob.indexOf(item);
-        return DropdownMenuItem<String>(
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Text('$item'),
-          ),
-          //value: item,
-          value: index.toString(),
-        );
-      }).toList(),
+      items:
+          itemStatusJob.map((item) {
+            int index = itemStatusJob.indexOf(item);
+            return DropdownMenuItem<String>(
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text('$item'),
+              ),
+              //value: item,
+              value: index.toString(),
+            );
+          }).toList(),
       onChanged: (value) {
         setState(() {
           sel_status_job = value!;
@@ -524,14 +529,28 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 // loop value in json object
                 //jsonRes["userid"];
 
+                //===============================================
                 itemStatusJobDetail.clear();
+                List<String> itemStatusJobDetailTemp = [];
 
                 for (var i = 0; i < jsonRes.length; i++) {
                   //print(jsonRes[i].name_msg_detail.toString() + "\n");
-                  print(jsonRes[i]['name_msg_detail'].toString() + "\n");
-                  itemStatusJobDetail
-                      .add(jsonRes[i]['name_msg_detail'].toString());
+                  //print(jsonRes[i]['name_msg_detail'].toString() + "\n");
+                  itemStatusJobDetailTemp.add(
+                    jsonRes[i]['name_msg_detail'].toString(),
+                  );
                 }
+
+                itemStatusJobDetailTemp.insert(
+                  0,
+                  'กรุณาเลือกรายละเอียดสถานะงาน',
+                );
+
+                setState(() {
+                  sel_status_job_detail = "0";
+                  itemStatusJobDetail.addAll(itemStatusJobDetailTemp);
+                });
+                //===============================================
               }
             }
           });
@@ -556,17 +575,18 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     final ddlStatusJobDetail = DropdownButton(
       borderRadius: BorderRadius.circular(10),
       value: sel_status_job_detail,
-      items: itemStatusJobDetail.map((item) {
-        int index = itemStatusJobDetail.indexOf(item);
-        return DropdownMenuItem<String>(
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Text('$item'),
-          ),
-          //value: item,
-          value: index.toString(),
-        );
-      }).toList(),
+      items:
+          itemStatusJobDetail.map((item) {
+            int index = itemStatusJobDetail.indexOf(item);
+            return DropdownMenuItem<String>(
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Text('$item'),
+              ),
+              //value: item,
+              value: index.toString(),
+            );
+          }).toList(),
       onChanged: (value) {
         setState(() {
           sel_status_job_detail = value!;
@@ -589,78 +609,84 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       iconSize: 30,
     );
 
-//======define ddl widget=======
+    //======define ddl widget=======
     Widget ddlUnit(udata) {
       return FutureBuilder<List<UnitName>?>(
-          future: udata,
-          //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
-          builder: (context, snapshot) {
-            if (!snapshot.hasData)
-              return CircularProgressIndicator();
-            //return Center(child: CircularProgressIndicator());
-            else
-              return DropdownButton<String>(
-                focusNode: ddlNode,
-                //autofocus: true,
-                //isExpanded: true,
-                borderRadius: BorderRadius.circular(10),
-                items: snapshot.data
-                    ?.map((item) => DropdownMenuItem<String>(
+        future: udata,
+        //builder: (BuildContext context, AsyncSnapshot<List<UnitName>?> snapshot) {
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return CircularProgressIndicator();
+          //return Center(child: CircularProgressIndicator());
+          else
+            return DropdownButton<String>(
+              focusNode: ddlNode,
+              //autofocus: true,
+              //isExpanded: true,
+              borderRadius: BorderRadius.circular(10),
+              items:
+                  snapshot.data
+                      ?.map(
+                        (item) => DropdownMenuItem<String>(
                           child: Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: Text(item.uint_name,
-                                style: TextStyle(
-                                  //backgroundColor: white,
-                                  //decoration: TextDecoration.underline,
-                                  color: Colors.green.shade900,
-                                  //backgroundColor: lightgreen
-                                )),
+                            child: Text(
+                              item.uint_name,
+                              style: TextStyle(
+                                //backgroundColor: white,
+                                //decoration: TextDecoration.underline,
+                                color: Colors.green.shade900,
+                                //backgroundColor: lightgreen
+                              ),
+                            ),
                           ),
                           value: item.uint,
-                        ))
-                    .toList(),
-                value: sent_to,
-                //value: "",
-                //value: null,
-                onChanged: (un) {
-                  setState(() {
-                    sent_to = un.toString();
+                        ),
+                      )
+                      .toList(),
+              value: sent_to,
+              //value: "",
+              //value: null,
+              onChanged: (un) {
+                setState(() {
+                  sent_to = un.toString();
 
-                    snapshot.data?.map((item) {
-                      if (item.uint == un) {
-                        txt_sent_to = item.uint_name;
-                        print("txt_sent_to=" + txt_sent_to);
-                      }
-                    }).toList();
-                  });
-                  // ignore: unused_local_variable
-                  var msg = new ResponseMessage();
-                  //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
-                },
-                //isExpanded: true,
-                hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
-                disabledHint: Text("Disabled"),
-                elevation: 3,
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 13.0,
-                  //fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
-                //style: Theme.of(context).textTheme.labelMedium,
-                //style: Theme.of(context).textTheme.bodyText2,
-                dropdownColor: Colors.grey.shade200,
-                //dropdownColor: lightyellow2,
-                //focusColor: Colors.yellow.shade100,
-                icon: Icon(Icons.arrow_drop_down_circle),
-                iconDisabledColor: Colors.red,
-                iconEnabledColor: Colors.blue,
-                iconSize: 30,
-              );
-          });
+                  snapshot.data?.map((item) {
+                    if (item.uint == un) {
+                      txt_sent_to = item.uint_name;
+                      print("txt_sent_to=" + txt_sent_to);
+                    }
+                  }).toList();
+                });
+                // ignore: unused_local_variable
+                var msg = new ResponseMessage();
+                //msg.Alert(context, "เลือกหน่วยงาน", unitNow.toString());
+              },
+              //isExpanded: true,
+              hint: Text('กรุณาเลือกหน่วยที่ต้องการ'),
+              disabledHint: Text("Disabled"),
+              elevation: 3,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 13.0,
+                //fontWeight: FontWeight.bold,
+                color: Colors.brown,
+              ),
+              //style: Theme.of(context).textTheme.labelMedium,
+              //style: Theme.of(context).textTheme.bodyText2,
+              dropdownColor: Colors.grey.shade200,
+              //dropdownColor: lightyellow2,
+              //focusColor: Colors.yellow.shade100,
+              icon: Icon(Icons.arrow_drop_down_circle),
+              iconDisabledColor: Colors.red,
+              iconEnabledColor: Colors.blue,
+              iconSize: 30,
+            );
+        },
+      );
     }
 
-//=======widget button===========
+    //=======widget button===========
     final saveButton = Material(
       elevation: 3.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -701,8 +727,10 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             // cut only filename
             if (_file != null) {
               FileName = _file!.path;
-              FileName =
-                  FileName.replaceAll(RegExp(r'.*/'), ''); // แทนจุดด้วยช่องว่าง
+              FileName = FileName.replaceAll(
+                RegExp(r'.*/'),
+                '',
+              ); // แทนจุดด้วยช่องว่าง
             } else {
               FileName = "";
             }
@@ -723,12 +751,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
               txt_status_job_detail, //sel_status_job_detail,
               FileName,
               txtETC.text,
-              txtResponseOriginal.text,
+              // txtResponseOriginal.text it will reccord in rx
               txtSender.text,
               login.get('mobile'),
             )
-                //txtResponse.text)
-                .then((String result) {
+            //txtResponse.text)
+            .then((String result) {
               var ret = json.decode(result);
 
               //String msgstr = "";
@@ -739,10 +767,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 print("Status Insert : $msgStr");
 
                 if (_file != null) {
-                  upc.UploadFileToServer(
-                    _file,
-                    "budget1",
-                  ).then((value) {
+                  upc.UploadFileToServer(_file, "$Budget_Site").then((value) {
                     // if (value != "") {
                     //   print("Upload File Successful \n FileName : " + value);
                     // } else {
@@ -750,8 +775,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     // }
                     //var ret = json.decode(value);
                     //print(ret["result"] + " | " + ret["msg"]);
-                    Map<String, dynamic> ret =
-                        jsonDecode(value.replaceAll("'", '"'));
+                    Map<String, dynamic> ret = jsonDecode(
+                      value.replaceAll("'", '"'),
+                    );
 
                     if (ret['result'] == true) {
                       print("Success Upload File");
@@ -777,10 +803,14 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             });
           }
         },
-        child: Text("เริ่มส่ง",
-            textAlign: TextAlign.center,
-            style: styleHeadPurple4.copyWith(
-                color: lightyellow2, fontWeight: FontWeight.bold)),
+        child: Text(
+          "เริ่มส่ง",
+          textAlign: TextAlign.center,
+          style: styleHeadPurple4.copyWith(
+            color: lightyellow2,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -802,12 +832,14 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             }
           });
         },
-        child: Text("เลือกแฟ้ม",
-            textAlign: TextAlign.center,
-            style: styleHeadPurple4.copyWith(
-              color: lightyellow2,
-              //fontWeight: FontWeight.bold
-            )),
+        child: Text(
+          "เลือกแฟ้ม",
+          textAlign: TextAlign.center,
+          style: styleHeadPurple4.copyWith(
+            color: lightyellow2,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -824,10 +856,14 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
           //ShowStartBook.routeName,
           Navigator.popAndPushNamed(context, ShowStartBook.routeName);
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleHeadPurple4.copyWith(
-                color: lightyellow2, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleHeadPurple4.copyWith(
+            color: lightyellow2,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -844,7 +880,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
           //ShowStartBook.routeName,
           //Navigator.popAndPushNamed(context, ShowStartBook.routeName);
 
-          String urlPath = 'http://10.130.230.64/budget1/Follow/doc/';
+          String urlPath = 'http://$ipAddress/$Budget_Site/Follow/doc/';
 
           //call launchURL(urlStr, fileName)
           //String fullUrl = urlStr + Uri.encodeComponent(fileName);
@@ -852,12 +888,15 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
           open.launchURL(urlPath, FileNameOriginal);
         },
-        child: Text("Download",
-            textAlign: TextAlign.center,
-            style: styleHeadPurple4.copyWith(
-                color: lightyellow2,
-                //fontWeight: FontWeight.bold,
-                fontSize: 13)),
+        child: Text(
+          "Download",
+          textAlign: TextAlign.center,
+          style: styleHeadPurple4.copyWith(
+            color: lightyellow2,
+            //fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
+        ),
       ),
     );
 
@@ -882,30 +921,30 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       //txtMalloc.text = fo.nonSymbol;
     });
 
-// //=====tbl_book_unit====
-//     mydb
-//         .getBookIdJob(widget.id_job, yearNow.toString())
-//         .then((BookUnit? result) {
-//       if (result != null) {
-//         txtTitle.text = result.title;
-//         txtBookNo.text = result.doc_unit_no;
+    // //=====tbl_book_unit====
+    //     mydb
+    //         .getBookIdJob(widget.id_job, yearNow.toString())
+    //         .then((BookUnit? result) {
+    //       if (result != null) {
+    //         txtTitle.text = result.title;
+    //         txtBookNo.text = result.doc_unit_no;
 
-//         MoneyFormatterOutput fo = FlutterMoney(amount: result.amout).output;
+    //         MoneyFormatterOutput fo = FlutterMoney(amount: result.amout).output;
 
-//         txtAmout.text = fo.nonSymbol;
+    //         txtAmout.text = fo.nonSymbol;
 
-//         txtDateOriginal.text = result.unit_date_no;
-//         txtUnitName.text = result.id_use_int.toString();
-//         txtAcc.text = result.speed_class.toString();
-//         txtSecret.text = result.secret_class.toString();
+    //         txtDateOriginal.text = result.unit_date_no;
+    //         txtUnitName.text = result.id_use_int.toString();
+    //         txtAcc.text = result.speed_class.toString();
+    //         txtSecret.text = result.secret_class.toString();
 
-//         setState(() {
-//           FileNameOriginal = result.doc_unit;
-//         });
-//       }
-//     });
+    //         setState(() {
+    //           FileNameOriginal = result.doc_unit;
+    //         });
+    //       }
+    //     });
 
-//=====defined coding=====
+    //=====defined coding=====
     //txtAmout.text = "0";
     //txtResponse.text = fullname;
 
@@ -938,16 +977,22 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('ประจำปีงบประมาณ',
-                        style: styleHeadPurple4.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.0)),
-                    Text(' $yearNow',
-                        style: styleHeadPurple4.copyWith(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.0)),
+                    Text(
+                      'ประจำปีงบประมาณ',
+                      style: styleHeadPurple4.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13.0,
+                      ),
+                    ),
+                    Text(
+                      ' $yearNow',
+                      style: styleHeadPurple4.copyWith(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13.0,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -956,9 +1001,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ชื่อหน่วยงาน : ',
-                            style: styleSmalless(black))),
+                      width: 90,
+                      child: Text(
+                        'ชื่อหน่วยงาน : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_unitname,
@@ -971,9 +1019,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ชื่องบประมาณ : ',
-                            style: styleSmalless(black))),
+                      width: 90,
+                      child: Text(
+                        'ชื่องบประมาณ : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txtlistname,
@@ -986,9 +1037,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child:
-                            Text('ชื่อเรื่อง : ', style: styleSmalless(black))),
+                      width: 90,
+                      child: Text('ชื่อเรื่อง : ', style: styleSmalless(black)),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txttitle,
@@ -1002,9 +1053,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('ที่ของหนังสือ : ',
-                            style: styleSmalless(black))),
+                      width: 90,
+                      child: Text(
+                        'ที่ของหนังสือ : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txtbookno,
@@ -1017,9 +1071,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child:
-                            Text('จำนวนเงิน : ', style: styleSmalless(black))),
+                      width: 90,
+                      child: Text('จำนวนเงิน : ', style: styleSmalless(black)),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_amout,
@@ -1032,12 +1086,16 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 90,
-                        child: Text('วันที่ของหนังสือ : ',
-                            style: styleSmalless(black))),
+                      width: 90,
+                      child: Text(
+                        'วันที่ของหนังสือ : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
-                        width: SizeConfig.screenWidth * 0.7,
-                        child: txt_date_original),
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_date_original,
+                    ),
                   ],
                 ),
               ),
@@ -1046,11 +1104,16 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 85,
-                        child: Text('วันที่ส่งเรื่อง : ',
-                            style: styleSmalless(black))),
+                      width: 85,
+                      child: Text(
+                        'วันที่ส่งเรื่อง : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
-                        width: SizeConfig.screenWidth * 0.7, child: txtdate),
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txtdate,
+                    ),
                   ],
                 ),
               ),
@@ -1059,11 +1122,16 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ความเร่งด่วน : ',
-                            style: styleSmalless(black))),
+                      width: 80,
+                      child: Text(
+                        'ความเร่งด่วน : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
-                        width: SizeConfig.screenWidth * 0.7, child: txt_acc),
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_acc,
+                    ),
                   ],
                 ),
               ),
@@ -1072,11 +1140,16 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ชั้นความลับ : ',
-                            style: styleSmalless(black))),
+                      width: 80,
+                      child: Text(
+                        'ชั้นความลับ : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
-                        width: SizeConfig.screenWidth * 0.7, child: txt_secret),
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_secret,
+                    ),
                   ],
                 ),
               ),
@@ -1085,12 +1158,13 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 80,
-                        child:
-                            Text('ประเภทงาน : ', style: styleSmalless(black))),
+                      width: 80,
+                      child: Text('ประเภทงาน : ', style: styleSmalless(black)),
+                    ),
                     Container(
-                        width: SizeConfig.screenWidth * 0.7,
-                        child: txt_type_job),
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_type_job,
+                    ),
                   ],
                 ),
               ),
@@ -1101,9 +1175,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        width: 80,
-                        child:
-                            Text('ผู้สร้าง : ', style: styleSmalless(black))),
+                      width: 80,
+                      child: Text('ผู้สร้าง : ', style: styleSmalless(black)),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_response_original,
@@ -1132,7 +1206,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                         fixedSize: Size(SizeConfig.screenWidth * 0.7, 55),
                         foregroundColor: blue,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                         backgroundColor: lightyellow2,
                       ),
                       onPressed: () async {
@@ -1156,15 +1231,13 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                         // String encodedUrl = Uri.encodeQueryComponent(url);
                         // print("Encode Url File: " + encodedUrl);
 
-// checck $FileNameOriginal if is pdf open pdf
-// if is picture open new page
-// if is other doc ppt xls confirm download? not view
+                        // checck $FileNameOriginal if is pdf open pdf
+                        // if is picture open new page
+                        // if is other doc ppt xls confirm download? not view
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewPDF(url),
-                          ),
+                          MaterialPageRoute(builder: (context) => ViewPDF(url)),
                         );
                       },
                       child: Text(
@@ -1178,7 +1251,6 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
               //hidden TextField
               //Visibility(visible: false, child: txt_hide_bookdate),
-
               Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: Row(
@@ -1208,10 +1280,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      'ส่งถึงหน่วย :',
-                      style: styleSmalless(black),
-                    ),
+                    child: Text('ส่งถึงหน่วย :', style: styleSmalless(black)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -1230,10 +1299,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      'ประเภทงาน :',
-                      style: styleSmalless(black),
-                    ),
+                    child: Text('ประเภทงาน :', style: styleSmalless(black)),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(1.0),
@@ -1253,10 +1319,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                     padding: const EdgeInsets.all(1.0),
                     child: Column(
                       children: [
-                        Text(
-                          'รายละเอียด : ',
-                          style: styleSmalless(black),
-                        ),
+                        Text('รายละเอียด : ', style: styleSmalless(black)),
                       ],
                     ),
                   ),
@@ -1277,9 +1340,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 75,
-                        child:
-                            Text('หมายเหตุ : ', style: styleSmalless(black))),
+                      width: 75,
+                      child: Text('หมายเหตุ : ', style: styleSmalless(black)),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_etc,
@@ -1292,9 +1355,12 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 80,
-                        child: Text('ผู้รับผิดชอบ : ',
-                            style: styleSmalless(black))),
+                      width: 80,
+                      child: Text(
+                        'ผู้รับผิดชอบ : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.7,
                       child: txt_sender,
@@ -1307,9 +1373,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 child: Row(
                   children: [
                     Container(
-                        width: 80,
-                        child:
-                            Text('เอกสารแนบ : ', style: styleSmalless(black))),
+                      width: 80,
+                      child: Text('เอกสารแนบ : ', style: styleSmalless(black)),
+                    ),
                     Container(
                       width: SizeConfig.screenWidth * 0.74,
                       child: txt_file,
@@ -1317,18 +1383,9 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: selFileButton,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: saveButton,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: backButton,
-              ),
+              Padding(padding: const EdgeInsets.all(2.0), child: selFileButton),
+              Padding(padding: const EdgeInsets.all(2.0), child: saveButton),
+              Padding(padding: const EdgeInsets.all(2.0), child: backButton),
             ],
           ),
         ),

@@ -1,0 +1,306 @@
+แน่นอนครับ การนำฟอนต์ Google Sans แบบ Variable มาใช้ใน Flutter นั้นตรงไปตรงมา โดยเราจะควบคุม "ความหนา" ผ่าน FontVariation ครับ
+
+สรุปขั้นตอนคือ: ดาวน์โหลดไฟล์ฟอนต์ → เพิ่มเข้าโปรเจกต์ → ประกาศใน pubspec.yaml → เรียกใช้ในโค้ด
+
+✍️ ขั้นตอนที่ 1: เตรียมไฟล์ฟอนต์
+ก่อนอื่น คุณต้องมีไฟล์ฟอนต์ .ttf ของ Google Sans ก่อน ซึ่งมักจะมากับ Material Design Kit หรือหาได้จากแหล่งข้อมูลสำหรับนักพัฒนาของ Google
+
+เมื่อได้ไฟล์มาแล้ว สมมติว่าชื่อ GoogleSans-Variable.ttf
+
+📁 ขั้นตอนที่ 2: เพิ่มฟอนต์เข้าโปรเจกต์
+ในโปรเจกต์ Flutter ของคุณ ให้สร้างโฟลเดอร์ชื่อ assets (ถ้ายังไม่มี)
+
+ข้างในโฟลเดอร์ assets ให้สร้างโฟลเดอร์ fonts อีกชั้นหนึ่ง
+
+นำไฟล์ GoogleSans-Variable.ttf ไปวางไว้ในโฟลเดอร์ assets/fonts/
+
+โครงสร้างโฟลเดอร์ของคุณจะมีหน้าตาแบบนี้:
+
+my_flutter_app/
+├── lib/
+├── assets/
+│   └── fonts/
+│       └── GoogleSans-Variable.ttf
+└── pubspec.yaml
+⚙️ ขั้นตอนที่ 3: ประกาศฟอนต์ใน pubspec.yaml
+เปิดไฟล์ pubspec.yaml ขึ้นมา แล้วเพิ่มโค้ดส่วน flutter: เพื่อประกาศฟอนต์ที่เราเพิ่มเข้าไป:
+
+สำคัญมาก: การจัดย่อหน้าในไฟล์ YAML มีผลอย่างยิ่ง ให้ใช้ space 2 ครั้งในการย่อหน้า และตรวจสอบให้แน่ใจว่า fonts: อยู่ในระดับเดียวกับ uses-material-design:
+
+YAML
+
+flutter:
+  uses-material-design: true
+
+  # ประกาศฟอนต์ตรงนี้
+  fonts:
+    - family: GoogleSans
+      fonts:
+        - asset: assets/fonts/GoogleSans-Variable.ttf
+family: GoogleSans: คือชื่อที่เราจะใช้เรียกฟอนต์นี้ในแอป จะตั้งเป็นชื่ออื่นก็ได้
+
+asset: คือตำแหน่งของไฟล์ฟอนต์
+
+หลังจากแก้ไขไฟล์ pubspec.yaml แล้ว ให้กด "Pub get" (จะมีปุ่มขึ้นมาใน VS Code หรือ Android Studio) หรือรันคำสั่ง flutter pub get ใน terminal เพื่อให้ Flutter รู้จักฟอนต์ใหม่
+
+✨ ขั้นตอนที่ 4: เรียกใช้งานในแอป (ตัวอย่างง่ายๆ)
+มี 2 วิธีหลักๆ ในการใช้งานครับ
+
+วิธีที่ 1: ตั้งเป็นฟอนต์หลักของทั้งแอป (แนะนำ)
+วิธีนี้จะทำให้ทุกข้อความในแอปใช้ฟอนต์ Google Sans เป็นค่าเริ่มต้น
+
+ไปที่ไฟล์ lib/main.dart แล้วกำหนด fontFamily ใน ThemeData ของคุณ:
+
+Dart
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // กำหนดฟอนต์หลักตรงนี้!
+        fontFamily: 'GoogleSans',
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ตัวอย่างฟอนต์ Google Sans'),
+      ),
+      body: const Center(
+        // ข้อความนี้จะใช้ฟอนต์ GoogleSans โดยอัตโนมัติ
+        child: Text(
+          'สวัสดี Flutter!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+วิธีที่ 2: ปรับแต่งความหนาด้วย FontVariation (หัวใจของ Variable Font)
+นี่คือส่วนที่แสดงพลังของฟอนต์ Variable ครับ เราสามารถกำหนดค่าน้ำหนัก (weight) ที่นอกเหนือจากค่ามาตรฐานได้ (เช่น w100, w400, w700, w900)
+
+FontVariation รับค่า 2 ตัวคือ 'แกน' และ ค่า
+
+แกนความหนาของฟอนต์ส่วนใหญ่คือ 'wght'
+
+ค่าความหนามาตรฐานคือ 100 ถึง 900
+
+ดูตัวอย่างการใช้งานกับ Text widget โดยตรง:
+
+Dart
+
+import 'package:flutter/material.dart';
+
+class FontVariationExample extends StatelessWidget {
+  const FontVariationExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ตัวอย่าง FontVariation'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // ปกติ (Regular weight คือ 400)
+            const Text(
+              'Weight: 400 (Regular)',
+              style: TextStyle(fontSize: 22),
+            ),
+            const SizedBox(height: 16),
+
+            // หนาปานกลาง (Medium weight คือ 500)
+            const Text(
+              'Weight: 500 (Medium)',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w500, // สามารถใช้ fontWeight แบบเดิมได้
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // ลองกำหนดค่าน้ำหนักที่อยู่ "ระหว่าง" ค่ามาตรฐาน
+            const Text(
+              'Weight: 650.5 (อยู่ระหว่าง Bold)',
+              style: TextStyle(
+                fontSize: 22,
+                // ใช้ FontVariation ตรงนี้!
+                fontVariations: [
+                  FontVariation('wght', 650.5)
+                ],
+              ),
+            ),
+             const SizedBox(height: 16),
+
+             // หนาสุดๆ (Black weight คือ 900)
+             const Text(
+              'Weight: 900 (Black)',
+              style: TextStyle(
+                fontSize: 22,
+                fontVariations: [
+                  FontVariation('wght', 900)
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+จากตัวอย่างจะเห็นว่า FontVariation('wght', 650.5) ทำให้เราสามารถสร้างน้ำหนักตัวอักษรที่ละเอียดมากๆ ได้ ซึ่งฟอนต์แบบ Static ทั่วไปไม่สามารถทำได้ครับ
+
+----------------------------------------------------------------
+
+ // 2. วิดเจ็ตนี้ถูกกำหนดให้ใช้ฟอนต์ Google Sans โดยเฉพาะ
+            Text(
+              'หัวข้อพิเศษ',
+              style: TextStyle(
+                fontSize: 32,
+                fontFamily: 'GoogleSans', // <-- ระบุชื่อฟอนต์ที่นี่
+                fontWeight: FontWeight.bold, // ใช้ fontWeight แบบปกติได้
+              ),
+            ),
+
+   Text(
+              'ปรับความหนาเฉพาะจุด',
+              style: TextStyle(
+                fontSize: 24,
+                fontFamily: 'GoogleSans', // <-- ระบุชื่อฟอนต์
+                fontVariations: const [
+                  FontVariation('wght', 550), // <-- ปรับค่าความหนา
+                ],
+              ),
+            ),
+
+            
+ถ้า fonts: family: Muli
+
+ต้องเรียกใช้ชื่อ Muli ครับ
+
+ชื่อที่ใช้เรียกในโค้ดคือชื่อที่คุณตั้งไว้ใน family: ของไฟล์ pubspec.yaml ทุกครั้งครับ
+
+ตัวอย่างการเรียกใช้:
+ถ้าคุณต้องการใช้กับ Text widget ที่เดียว:
+
+Dart
+
+Text(
+  'ข้อความนี้จะใช้ฟอนต์ Muli',
+  style: TextStyle(
+    fontFamily: 'Muli', // <-- ใช้ชื่อนี้
+    fontSize: 20,
+  ),
+)
+หรือถ้าต้องการตั้งเป็นฟอนต์หลักของแอปใน ThemeData:
+
+Dart
+
+MaterialApp(
+  theme: ThemeData(
+    fontFamily: 'Muli', // <-- ใช้ชื่อเดียวกันนี้
+    // ... อื่นๆ
+  ),
+  home: MyHomePage(),
+)
+
+--------------------------------------------------------
+
+ถ้าฉันจะเอา font AngsanaNew , ThaiSaraBun ใช้ใน flutter ทำไง
+
+
+
+Google Search
+การเพิ่ม font AngsanaNew หรือ ThaiSarabun (ซึ่งมักจะต้องดาวน์โหลดไฟล์ฟอนต์เอง เนื่องจากไม่ได้อยู่ใน Google Fonts โดยตรง) เข้าไปใช้ใน Flutter ต้องทำตามขั้นตอนหลักๆ ดังนี้ครับ:
+
+1. เตรียมไฟล์ Font
+ดาวน์โหลดไฟล์ฟอนต์ AngsanaNew.ttf และ/หรือ ThaiSarabun.ttf หรือไฟล์อื่นๆ ที่มีรูปแบบ (เช่น Bold, Italic) ที่คุณต้องการใช้งาน โดย Flutter รองรับนามสกุลไฟล์ .ttf หรือ .otf
+
+ในโปรเจกต์ Flutter ของคุณ ให้สร้างโฟลเดอร์สำหรับเก็บฟอนต์ เช่น สร้างโฟลเดอร์ชื่อ fonts หรือ assets/fonts ที่ root ของโปรเจกต์
+
+คัดลอกไฟล์ฟอนต์ที่คุณดาวน์โหลดมาใส่ในโฟลเดอร์ที่สร้างขึ้น
+
+2. ประกาศ Font ใน pubspec.yaml
+เปิดไฟล์ pubspec.yaml ที่ root ของโปรเจกต์
+
+ค้นหาส่วนที่ประกาศ flutter: แล้วเพิ่มส่วนของ fonts: ตามตัวอย่างด้านล่าง (ให้ความสำคัญกับการเยื้อง/เว้นวรรคด้วย)
+
+family: คือชื่อที่คุณจะใช้อ้างถึงฟอนต์นี้ในโค้ด Flutter (ต้องเป็นชื่อที่ไม่ซ้ำกัน)
+
+asset: คือที่อยู่ของไฟล์ฟอนต์ที่เก็บไว้
+
+YAML
+
+flutter:
+  # The following section is an example of the assets in your application.
+  assets:
+    - assets/images/
+
+  # The following section specifies the fonts for the application.
+  fonts:
+    - family: AngsanaNew
+      fonts:
+        - asset: fonts/AngsanaNew.ttf
+        - asset: fonts/AngsanaNew_Italic.ttf
+          style: italic
+        - asset: fonts/AngsanaNew_Bold.ttf
+          weight: 700
+    - family: ThaiSarabun
+      fonts:
+        - asset: fonts/ThaiSarabun-Regular.ttf # หรือชื่อไฟล์ที่คุณใช้
+        - asset: fonts/ThaiSarabun-Bold.ttf
+          weight: 700
+หมายเหตุ: หลังการแก้ไขไฟล์ pubspec.yaml ให้รันคำสั่ง flutter pub get หรือกดปุ่มบันทึกใน IDE (ถ้าตั้งค่าไว้) และอาจจะต้อง Restart แอปพลิเคชันใหม่ (Cold Restart) เพื่อให้ Flutter โหลดฟอนต์ใหม่
+
+3. การเรียกใช้ Font ในโค้ด Flutter
+คุณสามารถเรียกใช้ฟอนต์ได้ 2 วิธี:
+
+A. ตั้งเป็น Default Font ทั้งแอป
+ถ้าคุณต้องการให้ฟอนต์นั้นเป็นฟอนต์หลักของทั้งแอป ให้กำหนดในส่วนของ theme ใน MaterialApp:
+
+Dart
+
+return MaterialApp(
+  title: 'My App',
+  theme: ThemeData(
+    // ตั้งชื่อ family ตรงกับที่ประกาศใน pubspec.yaml
+    fontFamily: 'ThaiSarabun', 
+    primarySwatch: Colors.blue,
+  ),
+  home: ...
+);
+B. ใช้เฉพาะบาง Widget
+ใช้ TextStyle ใน Widget ที่ต้องการ เช่น Text Widget:
+
+Dart
+
+Text(
+  'ตัวอย่างข้อความภาษาไทย Angsana New',
+  style: TextStyle(
+    fontFamily: 'AngsanaNew', // ตั้งชื่อ family ตรงกับที่ประกาศใน pubspec.yaml
+    fontSize: 20.0,
+    fontWeight: FontWeight.bold, // ถ้าประกาศ weight 700 ใน pubspec.yaml ไว้ มันจะใช้ AngsanaNew_Bold.ttf
+  ),
+),

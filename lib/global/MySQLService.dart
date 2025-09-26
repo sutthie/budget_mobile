@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:budget_mobile/models/BookUnit.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,49 @@ import '../models/Account.dart';
 import '../models/UnitName.dart';
 
 class MySQLDB {
+  //=========================================================
+  Future<int> chkStatusNetwork() async {
+    // Use the configured backend IP instead of a hardcoded address and
+    // handle connection failures/timeouts gracefully.
+    // Example path keeps your existing endpoint; adjust in globalVar.dart as needed.
+    final url = "http://$ipAddress/budget69/index.htm";
+
+    try {
+      final response = await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: 4));
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return 1;
+      } else {
+        debugPrint('chkStatusNetwork: HTTP ${response.statusCode} from $url');
+        return 0;
+      }
+    } on TimeoutException catch (e) {
+      debugPrint('chkStatusNetwork: timeout contacting $url -> $e');
+      return 0;
+    } catch (e) {
+      // Covers _ClientSocketException and other IO errors
+      debugPrint('chkStatusNetwork: connection error contacting $url -> $e');
+      return 0;
+    }
+  }
+
+  // Quick TCP reachability probe for diagnostics (not used by UI by default)
+  Future<bool> tcpReachable(
+    String host, {
+    int port = 80,
+    Duration timeout = const Duration(seconds: 2),
+  }) async {
+    try {
+      final socket = await Socket.connect(host, port, timeout: timeout);
+      socket.destroy();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   FocusChange(
     /* How to Use from current focus to next focus */
     BuildContext context,
@@ -457,6 +501,8 @@ class MySQLDB {
     }
   }
 
+  //=======check Format Id_exp_spen , code_bud_rtarf============
+
   //==============Book Unit=====================================
   Future<String> AddBookUnit(
     String Years,
@@ -560,7 +606,7 @@ class MySQLDB {
     String status_detail,
     String fileName,
     String etc,
-    String Response_Original,
+    //String Response_Original,
     String sender,
     String mobile,
   ) async {
@@ -581,7 +627,7 @@ class MySQLDB {
     Dat['status_detail'] = status_detail;
     Dat['doc_unit'] = fileName;
     Dat['etc'] = etc;
-    Dat['response_person_original'] = Response_Original;
+    // Dat['response_person_original'] = Response_Original; it will reccord to rx
     Dat['sender'] = sender;
     Dat['mobile'] = mobile;
 

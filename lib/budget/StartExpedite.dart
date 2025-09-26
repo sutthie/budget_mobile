@@ -9,7 +9,6 @@ import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'package:currency_formatter/currency_formatter.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';
@@ -45,7 +44,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   UploadFileClass upc = UploadFileClass();
 
   SnackBarMsg snackMsg = SnackBarMsg();
-//=========data ddl==============
+  //=========data ddl==============
   List<String> itemSecret = ['ปกติ', 'ลับ', 'ลับมาก', 'ลับที่สุด'];
   List<String> itemAcc = ['ปกติ', 'ด่วน', 'ด่วนมาก', 'ด่วนที่สุด'];
   List<String> itemTypeJob = [
@@ -56,7 +55,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     'งานซ่อมรถ',
     'งานโครงการ',
     'งานก่อสร้าง',
-    'งานอื่นๆ'
+    'งานอื่นๆ',
   ];
 
   int sel_acc = 0;
@@ -69,7 +68,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
   //late String? unitNow;
   //String? unitNow = null;
-//=====Controller Text===========
+  //=====Controller Text===========
   final txtListName = TextEditingController();
   final txtTitle = TextEditingController();
   final txtAmout = TextEditingController();
@@ -83,12 +82,15 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   final txtUnit = TextEditingController();
   final txtLastAccess = TextEditingController();
 
+  // Keep a single list of all controllers on this page for easy disposal
+  late final List<TextEditingController> AllTextControllerinWidget;
+
   // file
   // ddl urgent
   // ddl secret
   // ddl type_job
 
-// define FocusNode
+  // define FocusNode
   final FocusNode _focus_title = FocusNode();
   final FocusNode _focus_addr_book = FocusNode();
   final FocusNode _focus_amout = FocusNode();
@@ -98,13 +100,14 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
   //const currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
   static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
-  final currencyFormatter =
-      FilteringTextInputFormatter.allow(RegExp(currencyRegExp));
+  final currencyFormatter = FilteringTextInputFormatter.allow(
+    RegExp(currencyRegExp),
+  );
 
-//==========set==fullname=====
+  //==========set==fullname=====
   String fullname = "";
 
-// ==== set year====
+  // ==== set year====
   int yearNow = 0;
 
   _ShowBudgetDetailState() {}
@@ -154,6 +157,20 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     // _focus.addListener(() {
     //   print("Focus Node Status: ${_focus.hasFocus}");
     // });
+
+    // Register all controllers here so we can dispose them in one place
+    AllTextControllerinWidget = [
+      txtListName,
+      txtTitle,
+      txtAmout,
+      txtBookNo,
+      txtDate,
+      txtResponse,
+      txtYear,
+      txtIdExpSpen,
+      txtUnit,
+      txtLastAccess,
+    ];
   }
 
   @override
@@ -172,17 +189,17 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     //   print("Focus Node Listener Removed");
     // });
 
-// dispose focus
+    // dispose focus
     _focus_title.dispose();
     _focus_addr_book.dispose();
     _focus_amout.dispose();
     _focus_date.dispose();
     //_focus_ddlSecret.dispose();
 
-// dispose Text Controller
-    txtTitle.dispose();
-    txtAmout.dispose();
-    txtBookNo.dispose();
+    // Clean up controllers
+    for (var controller in AllTextControllerinWidget) {
+      controller.dispose();
+    }
 
     super.dispose();
   }
@@ -191,7 +208,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   Widget build(BuildContext context) {
     //_focus.requestFocus();
     //var widthTextFiled = MediaQuery.of(context).size.width * 0.6;
-//====TextStyle========
+    //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 18.0,
@@ -223,13 +240,13 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: Colors.green.shade800,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: Colors.green.shade800,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -249,12 +266,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       // maxLines: null,
       controller: txtTitle,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "ชื่อเรื่อง",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "ชื่อเรื่อง",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
         _focus_addr_book.requestFocus();
@@ -287,12 +304,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "ที่ของหนังสือ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "ที่ของหนังสือ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
         _focus_amout.requestFocus();
@@ -310,12 +327,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "จำนวนเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "จำนวนเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onChanged: (value) {
         String money = "";
 
@@ -339,12 +356,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วันที่ตั้งเรื่อง",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วันที่ตั้งเรื่อง",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onTap: () {
         DateTime dt = DateTime.now();
         int dn = dt.year - 5;
@@ -353,11 +370,11 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
         DateTime yend = DateTime(dn);
 
         showDatePicker(
-                context: context,
-                initialDate: now.DateTimeNow(),
-                firstDate: ystart,
-                lastDate: yend)
-            .then((value) {
+          context: context,
+          initialDate: now.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
           if (value != null) {
             setState(() {
               DateString = now.ConvertDateThaiNow(value);
@@ -389,29 +406,27 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //   currencyFormatter,
       // ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: lightyellow2,
-          hintText: "ผู้รับผิดชอบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "ผู้รับผิดชอบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
     );
 
-//======widget ddl=================
+    //======widget ddl=================
     final ddlSecret = DropdownButton(
       //focusNode: _focus_ddlSecret,
       borderRadius: BorderRadius.circular(10),
       value: sel_secret,
-      items: itemSecret.map((item) {
-        int index = itemSecret.indexOf(item);
-        return DropdownMenuItem<int>(
-          child: Text('$item'),
-          value: index,
-        );
-      }).toList(),
+      items:
+          itemSecret.map((item) {
+            int index = itemSecret.indexOf(item);
+            return DropdownMenuItem<int>(child: Text('$item'), value: index);
+          }).toList(),
       onChanged: (value) {
         setState(() {
           sel_secret = value!;
@@ -421,7 +436,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       disabledHint: Text("Disabled"),
       elevation: 8,
       style: TextStyle(
-          color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
+        color: Colors.blue,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
       //style: styleLabel,
       dropdownColor: Colors.yellow.shade100,
       icon: Icon(Icons.arrow_drop_down_circle),
@@ -433,13 +451,11 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     final ddlAcc = DropdownButton(
       borderRadius: BorderRadius.circular(10),
       value: sel_acc,
-      items: itemAcc.map((item) {
-        int index = itemAcc.indexOf(item);
-        return DropdownMenuItem<int>(
-          child: Text('$item'),
-          value: index,
-        );
-      }).toList(),
+      items:
+          itemAcc.map((item) {
+            int index = itemAcc.indexOf(item);
+            return DropdownMenuItem<int>(child: Text('$item'), value: index);
+          }).toList(),
       onChanged: (value) {
         setState(() {
           sel_acc = value!;
@@ -449,7 +465,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       disabledHint: Text("Disabled"),
       elevation: 8,
       style: TextStyle(
-          color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
+        color: Colors.red,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
       //style: styleLabel,
       dropdownColor: Colors.grey.shade200,
       icon: Icon(Icons.arrow_drop_down_circle),
@@ -461,14 +480,15 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     final ddlTypeJob = DropdownButton(
       borderRadius: BorderRadius.circular(10),
       value: sel_type_job,
-      items: itemTypeJob.map((item) {
-        //int index = itemTypeJob.indexOf(item);
-        return DropdownMenuItem<String>(
-          child: Text('$item'),
-          value: item,
-          //value: index,
-        );
-      }).toList(),
+      items:
+          itemTypeJob.map((item) {
+            //int index = itemTypeJob.indexOf(item);
+            return DropdownMenuItem<String>(
+              child: Text('$item'),
+              value: item,
+              //value: index,
+            );
+          }).toList(),
       onChanged: (value) {
         setState(() {
           sel_type_job = value!;
@@ -478,9 +498,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       disabledHint: Text("Disabled"),
       elevation: 8,
       style: TextStyle(
-          color: Colors.green.shade900,
-          fontSize: 16,
-          fontWeight: FontWeight.bold),
+        color: Colors.green.shade900,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
       //style: styleLabel,
       dropdownColor: Colors.grey.shade200,
       icon: Icon(Icons.arrow_drop_down_circle),
@@ -488,7 +509,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       iconEnabledColor: Colors.blue,
       iconSize: 35,
     );
-//=======widget button===========
+    //=======widget button===========
     final saveButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -596,8 +617,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                       var ret = json.decode(value);
 
                       if (ret["result"] == true) {
-                        print("Upload File Successful \n FileName : " +
-                            ret["msg"]);
+                        print(
+                          "Upload File Successful \n FileName : " + ret["msg"],
+                        );
                       } else {
                         print("Error Upload File \n FileName : " + ret["msg"]);
                       }
@@ -613,20 +635,31 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               // GetExpUserSend.php for show last start 10 send
               final oneSecond = Duration(seconds: 1);
               Future.delayed(oneSecond * 5, () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowStartBook(),
-                  ),
-                );
+                // If this widget was disposed during the delay, do nothing.
+                if (!mounted) return;
+                final nav = navigatorKey.currentState;
+                if (nav != null) {
+                  nav.pushReplacement(
+                    MaterialPageRoute(builder: (_) => ShowStartBook()),
+                  );
+                } else {
+                  // Fallback to the local context
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => ShowStartBook()),
+                  );
+                }
               });
             });
           }
         },
-        child: Text("บันทึก",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "บันทึก",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -645,10 +678,14 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
             });
           });
         },
-        child: Text("เลือกแฟ้ม",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "เลือกแฟ้ม",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -663,10 +700,14 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -689,7 +730,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //txtMalloc.text = fo.nonSymbol;
     });
 
-//=====defined coding=====
+    //=====defined coding=====
     //txtAmout.text = "0";
     //txtResponse.text = fullname;
 
@@ -722,74 +763,59 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('ประจำปีงบประมาณ',
-                        style: styleHead.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
-                    Text(' $yearNow',
-                        style: styleHead.copyWith(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0)),
+                    Text(
+                      'ประจำปีงบประมาณ',
+                      style: styleHead.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      ' $yearNow',
+                      style: styleHead.copyWith(
+                        color: Colors.blue[900],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: txtlistname,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: txttitle,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: txt_addr_book,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: txt_amout,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: txtdate,
-              ),
+              Padding(padding: const EdgeInsets.all(2.0), child: txtlistname),
+              Padding(padding: const EdgeInsets.all(2.0), child: txttitle),
+              Padding(padding: const EdgeInsets.all(2.0), child: txt_addr_book),
+              Padding(padding: const EdgeInsets.all(2.0), child: txt_amout),
+              Padding(padding: const EdgeInsets.all(2.0), child: txtdate),
 
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(_file?.path ?? '', style: styleHeadWhite3),
               ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: selFileButton,
-              ),
+              Padding(padding: const EdgeInsets.all(2.0), child: selFileButton),
 
               //hidden TextField
               //Visibility(visible: false, child: txt_hide_bookdate),
-
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        'เลือกชั้นความลับ',
-                        style: styleHead,
-                      ),
+                      child: Text('เลือกชั้นความลับ', style: styleHead),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.yellow.shade100,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: ddlSecret,
-                          )),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.yellow.shade100,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: ddlSecret,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -800,22 +826,20 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        'เลือกความเร่งด่วน',
-                        style: styleHead,
-                      ),
+                      child: Text('เลือกความเร่งด่วน', style: styleHead),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey.shade200,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: ddlAcc,
-                          )),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.shade200,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: ddlAcc,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -824,10 +848,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      'เลือกประเภทงาน',
-                      style: styleHead,
-                    ),
+                    child: Text('เลือกประเภทงาน', style: styleHead),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(2.0),
@@ -845,14 +866,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                 padding: const EdgeInsets.all(4.0),
                 child: txt_response_person,
               ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: saveButton,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: backButton,
-              ),
+              Padding(padding: const EdgeInsets.all(4.0), child: saveButton),
+              Padding(padding: const EdgeInsets.all(4.0), child: backButton),
             ],
           ),
         ),

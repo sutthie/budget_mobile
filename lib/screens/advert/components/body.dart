@@ -1,3 +1,5 @@
+import 'package:budget_mobile/global/MySQLService.dart';
+import 'package:budget_mobile/styles/TextStyle.dart';
 import 'package:flutter/material.dart';
 import '../../../global/constants.dart';
 import '../../../global/BannerMsg.dart';
@@ -16,6 +18,34 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentPage = 0;
+  final TextNetworkController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _chkNetwork();
+  }
+
+  _chkNetwork() async {
+    MySQLDB mysql = MySQLDB();
+    int _networkOK = await mysql.chkStatusNetwork();
+    if (_networkOK == 1) {
+      TextNetworkController.text = "สถานะเครือข่ายปกติ";
+    } else {
+      TextNetworkController.text = "ไม่มีสัญญาณเครือข่าย";
+      // final snackBar = SnackBar(
+      //   content: const Text('ไม่มีสัญญาณอินเตอร์เน็ต'),
+      //   backgroundColor: Colors.red,
+      // );
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  @override
+  void dispose() {
+    TextNetworkController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +64,19 @@ class _BodyState extends State<Body> {
                   });
                 },
                 itemCount: splashData.length,
-                itemBuilder: (context, index) => SplashContent(
-                  image: splashData[index]["image"],
-                  text: splashData[index]['text'],
-                ),
+                itemBuilder:
+                    (context, index) => SplashContent(
+                      image: splashData[index]["image"],
+                      text: splashData[index]['text'],
+                    ),
               ),
             ),
             Expanded(
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                  horizontal: getProportionateScreenWidth(20),
+                ),
                 child: Column(
                   children: <Widget>[
                     Spacer(),
@@ -54,6 +86,34 @@ class _BodyState extends State<Body> {
                         splashData.length,
                         (index) => buildDot(index: index),
                       ),
+                    ),
+                    Spacer(flex: 1),
+                    ValueListenableBuilder<TextEditingValue>(
+                      valueListenable: TextNetworkController,
+                      builder:
+                          (context, value, _) => Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/images/internet.png",
+                                  height: 70.0,
+                                  width: 70.0,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  value.text,
+                                  style: styleCustom(
+                                    "GoogleSans",
+                                    16.0,
+                                    Colors.white,
+                                    FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                     ),
                     Spacer(flex: 1),
                     TextButton(

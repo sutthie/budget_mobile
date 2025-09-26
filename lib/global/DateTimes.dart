@@ -17,7 +17,7 @@ class DateTimes {
     "ก.ย.",
     "ต.ค.",
     "พ.ย.",
-    "ธ.ค."
+    "ธ.ค.",
   ];
 
   List<String> MonthThFull = [
@@ -32,14 +32,61 @@ class DateTimes {
     "กันยายน",
     "ตุลาคม",
     "พฤศจิกายน",
-    "ธันวาคม"
+    "ธันวาคม",
   ];
 
   String selyear = "";
   String dateRet = "";
   int dayn = 0, monthn = 0, yearn = 0;
 
-//=========================================================
+  //=========================================================
+
+  String getThaiDay(int dayInt) {
+    // Define array of Thai day names indexed by their standard DayOfWeek numeric value
+    List<String> thaiDays = [
+      "อาทิตย์", // Sunday = 0
+      "จันทร์", // Monday = 1
+      "อังคาร", // Tuesday = 2
+      "พุธ", // Wednesday = 3
+      "พฤหัสบดี", // Thursday = 4
+      "ศุกร์", // Friday = 5
+      "เสาร์", // Saturday = 6
+    ];
+
+    dayInt -= 1;
+
+    // Validate input range
+    if (dayInt >= 0 && dayInt <= 6) {
+      return thaiDays[dayInt];
+    } else {
+      return ''; // Return empty string for invalid input
+    }
+  }
+
+  String getEngDay(int dayInt) {
+    // Define array of English day names indexed by their standard DayOfWeek numeric value
+    List<String> engDays = [
+      "Sunday", // Sunday = 0
+      "Monday", // Monday = 1
+      "Tuesday", // Tuesday = 2
+      "Wednesday", // Wednesday = 3
+      "Thursday", // Thursday = 4
+      "Friday", // Friday = 5
+      "Saturday", // Saturday = 6
+    ];
+
+    // Validate input range
+    if (dayInt >= 0 && dayInt <= 6) {
+      return engDays[dayInt];
+    } else {
+      return ''; // Return empty string for invalid input
+    }
+  }
+
+  bool isWeekend(DateTime date) {
+    int dayOfWeek = date.weekday;
+    return (dayOfWeek == DateTime.saturday) || (dayOfWeek == DateTime.sunday);
+  }
 
   DateTime DateTimeNow() {
     DateTime now = DateTime.now();
@@ -56,7 +103,8 @@ class DateTimes {
     monthn = now.month;
     yearn = now.year;
 
-    String dateRet = yearn.toString() +
+    String dateRet =
+        yearn.toString() +
         "-" +
         monthn.toString() +
         "-" +
@@ -105,7 +153,8 @@ class DateTimes {
     monthn = now.month;
     yearn = now.year + 543;
 
-    dateRet = dayn.toString() +
+    dateRet =
+        dayn.toString() +
         " " +
         MonthTh[monthn - 1].toString() +
         " " +
@@ -121,7 +170,8 @@ class DateTimes {
     monthn = now.month;
     yearn = now.year + 543;
 
-    dateRet = dayn.toString() +
+    dateRet =
+        dayn.toString() +
         " " +
         MonthThFull[monthn - 1].toString() +
         " " +
@@ -135,7 +185,8 @@ class DateTimes {
     monthn = dt.month;
     yearn = dt.year;
 
-    dateRet = yearn.toString() +
+    dateRet =
+        yearn.toString() +
         " " +
         MonthTh[monthn].toString() +
         " " +
@@ -149,7 +200,8 @@ class DateTimes {
     monthn = now.month - 1;
     yearn = now.year + 543;
 
-    dateRet = dayn.toString() +
+    dateRet =
+        dayn.toString() +
         " " +
         MonthTh[monthn].toString() +
         " " +
@@ -230,17 +282,15 @@ class DateTimes {
   );
 
   Widget ddlYearNew() {
-// init year now
+    // init year now
     int yearNow = DateTime.now().year.toInt() + 543;
-    List<int> listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
+    List<int> listyear = [for (var i = yearNow - 5; i <= yearNow + 5; i++) i];
     return DropdownButton(
       value: yearNow,
-      items: listyear.map((int item) {
-        return DropdownMenuItem<int>(
-          child: Text(' $item '),
-          value: item,
-        );
-      }).toList(),
+      items:
+          listyear.map((int item) {
+            return DropdownMenuItem<int>(child: Text(' $item '), value: item);
+          }).toList(),
       onChanged: (value) {
         selyear = value.toString();
         log(value.toString());
