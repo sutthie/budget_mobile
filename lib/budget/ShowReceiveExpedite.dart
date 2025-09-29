@@ -1,12 +1,17 @@
+import 'package:budget_mobile/MainPageAdmin.dart';
 import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 //import 'Dialog.dart';
+import '../MainPage.dart';
+import '../global/ManageLogin.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
 import 'ReceiveExpedite.dart';
+
+var login;
 
 class ShowReceiveExpedite extends StatefulWidget {
   final String uid;
@@ -60,12 +65,20 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
   //=====Controller Text===========
   final txtSearch = TextEditingController();
 
+  _ShowReceiveExpediteState() {
+    // initHive Box Name : LoginData
+    ManageLogin _login = ManageLogin();
+    _login.DefineBox().then((box) {
+      login = box;
+      print('ShowReceiveExpedite login: ${login.toMap()}');
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
 
-    // init data
     yearNow = yb.getYearBudget();
     listyear = [for (var i = yearNow - 5; i <= yearNow + 2; i++) i];
 
@@ -343,7 +356,20 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
         padding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
+          // Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => ShowReceiveExpedite(uid)),);
+
+          if (login.get('status').toString() == '1') {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              MainPageAdmin.routeName,
+              (Route<dynamic> route) => false,
+            );
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              MainPage.routeName,
+              (Route<dynamic> route) => false,
+            );
+          }
         },
         child: Text(
           "Back",

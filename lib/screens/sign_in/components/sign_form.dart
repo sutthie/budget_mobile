@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:budget_mobile/global/LocalDataShare.dart';
+import 'package:budget_mobile/global/ResponseMessage.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -28,6 +30,10 @@ class _SignFormState extends State<SignForm> {
   String? userid;
   String? password;
 
+  // เพิ่ม controllers
+  late final TextEditingController userController;
+  late final TextEditingController pwdController;
+
   bool? remember = false;
   final List<String?> errors = [];
 
@@ -49,6 +55,47 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
+  }
+
+  // เพิ่มสถานะสำหรับซ่อน/แสดงรหัสผ่าน
+  bool _obscurePassword = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // สร้าง controllers
+    userController = TextEditingController();
+    pwdController = TextEditingController();
+
+    // โหลดค่าจาก LocalDataShare แล้วตั้งลงใน controller.text
+    LocalDataShare.getUserID().then((value) {
+      userController.text = value ?? '';
+      userid = value;
+      if (value != null && value.isNotEmpty) {
+        setState(() {
+          remember = true;
+        });
+      } else {
+        setState(() {
+          remember = false;
+        });
+      }
+      // ไม่จำเป็นต้อง setState แค่ controller.text ก็อัพเดต UI
+    });
+    LocalDataShare.getPassword().then((value) {
+      pwdController.text = value ?? '';
+      password = value;
+    });
+  }
+
+  @override
+  void dispose() {
+    // ปิด controllers
+    userController.dispose();
+    pwdController.dispose();
+    // ...ถ้ามี focus/dispose อื่น ๆ ให้เก็บไว้...
+    super.dispose();
   }
 
   @override
@@ -84,12 +131,11 @@ class _SignFormState extends State<SignForm> {
               ),
               Spacer(),
               GestureDetector(
-                onTap:
-                    () => Navigator.pushNamed(
-                      context,
-                      
-                      ForgotPasswordScreen.routeName,
-                    ),
+                onTap: () {
+                  //Navigator.pushNamed(context,ForgotPasswordScreen.routeName,),
+                  ResponseMessage msg = new ResponseMessage();
+                  msg.Alert(context, "ติดต่อแอดมิน", "Line ID: sjsell");
+                },
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(
@@ -213,7 +259,20 @@ class _SignFormState extends State<SignForm> {
                     // print("Fullname : " + dat["fullname"]);
                     // print("Status : " + dat["status"]); // user , admin
                     // print("Token : " + Token);
+                    //==============set Preferences==========================
 
+                    if (remember!) //remember not null and true
+                    {
+                      // set remember me
+                      LocalDataShare.saveUserID(userid!);
+                      LocalDataShare.savePassword(password!);
+                    } else {
+                      // LocalDataShare.removeUserID();
+                      // LocalDataShare.removePassword();
+
+                      LocalDataShare.saveUserID("");
+                      LocalDataShare.savePassword("");
+                    }
                     // if all are valid then go to success screen
                     //KeyboardUtil.hideKeyboard(context);
                     Navigator.pushNamed(context, LoginSuccessScreen.routeName);
@@ -229,8 +288,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildUserIdFormField() {
     return TextFormField(
-      //initialValue: 'test100',
-      //initialValue: 'sutthie',
+      // ใช้ controller แทน initialValue
+      controller: userController,
       keyboardType: TextInputType.text,
       focusNode: focus_userid,
       onFieldSubmitted: (ValueKey) => focus_pwd.requestFocus(),
@@ -265,10 +324,6 @@ class _SignFormState extends State<SignForm> {
           borderSide: new BorderSide(color: Colors.blue, width: 2.0),
           borderRadius: new BorderRadius.circular(22),
         ),
-        // enabledBorder: UnderlineInputBorder(
-        //   borderSide: BorderSide(color: Colors.white),
-        //   borderRadius: BorderRadius.circular(25.7),
-        // ),
         labelText: "UserID",
         labelStyle: TextStyle(
           fontSize: 24.0,
@@ -276,8 +331,6 @@ class _SignFormState extends State<SignForm> {
           fontWeight: FontWeight.bold,
         ),
         hintText: "Enter your UserId",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
@@ -286,10 +339,9 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      //initialValue: 'test100',
-      //initialValue: 'mtts2517',
+      controller: pwdController,
       focusNode: focus_pwd,
-      obscureText: true,
+      obscureText: _obscurePassword,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -328,10 +380,18 @@ class _SignFormState extends State<SignForm> {
           fontWeight: FontWeight.bold,
         ),
         hintText: "Enter your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.lock : Icons.lock_open,
+            color: Colors.grey[700],
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        ),
       ),
     );
   }

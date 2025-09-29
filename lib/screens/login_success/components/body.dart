@@ -1,5 +1,6 @@
 import 'package:budget_mobile/MainPage.dart';
 import 'package:budget_mobile/MainPageAdmin.dart';
+import 'package:budget_mobile/budget/ShowReceiveExpedite.dart';
 import 'package:flutter/material.dart';
 import '../../../components/default_button.dart';
 //import '../../../screens/home/MainScreen.dart';
@@ -55,8 +56,8 @@ class Body extends StatelessWidget {
 
     final TxtField_cntIncome = TextField(
       controller: txtIncome,
-      //readOnly: true,
-      enabled: false,
+      readOnly: true,
+      //enabled: false,
       textAlign: TextAlign.center,
       style: styleLabel,
       decoration: InputDecoration(
@@ -65,6 +66,12 @@ class Body extends StatelessWidget {
         focusedBorder: InputBorder.none,
         contentPadding: const EdgeInsets.all(3),
       ),
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ShowReceiveExpedite(uid)),
+        );
+      },
     );
 
     return Column(
