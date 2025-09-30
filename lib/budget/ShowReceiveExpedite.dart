@@ -14,6 +14,8 @@ import 'ReceiveExpedite.dart';
 var login;
 
 class ShowReceiveExpedite extends StatefulWidget {
+  static String routeName = "/showrxexp";
+
   final String uid;
   ShowReceiveExpedite(this.uid) {
     print(this.uid);

@@ -1308,6 +1308,31 @@ class MySQLDB {
     }
   }
 
+  //=====================Chk Income Job in ChkIncomeJob.php =======================
+  Future<String> getStatusSend(String uid, String years) async {
+    String url = "http://$ipAddress/FlutterBudget/ChkStatusSend.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"uid": uid, "years": years},
+    );
+    if (response.statusCode == 200) {
+      print("return response : " + response.body.trim());
+
+      if (response.body.trim() != "0") {
+        return response.body.trim();
+      } else {
+        return "0";
+      }
+
+      //return 1;
+      //return ret;
+    } else {
+      print("return Error Get Status Send Job Count");
+      return "0";
+    }
+  }
+
   //=====================tbl_status=======================
   Future<String> getStatusMsg(id_msg) async {
     String url = "http://$ipAddress/FlutterBudget/get_msg_status_detail.php";

@@ -81,7 +81,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     _login.DefineBox().then((box) {
       login = box;
       txtResponse.text = login.get('fullname').toString();
-      uid = login.get('uid');
+      //uid = login.get('uid');
     });
   }
 
@@ -631,13 +631,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          if (uid == '30') {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => MainPageAdmin()),
-            );
-          } else
-            Navigator.of(context).pop();
+          //if (uid == '30') {
+          // if (login.get('status') == '1') {
+          //   Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => MainPageAdmin()),
+          //   );
+          // } else
+          //   Navigator.of(context).pop();
+          Navigator.of(context).pop();
         },
         child: Text(
           "ย้อนกลับ",

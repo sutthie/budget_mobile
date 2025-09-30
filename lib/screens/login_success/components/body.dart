@@ -19,6 +19,7 @@ class Body extends StatelessWidget {
   late int yearBud;
 
   final txtIncome = TextEditingController();
+  final txtcntSend = TextEditingController();
 
   Body() {
     GetYearBudget yb = new GetYearBudget();
@@ -41,6 +42,13 @@ class Body extends StatelessWidget {
         print(result);
 
         txtIncome.text = result;
+      });
+
+      //Get Status Send Job
+      mydb.getStatusSend(uid, yearBud.toString()).then((String result) {
+        print(result);
+
+        txtcntSend.text = result;
       });
     });
   }
@@ -67,9 +75,46 @@ class Body extends StatelessWidget {
         contentPadding: const EdgeInsets.all(3),
       ),
       onTap: () {
-        Navigator.pushReplacement(
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => ShowReceiveExpedite(uid)),
+        // );
+
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => ShowReceiveExpedite(uid)),
+          (Route<dynamic> route) => false,
+        );
+
+        // Navigator.of(context).pushNamedAndRemoveUntil(
+        //   '/showrxexp',
+        //   (Route<dynamic> route) => false,
+        // );
+      },
+    );
+
+    final TxtField_cntSend = TextField(
+      controller: txtcntSend,
+      readOnly: true,
+      //enabled: false,
+      textAlign: TextAlign.center,
+      style: styleLabel,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        contentPadding: const EdgeInsets.all(3),
+      ),
+      onTap: () {
+        // Navigator.of(context).pushNamedAndRemoveUntil(
+        //   '/showrxexp',
+        //   (Route<dynamic> route) => false,
+        // );
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ShowReceiveExpedite(uid)),
+          (Route<dynamic> route) => false,
         );
       },
     );
@@ -91,21 +136,33 @@ class Body extends StatelessWidget {
           ),
         ),
         Spacer(),
-        Text(
-          "มีงานยังไม่ได้รับ",
-          style: TextStyle(
-            fontSize: getProportionateScreenWidth(20),
-            fontWeight: FontWeight.bold,
-            color: Colors.yellow,
-          ),
+        Column(
+          children: [
+            Text(
+              "มีงานยังไม่ได้รับ",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(18),
+                fontWeight: FontWeight.bold,
+                color: Colors.yellow,
+              ),
+            ),
+          ],
         ),
-        Center(
-          child: Container(
-            //alignment: Alignment.center,
-            width: 80,
-            child: TxtField_cntIncome,
-          ),
+        Column(children: [TxtField_cntIncome]),
+        Spacer(),
+        Column(
+          children: [
+            Text(
+              "มีงานยังไม่ได้ส่ง",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(18),
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreenAccent,
+              ),
+            ),
+          ],
         ),
+        Column(children: [TxtField_cntSend]),
         Spacer(),
         SizedBox(
           width: SizeConfig.screenWidth * 0.6,
