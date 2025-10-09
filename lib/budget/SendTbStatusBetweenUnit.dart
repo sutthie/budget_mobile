@@ -906,7 +906,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
           //ShowStartBook.routeName,
           //Navigator.popAndPushNamed(context, ShowStartBook.routeName);
 
-          String urlPath = 'http://10.130.230.64/budget1/Follow/doc/';
+          String urlPath = 'http://$ipAddress/$Budget_Site/Follow/doc/';
 
           //call launchURL(urlStr, fileName)
           //String fullUrl = urlStr + Uri.encodeComponent(fileName);

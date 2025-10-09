@@ -1,3 +1,4 @@
+import 'package:budget_mobile/global/globalVar.dart';
 import 'package:flutter/material.dart';
 
 class General {
@@ -234,6 +235,27 @@ class General {
       // Return original string if length doesn't match expected formats
       return phoneNumber.toString();
     }
+  }
+
+  //======format currency string====================
+
+  String formatCurrency(String amount) {
+    // Check if the string is empty or null
+    if (amount.isEmpty) {
+      return amount;
+    }
+
+    // Remove any existing commas first
+    String cleanAmount = amount.replaceAll(',', '');
+
+    // Try to parse as number
+    double? number = double.tryParse(cleanAmount);
+    if (number == null) {
+      return amount; // Return original if not a valid number
+    }
+
+    // Format using internal formatter as a fallback (avoids calling undefined 'format' on CurrencyFormat)
+    return addCommas(cleanAmount);
   }
 
   //================================================

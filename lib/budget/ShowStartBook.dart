@@ -199,7 +199,7 @@ class _GetBudgetState extends State<ShowStartBook>
                                     child: Row(
                                       children: [
                                         Text(
-                                          'จำนวนเงิน : ${FormatMoney.setFormat(book.amout)} บาท',
+                                          'จำนวนเงิน : ${FormatMoney.formatCurrencyfromDouble(book.amout)} บาท',
                                           style: TextStyle(
                                             fontSize: 13,
                                             //fontWeight: FontWeight.bold

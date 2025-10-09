@@ -103,7 +103,9 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
 
     txtListExpen.text = widget.tbstatus.list_exp_spen;
     txtTitle.text = widget.tbstatus.title;
-    txtAmout.text = FormatMoney.setFormat(double.parse(widget.tbstatus.amout));
+    txtAmout.text = FormatMoney.formatCurrencyfromDouble(
+      double.parse(widget.tbstatus.amout),
+    );
     txtDocUnitNo.text = widget.tbstatus.doc_unit_no;
 
     // file attach

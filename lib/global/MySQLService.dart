@@ -878,14 +878,8 @@ class MySQLDB {
           String idExpSpen = jsonRes[0]["id_exp_spen"];
           String listExpSpen = jsonRes[0]["list_exp_spen"];
           String memoTh = jsonRes[0]["memo_th"];
-          double mBorder =
-              jsonRes[0]["mborder"] == null
-                  ? 0.00
-                  : double.parse(jsonRes[0]["mborder"]);
-          double mAlloc =
-              jsonRes[0]["malloc"] == null
-                  ? 0.00
-                  : double.parse(jsonRes[0]["malloc"]);
+          double mBorder = double.tryParse(jsonRes[0]["mborder"]?.toString() ?? '0.0') ?? 0.0;
+          double mAlloc = double.tryParse(jsonRes[0]["malloc"]?.toString() ?? '0.0') ?? 0.0;
           int status = int.parse(jsonRes[0]["status"]);
           String daystart = jsonRes[0]["daystart"];
           String daystop = jsonRes[0]["daystop"];
@@ -917,35 +911,35 @@ class MySQLDB {
               (jsonRes[0]["bud_type"] == null)
                   ? 0
                   : int.parse(jsonRes[0]["bud_type"]);
-          double mpay = double.parse(jsonRes[0]["mpay"]);
-          double bpay_n = double.parse(jsonRes[0]["bpay_n"]);
-          double bpay = double.parse(jsonRes[0]["bpay"]);
-          double cpay = double.parse(jsonRes[0]["cpay"]);
-          double dpay = double.parse(jsonRes[0]["dpay"]);
-          double spay = double.parse(jsonRes[0]["spay"]);
-          double spay_n = double.parse(jsonRes[0]["spay_n"]);
-          double opay = double.parse(jsonRes[0]["opay"]);
-          double tpay = double.parse(jsonRes[0]["tpay"]);
-          double tlpay = double.parse(jsonRes[0]["tlpay"]);
-          double stpay = double.parse(jsonRes[0]["stpay"]);
-          double balan = double.parse(jsonRes[0]["balan"]);
+          double mpay = double.tryParse(jsonRes[0]["mpay"]?.toString() ?? '0.0') ?? 0.0;
+          double bpay_n = double.tryParse(jsonRes[0]["bpay_n"]?.toString() ?? '0.0') ?? 0.0;
+          double bpay = double.tryParse(jsonRes[0]["bpay"]?.toString() ?? '0.0') ?? 0.0;
+          double cpay = double.tryParse(jsonRes[0]["cpay"]?.toString() ?? '0.0') ?? 0.0;
+          double dpay = double.tryParse(jsonRes[0]["dpay"]?.toString() ?? '0.0') ?? 0.0;
+          double spay = double.tryParse(jsonRes[0]["spay"]?.toString() ?? '0.0') ?? 0.0;
+          double spay_n = double.tryParse(jsonRes[0]["spay_n"]?.toString() ?? '0.0') ?? 0.0;
+          double opay = double.tryParse(jsonRes[0]["opay"]?.toString() ?? '0.0') ?? 0.0;
+          double tpay = double.tryParse(jsonRes[0]["tpay"]?.toString() ?? '0.0') ?? 0.0;
+          double tlpay = double.tryParse(jsonRes[0]["tlpay"]?.toString() ?? '0.0') ?? 0.0;
+          double stpay = double.tryParse(jsonRes[0]["stpay"]?.toString() ?? '0.0') ?? 0.0;
+          double balan = double.tryParse(jsonRes[0]["balan"]?.toString() ?? '0.0') ?? 0.0;
           int years = int.parse(jsonRes[0]["years"]);
-          double m10 = double.parse(jsonRes[0]["m10"]);
-          double m11 = double.parse(jsonRes[0]["m11"]);
-          double m12 = double.parse(jsonRes[0]["m12"]);
-          double sum1 = double.parse(jsonRes[0]["sum1"]);
-          double m01 = double.parse(jsonRes[0]["m01"]);
-          double m02 = double.parse(jsonRes[0]["m02"]);
-          double m03 = double.parse(jsonRes[0]["m03"]);
-          double sum2 = double.parse(jsonRes[0]["sum2"]);
-          double m04 = double.parse(jsonRes[0]["m04"]);
-          double m05 = double.parse(jsonRes[0]["m05"]);
-          double m06 = double.parse(jsonRes[0]["m06"]);
-          double sum3 = double.parse(jsonRes[0]["sum3"]);
-          double m07 = double.parse(jsonRes[0]["m07"]);
-          double m08 = double.parse(jsonRes[0]["m08"]);
-          double m09 = double.parse(jsonRes[0]["m09"]);
-          double sum4 = double.parse(jsonRes[0]["sum4"]);
+          double m10 = double.tryParse(jsonRes[0]["m10"]?.toString() ?? '0.0') ?? 0.0;
+          double m11 = double.tryParse(jsonRes[0]["m11"]?.toString() ?? '0.0') ?? 0.0;
+          double m12 = double.tryParse(jsonRes[0]["m12"]?.toString() ?? '0.0') ?? 0.0;
+          double sum1 = double.tryParse(jsonRes[0]["sum1"]?.toString() ?? '0.0') ?? 0.0;
+          double m01 = double.tryParse(jsonRes[0]["m01"]?.toString() ?? '0.0') ?? 0.0;
+          double m02 = double.tryParse(jsonRes[0]["m02"]?.toString() ?? '0.0') ?? 0.0;
+          double m03 = double.tryParse(jsonRes[0]["m03"]?.toString() ?? '0.0') ?? 0.0;
+          double sum2 = double.tryParse(jsonRes[0]["sum2"]?.toString() ?? '0.0') ?? 0.0;
+          double m04 = double.tryParse(jsonRes[0]["m04"]?.toString() ?? '0.0') ?? 0.0;
+          double m05 = double.tryParse(jsonRes[0]["m05"]?.toString() ?? '0.0') ?? 0.0;
+          double m06 = double.tryParse(jsonRes[0]["m06"]?.toString() ?? '0.0') ?? 0.0;
+          double sum3 = double.tryParse(jsonRes[0]["sum3"]?.toString() ?? '0.0') ?? 0.0;
+          double m07 = double.tryParse(jsonRes[0]["m07"]?.toString() ?? '0.0') ?? 0.0;
+          double m08 = double.tryParse(jsonRes[0]["m08"]?.toString() ?? '0.0') ?? 0.0;
+          double m09 = double.tryParse(jsonRes[0]["m09"]?.toString() ?? '0.0') ?? 0.0;
+          double sum4 = double.tryParse(jsonRes[0]["sum4"]?.toString() ?? '0.0') ?? 0.0;
           String stwork = jsonRes[0]["stwork"];
           int whocreate =
               (jsonRes[0]["whocreate"] == null)
@@ -967,10 +961,7 @@ class MySQLDB {
               (jsonRes[0]["unit_chk"] == null) ? '' : jsonRes[0]["unit_chk"];
           String st_rx =
               (jsonRes[0]["st_rx"] == null) ? '' : jsonRes[0]["st_rx"];
-          double st_malloc =
-              (jsonRes[0]["st_malloc"] == null)
-                  ? 0.00
-                  : double.parse(jsonRes[0]["st_malloc"]);
+          double st_malloc = double.tryParse(jsonRes[0]["st_malloc"]?.toString() ?? '0.0') ?? 0.0;
 
           exp = Expedite(
             idlist: idlist,
