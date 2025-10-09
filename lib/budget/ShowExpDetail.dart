@@ -1202,12 +1202,36 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         txtDaystop.text = result.daystop;
         txtIdExpSpen.text = result.id_exp_spen;
         txtCodeBudRtarf.text = result.code_bud_rtarf;
-        txtFieldWork.text = result.field_work.toString();
-        txtExpType.text = result.exp_type.toString();
-        txtIntGroup.text = result.int_group.toString();
-        txtUnitUse.text = result.unit_use.toString();
-        txtUnitOper.text = result.unit_oper.toString();
-        txtBudType.text = result.bud_type.toString();
+
+        mydb.getFieldWork(result.field_work.toString()).then((fieldWork) {
+          txtFieldWork.text = fieldWork;
+        });
+
+        mydb.getExpType(result.exp_type.toString()).then((expType) {
+          txtExpType.text = expType;
+        });
+        //txtExpType.text = result.exp_type.toString();
+
+        mydb.getIntGroupName(result.int_group.toString()).then((intGroup) {
+          txtIntGroup.text = intGroup;
+        });
+
+        //txtIntGroup.text = result.int_group.toString();
+
+        mydb.getUnitName(result.unit_use.toString()).then((unitUse) {
+          txtUnitUse.text = unitUse;
+        });
+        //txtUnitUse.text = result.unit_use.toString();
+
+        mydb.getUnitName(result.unit_oper.toString()).then((unitOper) {
+          txtUnitOper.text = unitOper;
+        });
+        //txtUnitOper.text = result.unit_oper.toString();
+
+        mydb.getBudType(result.bud_type.toString()).then((budType) {
+          txtBudType.text = budType;
+        });
+        //txtBudType.text = result.bud_type.toString();
 
         _v = double.tryParse(result.mpay.toString()) ?? 0.0;
         txtMpay.text = nf.format(_v);
@@ -1246,9 +1270,18 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         txtM09.text = result.m09.toString();
         txtSum4.text = result.sum4.toString();
         txtStwork.text = result.stwork;
-        txtWhocreate.text = result.whocreate.toString();
+
+        mydb.getAccName(result.whocreate.toString()).then((accName) {
+          txtWhocreate.text = accName;
+        });
+        //txtWhocreate.text = result.whocreate.toString();
+
+        mydb.getAccName(result.whouse.toString()).then((accName) {
+          txtWhouse.text = accName;
+        });
+        //txtWhouse.text = result.whouse.toString();
+
         txtCreatetime.text = result.createtime;
-        txtWhouse.text = result.whouse.toString();
         txtLastaccess.text = result.lastaccess;
         txtUnit_chk.text = result.unit_chk;
         txtStRx.text = result.st_rx;

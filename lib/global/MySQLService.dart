@@ -878,8 +878,11 @@ class MySQLDB {
           String idExpSpen = jsonRes[0]["id_exp_spen"];
           String listExpSpen = jsonRes[0]["list_exp_spen"];
           String memoTh = jsonRes[0]["memo_th"];
-          double mBorder = double.tryParse(jsonRes[0]["mborder"]?.toString() ?? '0.0') ?? 0.0;
-          double mAlloc = double.tryParse(jsonRes[0]["malloc"]?.toString() ?? '0.0') ?? 0.0;
+          double mBorder =
+              double.tryParse(jsonRes[0]["mborder"]?.toString() ?? '0.0') ??
+              0.0;
+          double mAlloc =
+              double.tryParse(jsonRes[0]["malloc"]?.toString() ?? '0.0') ?? 0.0;
           int status = int.parse(jsonRes[0]["status"]);
           String daystart = jsonRes[0]["daystart"];
           String daystop = jsonRes[0]["daystop"];
@@ -911,35 +914,63 @@ class MySQLDB {
               (jsonRes[0]["bud_type"] == null)
                   ? 0
                   : int.parse(jsonRes[0]["bud_type"]);
-          double mpay = double.tryParse(jsonRes[0]["mpay"]?.toString() ?? '0.0') ?? 0.0;
-          double bpay_n = double.tryParse(jsonRes[0]["bpay_n"]?.toString() ?? '0.0') ?? 0.0;
-          double bpay = double.tryParse(jsonRes[0]["bpay"]?.toString() ?? '0.0') ?? 0.0;
-          double cpay = double.tryParse(jsonRes[0]["cpay"]?.toString() ?? '0.0') ?? 0.0;
-          double dpay = double.tryParse(jsonRes[0]["dpay"]?.toString() ?? '0.0') ?? 0.0;
-          double spay = double.tryParse(jsonRes[0]["spay"]?.toString() ?? '0.0') ?? 0.0;
-          double spay_n = double.tryParse(jsonRes[0]["spay_n"]?.toString() ?? '0.0') ?? 0.0;
-          double opay = double.tryParse(jsonRes[0]["opay"]?.toString() ?? '0.0') ?? 0.0;
-          double tpay = double.tryParse(jsonRes[0]["tpay"]?.toString() ?? '0.0') ?? 0.0;
-          double tlpay = double.tryParse(jsonRes[0]["tlpay"]?.toString() ?? '0.0') ?? 0.0;
-          double stpay = double.tryParse(jsonRes[0]["stpay"]?.toString() ?? '0.0') ?? 0.0;
-          double balan = double.tryParse(jsonRes[0]["balan"]?.toString() ?? '0.0') ?? 0.0;
+          double mpay =
+              double.tryParse(jsonRes[0]["mpay"]?.toString() ?? '0.0') ?? 0.0;
+          double bpay_n =
+              double.tryParse(jsonRes[0]["bpay_n"]?.toString() ?? '0.0') ?? 0.0;
+          double bpay =
+              double.tryParse(jsonRes[0]["bpay"]?.toString() ?? '0.0') ?? 0.0;
+          double cpay =
+              double.tryParse(jsonRes[0]["cpay"]?.toString() ?? '0.0') ?? 0.0;
+          double dpay =
+              double.tryParse(jsonRes[0]["dpay"]?.toString() ?? '0.0') ?? 0.0;
+          double spay =
+              double.tryParse(jsonRes[0]["spay"]?.toString() ?? '0.0') ?? 0.0;
+          double spay_n =
+              double.tryParse(jsonRes[0]["spay_n"]?.toString() ?? '0.0') ?? 0.0;
+          double opay =
+              double.tryParse(jsonRes[0]["opay"]?.toString() ?? '0.0') ?? 0.0;
+          double tpay =
+              double.tryParse(jsonRes[0]["tpay"]?.toString() ?? '0.0') ?? 0.0;
+          double tlpay =
+              double.tryParse(jsonRes[0]["tlpay"]?.toString() ?? '0.0') ?? 0.0;
+          double stpay =
+              double.tryParse(jsonRes[0]["stpay"]?.toString() ?? '0.0') ?? 0.0;
+          double balan =
+              double.tryParse(jsonRes[0]["balan"]?.toString() ?? '0.0') ?? 0.0;
           int years = int.parse(jsonRes[0]["years"]);
-          double m10 = double.tryParse(jsonRes[0]["m10"]?.toString() ?? '0.0') ?? 0.0;
-          double m11 = double.tryParse(jsonRes[0]["m11"]?.toString() ?? '0.0') ?? 0.0;
-          double m12 = double.tryParse(jsonRes[0]["m12"]?.toString() ?? '0.0') ?? 0.0;
-          double sum1 = double.tryParse(jsonRes[0]["sum1"]?.toString() ?? '0.0') ?? 0.0;
-          double m01 = double.tryParse(jsonRes[0]["m01"]?.toString() ?? '0.0') ?? 0.0;
-          double m02 = double.tryParse(jsonRes[0]["m02"]?.toString() ?? '0.0') ?? 0.0;
-          double m03 = double.tryParse(jsonRes[0]["m03"]?.toString() ?? '0.0') ?? 0.0;
-          double sum2 = double.tryParse(jsonRes[0]["sum2"]?.toString() ?? '0.0') ?? 0.0;
-          double m04 = double.tryParse(jsonRes[0]["m04"]?.toString() ?? '0.0') ?? 0.0;
-          double m05 = double.tryParse(jsonRes[0]["m05"]?.toString() ?? '0.0') ?? 0.0;
-          double m06 = double.tryParse(jsonRes[0]["m06"]?.toString() ?? '0.0') ?? 0.0;
-          double sum3 = double.tryParse(jsonRes[0]["sum3"]?.toString() ?? '0.0') ?? 0.0;
-          double m07 = double.tryParse(jsonRes[0]["m07"]?.toString() ?? '0.0') ?? 0.0;
-          double m08 = double.tryParse(jsonRes[0]["m08"]?.toString() ?? '0.0') ?? 0.0;
-          double m09 = double.tryParse(jsonRes[0]["m09"]?.toString() ?? '0.0') ?? 0.0;
-          double sum4 = double.tryParse(jsonRes[0]["sum4"]?.toString() ?? '0.0') ?? 0.0;
+          double m10 =
+              double.tryParse(jsonRes[0]["m10"]?.toString() ?? '0.0') ?? 0.0;
+          double m11 =
+              double.tryParse(jsonRes[0]["m11"]?.toString() ?? '0.0') ?? 0.0;
+          double m12 =
+              double.tryParse(jsonRes[0]["m12"]?.toString() ?? '0.0') ?? 0.0;
+          double sum1 =
+              double.tryParse(jsonRes[0]["sum1"]?.toString() ?? '0.0') ?? 0.0;
+          double m01 =
+              double.tryParse(jsonRes[0]["m01"]?.toString() ?? '0.0') ?? 0.0;
+          double m02 =
+              double.tryParse(jsonRes[0]["m02"]?.toString() ?? '0.0') ?? 0.0;
+          double m03 =
+              double.tryParse(jsonRes[0]["m03"]?.toString() ?? '0.0') ?? 0.0;
+          double sum2 =
+              double.tryParse(jsonRes[0]["sum2"]?.toString() ?? '0.0') ?? 0.0;
+          double m04 =
+              double.tryParse(jsonRes[0]["m04"]?.toString() ?? '0.0') ?? 0.0;
+          double m05 =
+              double.tryParse(jsonRes[0]["m05"]?.toString() ?? '0.0') ?? 0.0;
+          double m06 =
+              double.tryParse(jsonRes[0]["m06"]?.toString() ?? '0.0') ?? 0.0;
+          double sum3 =
+              double.tryParse(jsonRes[0]["sum3"]?.toString() ?? '0.0') ?? 0.0;
+          double m07 =
+              double.tryParse(jsonRes[0]["m07"]?.toString() ?? '0.0') ?? 0.0;
+          double m08 =
+              double.tryParse(jsonRes[0]["m08"]?.toString() ?? '0.0') ?? 0.0;
+          double m09 =
+              double.tryParse(jsonRes[0]["m09"]?.toString() ?? '0.0') ?? 0.0;
+          double sum4 =
+              double.tryParse(jsonRes[0]["sum4"]?.toString() ?? '0.0') ?? 0.0;
           String stwork = jsonRes[0]["stwork"];
           int whocreate =
               (jsonRes[0]["whocreate"] == null)
@@ -961,7 +992,9 @@ class MySQLDB {
               (jsonRes[0]["unit_chk"] == null) ? '' : jsonRes[0]["unit_chk"];
           String st_rx =
               (jsonRes[0]["st_rx"] == null) ? '' : jsonRes[0]["st_rx"];
-          double st_malloc = double.tryParse(jsonRes[0]["st_malloc"]?.toString() ?? '0.0') ?? 0.0;
+          double st_malloc =
+              double.tryParse(jsonRes[0]["st_malloc"]?.toString() ?? '0.0') ??
+              0.0;
 
           exp = Expedite(
             idlist: idlist,
@@ -1343,6 +1376,131 @@ class MySQLDB {
     }
   }
 
+  //=========================================================
+  Future<String> getFieldWork(String id_field_work) async {
+    String url = "http://$ipAddress/FlutterBudget/getFieldWork.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_field_work": id_field_work},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
+  //===========get budget type name========================
+  Future<String> getBudType(String id_bud_type) async {
+    String url = "http://$ipAddress/FlutterBudget/getBudType.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_bud_type": id_bud_type},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
+  //====================GetUnitName==========================
+  Future<String> getUnitName(String uid) async {
+    String url = "http://$ipAddress/FlutterBudget/GetUnitNameID.php";
+
+    final response = await http.post(Uri.parse(url), body: {"uid": uid});
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
+  //======================Get Acc Name=========================
+  Future<String> getAccName(String aid) async {
+    String url = "http://$ipAddress/FlutterBudget/GetAccName.php";
+
+    final response = await http.post(Uri.parse(url), body: {"aid": aid});
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
+  //=======================Get int group name=========================
+  Future<String> getIntGroupName(String id_int_group) async {
+    String url = "http://$ipAddress/FlutterBudget/GetIntGroup.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_int_group": id_int_group},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
+  //======================get getExpType=============================
+  Future<String> getExpType(String id_expen_type) async {
+    String url = "http://$ipAddress/FlutterBudget/GetExpType.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_expen_type": id_expen_type},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
   //====================== Table Status ================================
 
   Future<List<TBStatusSearch>?> GetTBStatusSearch(
