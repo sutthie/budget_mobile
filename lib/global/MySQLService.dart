@@ -519,6 +519,9 @@ class MySQLDB {
     String Units,
     String UnitName,
     String TypeJob,
+    String DateStart,
+    String DateStop,
+    String Days,
   ) async {
     String url = "http://$ipAddress/FlutterBudget/AddBookUnit.php";
 
@@ -537,6 +540,9 @@ class MySQLDB {
     Dat['type_job'] = TypeJob;
     Dat['uid'] = Units;
     Dat['unitname'] = UnitName;
+    Dat['date_start'] = DateStart;
+    Dat['date_stop'] = DateStop;
+    Dat['days'] = Days;
 
     var datAdd = json.encode(Dat);
 

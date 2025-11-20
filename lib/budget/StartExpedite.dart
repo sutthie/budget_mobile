@@ -33,7 +33,7 @@ class StartExpedite extends StatefulWidget {
 class _ShowBudgetDetailState extends State<StartExpedite> {
   late MySQLDB mydb;
   late ResponseMessage msg;
-  late DateTimes now = DateTimes();
+  late DateTimes dtClass = DateTimes();
   String DateString = "";
   //String DateReal = "";
   String msgStr = "";
@@ -81,6 +81,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   final txtIdExpSpen = TextEditingController();
   final txtUnit = TextEditingController();
   final txtLastAccess = TextEditingController();
+  final txtDateStart = TextEditingController();
+  final txtDateStop = TextEditingController();
+  final txtDays = TextEditingController();
 
   // Keep a single list of all controllers on this page for easy disposal
   late final List<TextEditingController> AllTextControllerinWidget;
@@ -95,6 +98,42 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   final FocusNode _focus_addr_book = FocusNode();
   final FocusNode _focus_amout = FocusNode();
   final FocusNode _focus_date = FocusNode();
+  final FocusNode _focus_date_start = FocusNode();
+  final FocusNode _focus_date_stop = FocusNode();
+  final FocusNode _focus_days = FocusNode();
+
+  // Track which field currently has a validation error for highlighting
+  String?
+  _errorField; // values: title, bookno, amout, date, date_start, date_stop, days
+
+  void _focusErrorField() {
+    if (_errorField == null) return;
+    switch (_errorField) {
+      case 'title':
+        _focus_title.requestFocus();
+        break;
+      case 'bookno':
+        _focus_addr_book.requestFocus();
+        break;
+      case 'amout':
+        _focus_amout.requestFocus();
+        break;
+      case 'date':
+        _focus_date.requestFocus();
+        break;
+      case 'date_start':
+        _focus_date_start.requestFocus();
+        break;
+      case 'date_stop':
+        _focus_date_stop.requestFocus();
+        break;
+      case 'days':
+        _focus_days.requestFocus();
+        break;
+    }
+  }
+
+  // (removed helper) amount validation is handled inline in onChanged/onPressed
 
   //final FocusNode _focus_ddlSecret = FocusNode();
 
@@ -140,8 +179,12 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     unitList = mydb.getUnitList();
 
     //======init Date to TextField========
-    DateString = now.DateThaiNow();
+    DateString = dtClass.DateThaiNow();
     txtDate.text = DateString; // show date now
+
+    txtDateStart.text = "0000-00-00";
+    txtDateStop.text = "0000-00-00";
+    txtDays.text = "0";
 
     //txtHideDate.text = now.DateNowYMD(); // real record date
 
@@ -170,6 +213,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       txtIdExpSpen,
       txtUnit,
       txtLastAccess,
+      txtDateStart,
+      txtDateStop,
+      txtDays,
     ];
   }
 
@@ -194,6 +240,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     _focus_addr_book.dispose();
     _focus_amout.dispose();
     _focus_date.dispose();
+    _focus_date_start.dispose();
+    _focus_date_stop.dispose();
+    _focus_days.dispose();
     //_focus_ddlSecret.dispose();
 
     // Clean up controllers
@@ -268,13 +317,18 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: _errorField == 'title' ? Colors.red.shade100 : Colors.white,
         hintText: "ชื่อเรื่อง",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
         _focus_addr_book.requestFocus();
+      },
+      onChanged: (v) {
+        if (_errorField == 'title' && v.isNotEmpty) {
+          setState(() => _errorField = null);
+        }
       },
       // onTap: () {
       //   //_focus.requestFocus();
@@ -306,13 +360,18 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: _errorField == 'bookno' ? Colors.red.shade100 : Colors.white,
         hintText: "ที่ของหนังสือ",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
         _focus_amout.requestFocus();
+      },
+      onChanged: (v) {
+        if (_errorField == 'bookno' && v.isNotEmpty) {
+          setState(() => _errorField = null);
+        }
       },
     );
 
@@ -329,14 +388,22 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: _errorField == 'amout' ? Colors.red.shade100 : Colors.white,
         hintText: "จำนวนเงิน",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       onChanged: (value) {
-        String money = "";
-
-        print(money);
+        // Live validate amount; highlight red when invalid or <= 0
+        final cleaned = value.replaceAll(RegExp(r'[,\s]'), '');
+        final parsed = double.tryParse(cleaned);
+        final invalid = parsed == null || parsed <= 0;
+        if (invalid) {
+          if (_errorField != 'amout') {
+            setState(() => _errorField = 'amout');
+          }
+        } else if (_errorField == 'amout') {
+          setState(() => _errorField = null);
+        }
       },
       onSubmitted: (v) {
         _focus_date.requestFocus();
@@ -358,7 +425,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: _errorField == 'date' ? Colors.red.shade100 : Colors.white,
         hintText: "วันที่ตั้งเรื่อง",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
@@ -371,23 +438,121 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
         showDatePicker(
           context: context,
-          initialDate: now.DateTimeNow(),
+          initialDate: dtClass.DateTimeNow(),
           firstDate: ystart,
           lastDate: yend,
         ).then((value) {
           if (value != null) {
             setState(() {
-              DateString = now.ConvertDateThaiNow(value);
+              DateString = dtClass.ConvertDateThaiNow(value);
               //DateReal = now.ConvertDateDB(value);
             });
 
             txtDate.text = DateString;
             //txtHideDate.text = DateReal;
+            if (_errorField == 'date') {
+              setState(() => _errorField = null);
+            }
           }
         });
       },
       onSubmitted: (v) {
         //_focus_ddlSecret.requestFocus();
+      },
+    );
+
+    final txt_date_start = TextField(
+      style: styleInput,
+      focusNode: _focus_date_start,
+      controller: txtDateStart,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor:
+            _errorField == 'date_start' ? Colors.red.shade100 : Colors.white,
+        hintText: "วันที่เริ่ม",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      onTap: () {
+        DateTime dt = DateTime.now();
+        int dn = dt.year - 5;
+        DateTime ystart = DateTime(dn);
+        dn = dt.year + 10;
+        DateTime yend = DateTime(dn);
+
+        showDatePicker(
+          context: context,
+          initialDate: dtClass.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
+          if (value != null) {
+            setState(() {
+              txtDateStart.text = dtClass.ConvertDateThaiNow(value);
+              if (_errorField == 'date_start') {
+                _errorField = null;
+              }
+            });
+          }
+        });
+      },
+    );
+
+    final txt_date_stop = TextField(
+      style: styleInput,
+      focusNode: _focus_date_stop,
+      controller: txtDateStop,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor:
+            _errorField == 'date_stop' ? Colors.red.shade100 : Colors.white,
+        hintText: "วันที่สิ้นสุด",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      onTap: () {
+        DateTime dt = DateTime.now();
+        int dn = dt.year - 5;
+        DateTime ystart = DateTime(dn);
+        dn = dt.year + 10;
+        DateTime yend = DateTime(dn);
+
+        showDatePicker(
+          context: context,
+          initialDate: dtClass.DateTimeNow(),
+          firstDate: ystart,
+          lastDate: yend,
+        ).then((value) {
+          if (value != null) {
+            setState(() {
+              txtDateStop.text = dtClass.ConvertDateThaiNow(value);
+              if (_errorField == 'date_stop') {
+                _errorField = null;
+              }
+            });
+          }
+        });
+      },
+    );
+
+    final txt_days = TextField(
+      style: styleInput,
+      focusNode: _focus_days,
+      controller: txtDays,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: _errorField == 'days' ? Colors.red.shade100 : Colors.white,
+        hintText: "จำนวนวัน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      onChanged: (v) {
+        if (_errorField == 'days' && v.isNotEmpty && v != '0') {
+          setState(() => _errorField = null);
+        }
       },
     );
 
@@ -492,6 +657,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       onChanged: (value) {
         setState(() {
           sel_type_job = value!;
+          if (_errorField == 'typejob' &&
+              sel_type_job != 'กรุณาเลือกประเภทงาน') {
+            _errorField = null;
+          }
         });
       },
       //hint: Text("เลือกปีงบประมาณ"),
@@ -519,138 +688,211 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
         padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
-          if (txtTitle.text.isEmpty ||
-              txtBookNo.text.isEmpty ||
-              txtAmout.text == "0" ||
-              txtDate.text.isEmpty ||
-              txtResponse.text.isEmpty ||
-              //unitNow == null ||
-              txt_unit == "" ||
-              sel_type_job == "กรุณาเลือกประเภทงาน" ||
-              //(unitNow == null || unitNow!.isEmpty) ||
-              txtYear.text.isEmpty ||
-              txtIdExpSpen.text.isEmpty) // add years , id_exp_spen
-          {
-            // if (_file != null) {
-            //   FileName = _file!.path;
-            //   FileName = FileName.replaceAll(RegExp(r'.*/'), '');
-            // } else {
-            //   FileName = "";
-            // }
-            // print("file : " + FileName);
+          // Build a list of missing/invalid fields
+          List<String> missing = [];
+          if (txtTitle.text.isEmpty) missing.add('title');
+          if (txtBookNo.text.isEmpty) missing.add('bookno');
+          if (txtAmout.text.isEmpty || txtAmout.text == '0')
+            missing.add('amout');
+          if (txtDate.text.isEmpty) missing.add('date');
+          if (txtResponse.text.isEmpty)
+            missing.add('response'); // not a focusable error field
+          if (txt_unit == '')
+            missing.add('unit'); // not a focusable error field
+          if (sel_type_job == 'กรุณาเลือกประเภทงาน')
+            missing.add('typejob'); // dropdown
+          if (txtYear.text.isEmpty) missing.add('year');
+          if (txtIdExpSpen.text.isEmpty) missing.add('idexpspen');
 
-            msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
-            msg.Alert(context, "Error", msgStr);
-          } else {
-            //=======================save===========================================
-
-            //txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
-            String dateDB = now.ConvDateThaiToDateDB(txtDate.text);
-            print("date format db : " + dateDB);
-
-            String fmtCommaStr = "r'[\,]";
-            RegExp fmtCommaRegExp = RegExp(fmtCommaStr);
-            //const fmtMoneyDisp = "r'^(\d+)(?:\.|\,)\d{0,2}";
-
-            //String fmt = txtAmout.text.replaceAll(RegExp(r'[\,]+'), '');
-            String fmtAmout = txtAmout.text.replaceAll(fmtCommaRegExp, '');
-
-            // cut only filename
-            if (_file != null) {
-              FileName = _file!.path;
-              FileName = FileName.replaceAll(RegExp(r'.*/'), '');
-            } else {
-              FileName = "";
+          // Validate date range only if both provided in Thai format and not default placeholders
+          if (txtDateStart.text != '0000-00-00' &&
+              txtDateStop.text != '0000-00-00' &&
+              txtDateStart.text.isNotEmpty &&
+              txtDateStop.text.isNotEmpty) {
+            DateTime startDate = DateTime.parse(
+              dtClass.ConvDateThaiToDateDB(txtDateStart.text),
+            );
+            DateTime stopDate = DateTime.parse(
+              dtClass.ConvDateThaiToDateDB(txtDateStop.text),
+            );
+            if (stopDate.isBefore(startDate) ||
+                stopDate.isAtSameMomentAs(startDate)) {
+              setState(() => _errorField = 'date_stop');
+              _focusErrorField();
+              msgStr = 'วันที่สิ้นสุดต้องมากกว่าวันที่เริ่มต้น !!!';
+              msg.Alert(context, 'Error', msgStr);
+              return;
             }
-            print("file : " + FileName);
+          }
 
-            mydb.AddBookUnit(
-              txtYear.text,
-              txtIdExpSpen.text,
-              txtListName.text,
-              txtTitle.text,
-              txtBookNo.text,
-              //txtAmout.text,
-              FileName,
-              fmtAmout,
-              dateDB,
-              //txtDate.text,
-              ddlSecret.value.toString(),
-              ddlAcc.value.toString(),
-              txtResponse.text,
-              txt_unit,
-              unitName,
-              //unitNow.toString(), // send to other unit
-              sel_type_job,
-            ).then((String result) {
-              var ret = json.decode(result);
+          // Validate amount must be numeric > 0
+          if (txtAmout.text.isNotEmpty) {
+            final cleanedAmt = txtAmout.text.replaceAll(RegExp(r'[,\s]'), '');
+            final parsedAmt = double.tryParse(cleanedAmt);
+            if (parsedAmt == null || parsedAmt <= 0) {
+              setState(() => _errorField = 'amout');
+              _focusErrorField();
+              msgStr = 'จำนวนเงินต้องเป็นตัวเลขมากกว่า 0';
+              msg.Alert(context, 'Error', msgStr);
+              return;
+            }
+          }
 
-              //String msgstr = "";
-              if (ret["result"] == "false") {
-                msgStr = "ผิดพลาดในการบันทึก : ${ret["msg"]} ";
-              } else if (ret["result"] == "true") {
-                msgStr = "บันทึกเรียบร้อยแล้ว";
-                print("Status Insert : $msgStr");
+          if (missing.isNotEmpty) {
+            // choose first focusable error field if any; otherwise just alert
+            const focusable = [
+              'title',
+              'bookno',
+              'amout',
+              'date',
+              'date_start',
+              'date_stop',
+              'days',
+            ];
+            String firstFocusable = missing.firstWhere(
+              (m) => focusable.contains(m),
+              orElse: () => '',
+            );
 
-                //create QR CODE by PHP in budget1 send url from ret["msg"]
-                String id_exp_spen = ret["msg"];
-                // create QRCODE in website budget
-                mydb.SentURLQRCODE(id_exp_spen, Budget_Site).then((value) {
-                  int ret = int.parse(value);
-                  if (ret == 0) {
-                    print('Error Create QR Code !!!');
-                  } else {
-                    print("Create QRCode OK=>id_exp_spen : " + id_exp_spen);
-                  }
-                });
+            // Highlight dropdown 'typejob' container if that's the only missing
+            if (firstFocusable.isEmpty && missing.contains('typejob')) {
+              setState(() => _errorField = 'typejob');
+            } else if (firstFocusable.isNotEmpty) {
+              setState(() => _errorField = firstFocusable);
+              _focusErrorField();
+            }
 
-                if (_file != null) {
-                  //upc.UploadFileToServer(_file, "budget1").then((value) {
-                  upc.UploadFToSrvAddProp(
-                    _file,
-                    Budget_Site,
-                    txtIdExpSpen.text,
-                  ).then((value) {
-                    print("return upload msg : \n" + value);
+            msgStr =
+                missing.contains('typejob')
+                    ? 'กรุณาเลือกประเภทงาน'
+                    : 'กรุณากรอกข้อมูลให้ครบถ้วน !!!';
+            msg.Alert(context, 'Error', msgStr);
+            return;
+          }
 
-                    if (value != "") {
-                      var ret = json.decode(value);
+          // All validations passed
+          setState(() => _errorField = null);
+          //=======================save===========================================
 
-                      if (ret["result"] == true) {
-                        print(
-                          "Upload File Successful \n FileName : " + ret["msg"],
-                        );
-                      } else {
-                        print("Error Upload File \n FileName : " + ret["msg"]);
-                      }
-                    } else {
-                      print("Error Upload File");
-                    }
-                  });
-                }
-              }
+          //txtDate.text = dtClass.ConvDateThaiToDateDB(txtDate.text);
+          String dateDB = dtClass.ConvDateThaiToDateDB(txtDate.text);
+          print("date format db : " + dateDB);
 
-              msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
+          String dateStartDB = txtDateStart.text;
+          if (txtDateStart.text != "0000-00-00") {
+            dateStartDB = dtClass.ConvDateThaiToDateDB(txtDateStart.text);
+          }
 
-              // GetExpUserSend.php for show last start 10 send
-              final oneSecond = Duration(seconds: 1);
-              Future.delayed(oneSecond * 5, () {
-                // If this widget was disposed during the delay, do nothing.
-                if (!mounted) return;
-                final nav = navigatorKey.currentState;
-                if (nav != null) {
-                  nav.pushReplacement(
-                    MaterialPageRoute(builder: (_) => ShowStartBook()),
-                  );
+          String dateStopDB = txtDateStop.text;
+          if (txtDateStop.text != "0000-00-00") {
+            dateStopDB = dtClass.ConvDateThaiToDateDB(txtDateStop.text);
+          }
+
+          String fmtCommaStr = "r'[\,]";
+          RegExp fmtCommaRegExp = RegExp(fmtCommaStr);
+          //const fmtMoneyDisp = "r'^(\d+)(?:\.|\,)\d{0,2}";
+
+          //String fmt = txtAmout.text.replaceAll(RegExp(r'[\,]+'), '');
+          String fmtAmout = txtAmout.text.replaceAll(fmtCommaRegExp, '');
+
+          // cut only filename
+          if (_file != null) {
+            FileName = _file!.path;
+            FileName = FileName.replaceAll(RegExp(r'.*/'), '');
+          } else {
+            FileName = "";
+          }
+          print("file : " + FileName);
+
+          mydb.AddBookUnit(
+            txtYear.text,
+            txtIdExpSpen.text,
+            txtListName.text,
+            txtTitle.text,
+            txtBookNo.text,
+            //txtAmout.text,
+            FileName,
+            fmtAmout,
+            dateDB,
+            //txtDate.text,
+            ddlSecret.value.toString(),
+            ddlAcc.value.toString(),
+            txtResponse.text,
+            txt_unit,
+            unitName,
+            //unitNow.toString(), // send to other unit
+            sel_type_job,
+            dateStartDB,
+            dateStopDB,
+            txtDays.text,
+          ).then((String result) {
+            var ret = json.decode(result);
+
+            //String msgstr = "";
+            if (ret["result"] == "false") {
+              msgStr = "ผิดพลาดในการบันทึก : ${ret["msg"]} ";
+            } else if (ret["result"] == "true") {
+              msgStr = "บันทึกเรียบร้อยแล้ว";
+              print("Status Insert : $msgStr");
+
+              //create QR CODE by PHP in budget1 send url from ret["msg"]
+              String id_exp_spen = ret["msg"];
+              // create QRCODE in website budget
+              mydb.SentURLQRCODE(id_exp_spen, Budget_Site).then((value) {
+                int ret = int.parse(value);
+                if (ret == 0) {
+                  print('Error Create QR Code !!!');
                 } else {
-                  // Fallback to the local context
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => ShowStartBook()),
-                  );
+                  print("Create QRCode OK=>id_exp_spen : " + id_exp_spen);
                 }
               });
+
+              if (_file != null) {
+                //upc.UploadFileToServer(_file, "budget1").then((value) {
+                upc.UploadFToSrvAddProp(
+                  _file,
+                  Budget_Site,
+                  txtIdExpSpen.text,
+                ).then((value) {
+                  print("return upload msg : \n" + value);
+
+                  if (value != "") {
+                    var ret = json.decode(value);
+
+                    if (ret["result"] == true) {
+                      print(
+                        "Upload File Successful \n FileName : " + ret["msg"],
+                      );
+                    } else {
+                      print("Error Upload File \n FileName : " + ret["msg"]);
+                    }
+                  } else {
+                    print("Error Upload File");
+                  }
+                });
+              }
+            }
+
+            msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
+
+            // GetExpUserSend.php for show last start 10 send
+            final oneSecond = Duration(seconds: 1);
+            Future.delayed(oneSecond * 5, () {
+              // If this widget was disposed during the delay, do nothing.
+              if (!mounted) return;
+              final nav = navigatorKey.currentState;
+              if (nav != null) {
+                nav.pushReplacement(
+                  MaterialPageRoute(builder: (_) => ShowStartBook()),
+                );
+              } else {
+                // Fallback to the local context
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => ShowStartBook()),
+                );
+              }
             });
-          }
+          });
         },
         child: Text(
           "บันทึก",
@@ -790,6 +1032,13 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
 
               Padding(
                 padding: const EdgeInsets.all(2.0),
+                child: txt_date_start,
+              ),
+              Padding(padding: const EdgeInsets.all(2.0), child: txt_date_stop),
+              Padding(padding: const EdgeInsets.all(2.0), child: txt_days),
+
+              Padding(
+                padding: const EdgeInsets.all(2.0),
                 child: Text(_file?.path ?? '', style: styleHeadWhite3),
               ),
               Padding(padding: const EdgeInsets.all(2.0), child: selFileButton),
@@ -856,7 +1105,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
                       child: ddlTypeJob,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey.shade200,
+                        color:
+                            _errorField == 'typejob'
+                                ? Colors.red.shade100
+                                : Colors.grey.shade200,
                       ),
                     ),
                   ),

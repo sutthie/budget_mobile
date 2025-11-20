@@ -17,6 +17,9 @@ class BookUnit {
   String LastAccess;
   String type_job;
   String send;
+  DateTime date_start;
+  DateTime date_stop;
+  int days;
 
   BookUnit({
     required this.id_job,
@@ -37,12 +40,15 @@ class BookUnit {
     required this.LastAccess,
     required this.type_job,
     required this.send,
+    required this.date_start,
+    required this.date_stop,
+    required this.days,
   });
 
   @override
   String toString() {
     //return "id_exp_spen=>$id_exp_spen,list_exp_spen=>$list_exp_spen,memo_th=>$memo_th,mborder=>$mborder,malloc=>$malloc";
-    return "id_job=>$id_job,id_exp_spen=>$id_exp_spen,id_use_int=>$id_use_int,secret_class=>$secret_class,speed_class=>$speed_class,doc_unit_no=>$doc_unit_no,unit_date_no=>$unit_date_no,title=>$title,doc_unit=>$doc_unit,years=>$years,response_person=>$response_person,status_wd=>$status_wd,status_use=>$status_use,amout=>$amout,amout_rpay=>$amout_rpay,LastAccess=>$LastAccess,type_job=>$type_job,send=$send";
+    return "id_job=>$id_job,id_exp_spen=>$id_exp_spen,id_use_int=>$id_use_int,secret_class=>$secret_class,speed_class=>$speed_class,doc_unit_no=>$doc_unit_no,unit_date_no=>$unit_date_no,title=>$title,doc_unit=>$doc_unit,years=>$years,response_person=>$response_person,status_wd=>$status_wd,status_use=>$status_use,amout=>$amout,amout_rpay=>$amout_rpay,LastAccess=>$LastAccess,type_job=>$type_job,send=$send,date_start=>$date_start,date_stop=>$date_stop,days=>$days";
   }
 
   factory BookUnit.fromJson(Map<String, dynamic> json) {
@@ -61,35 +67,42 @@ class BookUnit {
       status_wd: (json["status_wd"] == null) ? 0 : int.parse(json["status_wd"]),
       status_use:
           (json["status_use"] == null) ? 0 : int.parse(json["status_use"]),
-      amout: (json["amout"] == null)
-          ? 0.00
-          : double.parse(json["amout"]), //double.parse(json['amout']),
+      amout:
+          (json["amout"] == null)
+              ? 0.00
+              : double.parse(json["amout"]), //double.parse(json['amout']),
       amout_rpay:
           (json["amout"] == null) ? 0.00 : double.parse(json["amout_rpay"]),
       LastAccess: json['LastAccess'],
       type_job: json['type_job'],
       send: json['send'],
+      date_start: DateTime.parse(json['date_start']),
+      date_stop: DateTime.parse(json['date_stop']),
+      days: int.parse(json['days']),
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id_job': id_job,
-        'id_exp_spen': id_exp_spen,
-        'id_use_int': id_use_int,
-        'secret_class': secret_class,
-        'speed_class': speed_class,
-        'doc_unit_no': doc_unit_no,
-        'unit_date_no': unit_date_no,
-        'title': title,
-        'doc_unit': doc_unit,
-        'years': years,
-        'response_person': response_person,
-        'status_wd': status_wd,
-        'status_use': status_use,
-        'amout': amout,
-        'amout_rpay': amout_rpay,
-        'LastAccess': LastAccess,
-        'type_job': type_job,
-        'send': send
-      };
+    'id_job': id_job,
+    'id_exp_spen': id_exp_spen,
+    'id_use_int': id_use_int,
+    'secret_class': secret_class,
+    'speed_class': speed_class,
+    'doc_unit_no': doc_unit_no,
+    'unit_date_no': unit_date_no,
+    'title': title,
+    'doc_unit': doc_unit,
+    'years': years,
+    'response_person': response_person,
+    'status_wd': status_wd,
+    'status_use': status_use,
+    'amout': amout,
+    'amout_rpay': amout_rpay,
+    'LastAccess': LastAccess,
+    'type_job': type_job,
+    'send': send,
+    'date_start': date_start,
+    'date_stop': date_stop,
+    'days': days,
+  };
 }
