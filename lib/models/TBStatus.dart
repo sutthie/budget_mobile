@@ -16,6 +16,9 @@ class TBStatus {
   bool status_bpay;
   DateTime date_check;
   String response_person;
+  DateTime date_start;
+  DateTime date_stop;
+  int days;
 
   TBStatus({
     required this.id_status,
@@ -35,12 +38,15 @@ class TBStatus {
     required this.status_bpay,
     required this.date_check,
     required this.response_person,
+    required this.date_start,
+    required this.date_stop,
+    required this.days,
   });
 
   @override
   String toString() {
     //return "id_exp_spen=>$id_exp_spen,list_exp_spen=>$list_exp_spen,memo_th=>$memo_th,mborder=>$mborder,malloc=>$malloc";
-    return "id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status=>$status,status_detail=>$status_detail,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,response_person=>$response_person";
+    return "id_status=>$id_status,id_job=>$id_job,id_use_int=>$id_use_int,sent_to=>$sent_to,date_sent_to=>$date_sent_to,date_sent_real=>$date_sent_real,date_receive_real=>$date_receive_real,status=>$status,status_detail=>$status_detail,doc_unit=>$doc_unit,no_doc_rx=>$no_doc_rx,date_rec_rx=>$date_rec_rx,date_sent=>$date_sent,etc=>$etc,status_bpay=>$status_bpay,date_check=>$date_check,response_person=>$response_person,date_start=>$date_start,date_stop=>$date_stop,days=>$days";
   }
 
   factory TBStatus.fromJson(Map<String, dynamic> json) {
@@ -62,26 +68,32 @@ class TBStatus {
       status_bpay: json['status_bpay'],
       date_check: json['date_check'],
       response_person: json['response_person'],
+      date_start: DateTime.parse(json['date_start']),
+      date_stop: DateTime.parse(json['date_stop']),
+      days: int.parse(json['days']),
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id_status': id_status,
-        'id_job': id_job,
-        'id_use_int': id_use_int,
-        'sent_to': sent_to,
-        'date_sent_to': date_sent_to,
-        'date_sent_real': date_sent_real,
-        'date_receive_real': date_receive_real,
-        'status': status,
-        'status_detail': status_detail,
-        'doc_unit': doc_unit,
-        'no_doc_rx': no_doc_rx,
-        'date_rec_rx': date_rec_rx,
-        'date_sent': date_sent,
-        'etc': etc,
-        'status_bpay': status_bpay,
-        'date_check': date_check,
-        'response_person': response_person,
-      };
+    'id_status': id_status,
+    'id_job': id_job,
+    'id_use_int': id_use_int,
+    'sent_to': sent_to,
+    'date_sent_to': date_sent_to,
+    'date_sent_real': date_sent_real,
+    'date_receive_real': date_receive_real,
+    'status': status,
+    'status_detail': status_detail,
+    'doc_unit': doc_unit,
+    'no_doc_rx': no_doc_rx,
+    'date_rec_rx': date_rec_rx,
+    'date_sent': date_sent,
+    'etc': etc,
+    'status_bpay': status_bpay,
+    'date_check': date_check,
+    'response_person': response_person,
+    'date_start': date_start,
+    'date_stop': date_stop,
+    'days': days,
+  };
 }

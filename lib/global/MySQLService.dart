@@ -715,9 +715,12 @@ class MySQLDB {
     String date_sent_to,
     String status,
     String status_detail,
-    String fileName,
+    String date_start,
+    String date_stop,
+    String days,
     String etc,
     String Response_Original,
+    String fileName,
     String sender,
     String mobile,
   ) async {
@@ -735,6 +738,9 @@ class MySQLDB {
     Dat['sent_to'] = sent_to;
     Dat['sent_to_name'] = sent_to_name;
     Dat['date_sent_to'] = date_sent_to;
+    Dat['date_start'] = date_start;
+    Dat['date_stop'] = date_stop;
+    Dat['days'] = days;
     Dat['status'] = status;
     Dat['status_detail'] = status_detail;
     Dat['doc_unit'] = fileName;

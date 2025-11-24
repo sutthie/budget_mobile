@@ -239,6 +239,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     );
 
     final txt_doc_unit = TextField(
+      readOnly: true,
       style: styleLinkNormal(Colors.blue),
       //autofocus: true,
       //focusNode: focusNode,
@@ -263,7 +264,9 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         //String fullUrl = urlStr + Uri.encodeComponent(fileName);
         //url = "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
 
-        open.launchURL(urlPath, txtDocUnit.text);
+        if (txtDocUnit.text.isNotEmpty) {
+          open.launchURL(urlPath, txtDocUnit.text);
+        }
       },
     );
 
@@ -469,6 +472,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     // );
 
     final txt_response_person = TextField(
+      readOnly: true,
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
