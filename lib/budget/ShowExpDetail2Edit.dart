@@ -14,7 +14,7 @@ class ShowExpDetail extends StatefulWidget {
 }
 
 class _ShowBudgetDetailState extends State<ShowExpDetail> {
-//=====Controller Text===========
+  //=====Controller Text===========
   final txtListName = TextEditingController();
   final txtBorder = TextEditingController();
   final txtMemo = TextEditingController();
@@ -71,8 +71,9 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
 
   //const currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
   static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
-  final currencyFormatter =
-      FilteringTextInputFormatter.allow(RegExp(currencyRegExp));
+  final currencyFormatter = FilteringTextInputFormatter.allow(
+    RegExp(currencyRegExp),
+  );
 
   // ==== set caption to Text====
   int yearNow = 0;
@@ -82,8 +83,7 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
     super.initState();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
   }
 
   @override
@@ -93,7 +93,7 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
 
   @override
   Widget build(BuildContext context) {
-//====TextStyle========
+    //====TextStyle========
     TextStyle styleHead = const TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 18.0,
@@ -117,13 +117,13 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
       minLines: 1, // Display at least 5 lines
       maxLines: null,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          //filled : false,
-          fillColor: Colors.white,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        //filled : false,
+        fillColor: Colors.white,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -136,12 +136,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
       //focusNode: _focus,
       controller: txtMemo,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          //hintText: "ชื่องบ",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        //hintText: "ชื่องบ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -154,16 +154,14 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
       //focusNode: _focus,
       controller: txtBorder,
       keyboardType: TextInputType.number,
-      inputFormatters: [
-        currencyFormatter,
-      ],
+      inputFormatters: [currencyFormatter],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "กรอบวงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "กรอบวงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -182,12 +180,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -206,12 +204,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
@@ -230,12 +228,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_list_exp_spen = TextField(
       style: styleInput,
@@ -250,12 +248,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_status = TextField(
       style: styleInput,
@@ -270,12 +268,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_daystart = TextField(
       style: styleInput,
@@ -290,12 +288,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_daystop = TextField(
       style: styleInput,
@@ -310,12 +308,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_id_exp_spen = TextField(
       style: styleInput,
@@ -330,12 +328,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_code_bud_rtarf = TextField(
       style: styleInput,
@@ -350,12 +348,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_field_work = TextField(
       style: styleInput,
@@ -370,12 +368,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_exp_type = TextField(
       style: styleInput,
@@ -390,12 +388,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_int_group = TextField(
       style: styleInput,
@@ -410,12 +408,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_use = TextField(
       style: styleInput,
@@ -430,12 +428,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_oper = TextField(
       style: styleInput,
@@ -450,12 +448,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_mborder = TextField(
       style: styleInput,
@@ -470,12 +468,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_bud_type = TextField(
       style: styleInput,
@@ -490,12 +488,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_malloc = TextField(
       style: styleInput,
@@ -510,12 +508,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_mpay = TextField(
       style: styleInput,
@@ -530,12 +528,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_bpay_n = TextField(
       style: styleInput,
@@ -550,12 +548,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_bpay = TextField(
       style: styleInput,
@@ -570,12 +568,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_cpay = TextField(
       style: styleInput,
@@ -590,12 +588,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_dpay = TextField(
       style: styleInput,
@@ -610,12 +608,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_spay = TextField(
       style: styleInput,
@@ -630,12 +628,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_spay_n = TextField(
       style: styleInput,
@@ -650,12 +648,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_opay = TextField(
       style: styleInput,
@@ -670,12 +668,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_tpay = TextField(
       style: styleInput,
@@ -690,12 +688,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_tlpay = TextField(
       style: styleInput,
@@ -710,12 +708,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_stpay = TextField(
       style: styleInput,
@@ -730,12 +728,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_balan = TextField(
       style: styleInput,
@@ -750,12 +748,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_years = TextField(
       style: styleInput,
@@ -770,12 +768,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m10 = TextField(
       style: styleInput,
@@ -790,12 +788,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m11 = TextField(
       style: styleInput,
@@ -810,12 +808,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m12 = TextField(
       style: styleInput,
@@ -830,12 +828,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum1 = TextField(
       style: styleInput,
@@ -850,12 +848,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m01 = TextField(
       style: styleInput,
@@ -870,12 +868,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m02 = TextField(
       style: styleInput,
@@ -890,12 +888,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m03 = TextField(
       style: styleInput,
@@ -910,12 +908,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum2 = TextField(
       style: styleInput,
@@ -930,12 +928,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m04 = TextField(
       style: styleInput,
@@ -950,12 +948,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m05 = TextField(
       style: styleInput,
@@ -970,12 +968,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m06 = TextField(
       style: styleInput,
@@ -990,12 +988,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum3 = TextField(
       style: styleInput,
@@ -1010,12 +1008,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m07 = TextField(
       style: styleInput,
@@ -1030,12 +1028,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m08 = TextField(
       style: styleInput,
@@ -1050,12 +1048,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_m09 = TextField(
       style: styleInput,
@@ -1070,12 +1068,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_sum4 = TextField(
       style: styleInput,
@@ -1090,12 +1088,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_stwork = TextField(
       style: styleInput,
@@ -1110,12 +1108,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_whocreate = TextField(
       style: styleInput,
@@ -1130,12 +1128,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_createtime = TextField(
       style: styleInput,
@@ -1150,12 +1148,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_whouse = TextField(
       style: styleInput,
@@ -1170,12 +1168,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_lastaccess = TextField(
       style: styleInput,
@@ -1190,12 +1188,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_unit_chk = TextField(
       style: styleInput,
@@ -1210,12 +1208,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_st_rx = TextField(
       style: styleInput,
@@ -1230,12 +1228,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
     final txt_st_malloc = TextField(
       style: styleInput,
@@ -1250,12 +1248,12 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         currencyFormatter,
       ],
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          filled: true,
-          fillColor: Colors.white,
-          hintText: "วงเงิน",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(16.0))),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        hintText: "วงเงิน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final backButon = Material(
@@ -1269,10 +1267,14 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("ย้อนกลับ",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(
+          "ย้อนกลับ",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -1356,35 +1358,29 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('ประจำปี',
-                    style: styleHead.copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0)),
-                Text(' $yearNow',
-                    style: styleHead.copyWith(
-                        color: Colors.blue[900],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0)),
+                Text(
+                  'ประจำปี',
+                  style: styleHead.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                Text(
+                  ' $yearNow',
+                  style: styleHead.copyWith(
+                    color: Colors.blue[900],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: txtlistname,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: txtmemo,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: txtborder,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: txtmalloc,
-          ),
+          Padding(padding: const EdgeInsets.all(2.0), child: txtlistname),
+          Padding(padding: const EdgeInsets.all(2.0), child: txtmemo),
+          Padding(padding: const EdgeInsets.all(2.0), child: txtborder),
+          Padding(padding: const EdgeInsets.all(2.0), child: txtmalloc),
           const SizedBox(height: 4.0),
           backButon,
         ],

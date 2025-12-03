@@ -4,7 +4,6 @@ import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../MainPageAdmin.dart';
 import '../download/OpenUrlBrowser.dart';
 import '../global/MySQLService.dart';
 import '../global/globalVar.dart';
@@ -30,6 +29,7 @@ class ReceiveExpedite extends StatefulWidget {
 
 class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   // =====declare object===========
+  late DateTimes dtClass = DateTimes();
   late MySQLDB mydb;
   late ResponseMessage msg;
   String uid = "0";
@@ -47,6 +47,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   final txtDateSendReal = TextEditingController();
   final txtStatus = TextEditingController();
   final txtNoDocRx = TextEditingController();
+  final txtDateRx = TextEditingController();
   final txtStRX = TextEditingController();
   final txtETC = TextEditingController();
   final txtUnit_chk = TextEditingController();
@@ -56,6 +57,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
   //===== define FocusNode=======
   // final FocusNode _focus = FocusNode();
   final FocusNode _focus_no_doc_rx = FocusNode();
+  // final FocusNode _focus_date_rx = FocusNode();
   final FocusNode _focus_status = FocusNode();
   final FocusNode _focus_etc = FocusNode();
 
@@ -118,6 +120,26 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
     txtSender.text = widget.tbstatus.sender;
     txtETC.text = widget.tbstatus.etc;
     txtNoDocRx.text = widget.tbstatus.no_doc_rx;
+
+    // get date rec rx from tb_status.date_rec_rx
+    String id_status = widget.tbstatus.id_status.toString();
+
+    mydb.getDateRecRx(id_status).then((dateRecRxStrFromDB) {
+      if (dateRecRxStrFromDB.isEmpty) {
+        return;
+      }
+      final datePart = dateRecRxStrFromDB.split(' ').first;
+      DateTime? parsedDateRecRx = DateTime.tryParse(datePart);
+      if (parsedDateRecRx != null) {
+        txtDateRx.text =
+            dtClass.ConvertDateThaiNow(parsedDateRecRx) +
+            ' ' +
+            dateRecRxStrFromDB.split(' ').last +
+            ' น.';
+      }
+    });
+
+    //=========================================
     _focus_no_doc_rx.requestFocus();
   }
 
@@ -255,7 +277,7 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         hintText: "",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
-      onTap: () {
+      onTap: () async {
         //print(txtDocUnit.text);
 
         String urlPath = 'http://$ipAddress/$Budget_Site/Follow/doc/';
@@ -264,8 +286,19 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
         //String fullUrl = urlStr + Uri.encodeComponent(fileName);
         //url = "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
 
-        if (txtDocUnit.text.isNotEmpty) {
-          open.launchURL(urlPath, txtDocUnit.text);
+        if (txtDocUnit.text.isEmpty) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('ไม่พบไฟล์แนบ')));
+          return;
+        }
+
+        try {
+          await open.launchURL(urlPath, txtDocUnit.text);
+        } catch (e) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(e.toString())));
         }
       },
     );
@@ -362,6 +395,19 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
       // onSubmitted: (v) {
       //   //_fieldFocusChange(context, _focus, _nextFocus);
       // },
+    );
+
+    final txt_date_rx = TextField(
+      style: styleInput,
+      readOnly: true,
+      controller: txtDateRx,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightpurple2,
+        hintText: "วันที่รับงาน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
     );
 
     final txt_status_rx = TextField(
@@ -559,15 +605,15 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
               msg.Alert(context, "ผลการบันทึก", "ผลคือ : ${msgStr}");
 
               // GetExpUserSend.php for show last start 10 send
-              final oneSecond = Duration(seconds: 1);
-              Future.delayed(oneSecond * 2, () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowReceiveExpedite(login.get('uid')),
-                  ),
-                );
-              });
+              // final oneSecond = Duration(seconds: 1);
+              // Future.delayed(oneSecond * 2, () {
+              //   Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => ShowReceiveExpedite(login.get('uid')),
+              //     ),
+              //   );
+              // });
             });
           } else {
             msgStr = "กรุณากรอกข้อมูลให้ครบถ้วน !!!";
@@ -645,7 +691,14 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
           //   );
           // } else
           //   Navigator.of(context).pop();
-          Navigator.of(context).pop();
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowReceiveExpedite(login.get('uid')),
+            ),
+            (Route<dynamic> route) => false,
+          );
         },
         child: Text(
           "ย้อนกลับ",
@@ -905,6 +958,26 @@ class _ShowBudgetDetailState extends State<ReceiveExpedite> {
                     ),
                     Container(
                       child: txt_no_doc_rx,
+                      width: MediaQuery.of(context).size.width * 0.7,
+
+                      //width: 350,
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 80,
+                      child: Text('วันที่รับงาน', style: styleHead3),
+                    ),
+                    Container(
+                      child: txt_date_rx,
                       width: MediaQuery.of(context).size.width * 0.7,
 
                       //width: 350,

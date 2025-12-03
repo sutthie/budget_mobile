@@ -82,8 +82,7 @@ class _ShowBudgetDetailState extends State<ShowExpDetail> {
     super.initState();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
   }
 
   @override

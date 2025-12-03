@@ -34,7 +34,6 @@ class _GetBudgetState extends State<ShowExpedite>
   String uid = "0";
 
   // init year now
-  GetYearBudget yb = new GetYearBudget();
   late int yearNow;
 
   //int yearNow = DateTime.now().year.toInt() + 543;
@@ -56,7 +55,7 @@ class _GetBudgetState extends State<ShowExpedite>
     Future<List<Expedite>?> tmplist;
 
     // init data
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
     //listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
     listyear = [for (var i = yearNow - 5; i <= yearNow + 5; i++) i];
 
@@ -384,7 +383,7 @@ class _GetBudgetState extends State<ShowExpedite>
           //Navigator.of(context).pop();
           txtSearch.text = "";
           setState(() {
-            yearNow = yb.getYearBudget();
+            yearNow =GetYearBudget.getYearBudget();
             datList = getDataList("", yearNow.toString(), uid);
           });
         },

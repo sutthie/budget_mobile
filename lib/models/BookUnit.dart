@@ -76,8 +76,16 @@ class BookUnit {
       LastAccess: json['LastAccess'],
       type_job: json['type_job'],
       send: json['send'],
-      date_start: DateTime.parse(json['date_start']),
-      date_stop: DateTime.parse(json['date_stop']),
+      date_start:
+          ((json['date_start'] == null)
+              ? DateTime.parse("0000-00-00")
+              : DateTime.parse(json['date_start'])),
+      // json['date_start'],
+      //0.00 : double.parse(json["amout_rpay"]),
+      date_stop:
+          ((json['date_stop'] == null)
+              ? DateTime.parse("0000-00-00")
+              : DateTime.parse(json['date_stop'])),
       days: int.parse(json['days']),
     );
   }

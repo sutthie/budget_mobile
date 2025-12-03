@@ -65,7 +65,7 @@ class _GetBudgetState extends State<ShowStartBook>
     Future<List<BookUnit>?> tmplist;
 
     // init data
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
     listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
 
     selyear = yearNow.toString();
@@ -184,7 +184,7 @@ class _GetBudgetState extends State<ShowStartBook>
                                         Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Text(
-                                            'ที่หนังสือ : ${book.doc_unit_no} | วันที่ : ${dateF} ',
+                                            'ที่หนังสือ : ${book.doc_unit_no} | วันที่สร้าง : ${dateF} ',
                                             style: TextStyle(
                                               fontSize: 12,
                                               //fontWeight: FontWeight.bold
@@ -450,7 +450,7 @@ class _GetBudgetState extends State<ShowStartBook>
           //Navigator.of(context).pop();
           txtSearch.text = "";
           setState(() {
-            yearNow = yb.getYearBudget();
+            yearNow = GetYearBudget.getYearBudget();
             datList = getDataList("", yearNow.toString(), uid);
           });
         },

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../global/FormatMoney.dart';
 import '../global/MySQLService.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/DateTimes.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'package:currency_formatter/currency_formatter.dart';
+// import 'package:currency_formatter/currency_formatter.dart';
 import '../styles/TextStyle.dart';
 
 class EditExpDetail extends StatefulWidget {
@@ -103,8 +104,7 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
     mydb = MySQLDB();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
   }
 
   @override
@@ -1359,16 +1359,13 @@ class _ShowBudgetDetailState extends State<EditExpDetail> {
       txtStRx.text = result.st_rx;
       txtStMalloc.text = result.st_malloc.toString();
 
-      String format_money = CurrencyFormatter.format(
-        result.mborder,
-        thBahtSettings,
+      txtMBorder.text = FormatMoney.formatCurrencyfromDouble(
+        double.parse(result.mborder.toString()),
       );
 
-      txtMBorder.text = format_money;
-
-      format_money = CurrencyFormatter.format(result.malloc, thBahtSettings);
-
-      txtMalloc.text = format_money;
+      txtMalloc.text = FormatMoney.formatCurrencyfromDouble(
+        double.parse(result.malloc.toString()),
+      );
     });
 
     _focus.requestFocus();

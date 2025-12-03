@@ -8,16 +8,18 @@ import 'package:budget_mobile/models/BookUnit.dart';
 import 'package:budget_mobile/models/TBStatusSearch.dart';
 import 'package:flutter/material.dart';
 //import '../MainPageAdmin.dart';
+import '../global/GetHoliday.dart';
 import '../global/MySQLService.dart';
 import '../global/size_config.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 //import '../global/GetYearBudget.dart';
-import 'package:currency_formatter/currency_formatter.dart';
+import '../global/FormatMoney.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';
+import 'package:intl/intl.dart';
 import '../global/DateTimes.dart';
 import '../global/ManageLogin.dart';
 import '../upload/UploadFileBudget.dart';
@@ -55,7 +57,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
   late MySQLDB mydb;
   late ResponseMessage msg;
   late DateTimes dtClass = DateTimes();
-  String DateString = "";
+  // String DateString = "";
   //String DateReal = "";
   String msgStr = "";
 
@@ -85,6 +87,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
   ];
 
   List<String> itemStatusJobDetail = ['กรุณาเลือกรายละเอียดสถานะงาน'];
+  List<int> itemStatusJobDetailDay = [0];
 
   //String sel_status_job = "กรุณาเลือกสถานะงาน";
   String sel_status_job = "0";
@@ -99,6 +102,8 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
   List<String> itemSecret = ['ปกติ', 'ลับ', 'ลับมาก', 'ลับที่สุด'];
   List<String> itemAcc = ['ปกติ', 'ด่วน', 'ด่วนมาก', 'ด่วนที่สุด'];
 
+  //=======get Holiday data==========
+  final GetHoliday holidayService = GetHoliday();
   //=====Controller Text===========
   // show only
   final txtListName = TextEditingController();
@@ -163,6 +168,37 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
     }
   }
 
+  String _sanitizeFileName(String rawFileName) {
+    if (rawFileName.isEmpty) return rawFileName;
+
+    final trimmed = rawFileName.trim();
+    final lastDotIndex = trimmed.lastIndexOf('.');
+
+    String sanitizeName(String input) {
+      String sanitized = input;
+      sanitized = sanitized.replaceAll(RegExp(r'\s+'), '_');
+      sanitized = sanitized.replaceAll('.', '');
+      sanitized = sanitized.replaceAll(RegExp(r'[\\/?!\*]+'), '_');
+      sanitized = sanitized.replaceAll(RegExp(r'_+'), '_');
+      sanitized = sanitized.replaceAll(RegExp(r'^_+'), '');
+      sanitized = sanitized.replaceAll(RegExp(r'_+$'), '');
+      if (sanitized.isEmpty) {
+        sanitized = 'file';
+      }
+      return sanitized;
+    }
+
+    if (lastDotIndex <= 0) {
+      return sanitizeName(trimmed);
+    }
+
+    final namePart = trimmed.substring(0, lastDotIndex);
+    final extension = trimmed.substring(lastDotIndex);
+    final sanitizedName = sanitizeName(namePart);
+
+    return '$sanitizedName$extension';
+  }
+
   //==========set==fullname=====
   String fullname = ""; // for response person
   late String mobile;
@@ -201,9 +237,12 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
     unitList = mydb.getUnitList();
 
     //======init Date to TextField========
-    DateString = dtClass.DateThaiNow();
-    txtDate.text = DateString; // show date send set to now
-    txtDateStart.text = "0000-00-00";
+
+    // txtDateStart.text = "0000-00-00";
+    txtDateStart.text = dtClass.ConvertDateThai(
+      DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    );
+    // txtDateStop.text = "0000-00-00";
     txtDateStop.text = "0000-00-00";
     txtDays.text = "0";
 
@@ -245,12 +284,9 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
               DateTime.parse(result.unit_date_no),
             );
 
-            String format_money = CurrencyFormatter.format(
-              result.amout,
-              thBahtSettings,
+            txtAmout.text = FormatMoney.formatCurrencyfromDouble(
+              double.parse(widget.tbstatus.amout),
             );
-
-            txtAmout.text = format_money;
 
             //txtUnitName.text = result.id_use_int.toString();
 
@@ -343,24 +379,25 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
       focusNode: _focus_amout,
       controller: txtAmout,
       readOnly: true,
-      keyboardType: TextInputType.number,
+      //keyboardType: TextInputType.number,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         filled: true,
-        fillColor: _errorField == 'amout' ? Colors.red.shade100 : lightyellow2,
+        //fillColor: _errorField == 'amout' ? Colors.red.shade100 : lightyellow2,
+        fillColor: lightyellow2,
         hintText: "จำนวนเงิน",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
-      onChanged: (value) {
-        final cleaned = value.replaceAll(RegExp(r'[,\s]'), '');
-        final parsed = double.tryParse(cleaned);
-        final invalid = parsed == null || parsed <= 0;
-        if (invalid) {
-          if (_errorField != 'amout') setState(() => _errorField = 'amout');
-        } else if (_errorField == 'amout') {
-          setState(() => _errorField = null);
-        }
-      },
+      // onChanged: (value) {
+      //   final cleaned = value.replaceAll(RegExp(r'[,\s]'), '');
+      //   final parsed = double.tryParse(cleaned);
+      //   final invalid = parsed == null || parsed <= 0;
+      //   if (invalid) {
+      //     if (_errorField != 'amout') setState(() => _errorField = 'amout');
+      //   } else if (_errorField == 'amout') {
+      //     setState(() => _errorField = null);
+      //   }
+      // },
     );
 
     final txtbookno = TextField(
@@ -395,16 +432,62 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
       ),
     );
 
-    final txtdate = TextField(
-      readOnly: true,
+    // final txtdate = TextField(
+    //   readOnly: true,
+    //   style: styleHeadPurple4,
+    //   focusNode: _focus_date,
+    //   controller: txtDate,
+    //   decoration: InputDecoration(
+    //     contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+    //     filled: true,
+    //     fillColor: _errorField == 'date' ? Colors.red.shade100 : lightyellow2,
+    //     hintText: "วันที่เริ่มส่งเรื่อง",
+    //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+    //   ),
+    // onTap: () {
+    //   DateTime dt = DateTime.now();
+    //   int dn = dt.year - 5;
+    //   DateTime ystart = DateTime(dn);
+    //   dn = dt.year + 10;
+    //   DateTime yend = DateTime(dn);
+
+    //   showDatePicker(
+    //     context: context,
+    //     initialDate: dtClass.DateTimeNow(),
+    //     firstDate: ystart,
+    //     lastDate: yend,
+    //   ).then((value) {
+    //     if (value != null) {
+    //       setState(() {
+    //         DateString = dtClass.ConvertDateThaiNow(value);
+    //         //DateReal = now.ConvertDateDB(value);
+    //       });
+
+    //       txtDate.text = DateString;
+
+    //       if (_errorField == 'date') {
+    //         setState(() => _errorField = null);
+    //       }
+    //       //txtHideDate.text = DateReal;
+    //     }
+    //   });
+    // },
+    //onSubmitted: (v) {
+    //_fieldFocusChange(context, _focus, _nextFocus);
+    //},
+    // );
+
+    final txt_date_start = TextField(
       style: styleHeadPurple4,
-      focusNode: _focus_date,
-      controller: txtDate,
+      focusNode: _focus_date_start,
+      controller: txtDateStart,
+      readOnly: true,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         filled: true,
-        fillColor: _errorField == 'date' ? Colors.red.shade100 : lightyellow2,
-        hintText: "วันที่ตั้งเรื่อง",
+        fillColor:
+            _errorField == 'date_start' ? Colors.red.shade100 : lightyellow2,
+        hintText: "วันที่เริ่ม",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       // onTap: () {
@@ -422,94 +505,12 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
       //   ).then((value) {
       //     if (value != null) {
       //       setState(() {
-      //         DateString = dtClass.ConvertDateThaiNow(value);
-      //         //DateReal = now.ConvertDateDB(value);
+      //         txtDateStart.text = dtClass.ConvertDateThaiNow(value);
+      //         if (_errorField == 'date_start') _errorField = null;
       //       });
-
-      //       txtDate.text = DateString;
-
-      //       if (_errorField == 'date') {
-      //         setState(() => _errorField = null);
-      //       }
-      //       //txtHideDate.text = DateReal;
       //     }
       //   });
       // },
-      //onSubmitted: (v) {
-      //_fieldFocusChange(context, _focus, _nextFocus);
-      //},
-    );
-
-    final txt_date_start = TextField(
-      style: styleHeadPurple4,
-      focusNode: _focus_date_start,
-      controller: txtDateStart,
-      readOnly: true,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        filled: true,
-        fillColor:
-            _errorField == 'date_start' ? Colors.red.shade100 : lightyellow2,
-        hintText: "วันที่เริ่ม",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-      ),
-      onTap: () {
-        DateTime dt = DateTime.now();
-        int dn = dt.year - 5;
-        DateTime ystart = DateTime(dn);
-        dn = dt.year + 10;
-        DateTime yend = DateTime(dn);
-
-        showDatePicker(
-          context: context,
-          initialDate: dtClass.DateTimeNow(),
-          firstDate: ystart,
-          lastDate: yend,
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              txtDateStart.text = dtClass.ConvertDateThaiNow(value);
-              if (_errorField == 'date_start') _errorField = null;
-            });
-          }
-        });
-      },
-    );
-
-    final txt_date_stop = TextField(
-      style: styleHeadPurple4,
-      focusNode: _focus_date_stop,
-      controller: txtDateStop,
-      readOnly: true,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        filled: true,
-        fillColor:
-            _errorField == 'date_stop' ? Colors.red.shade100 : lightyellow2,
-        hintText: "วันที่สิ้นสุด",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-      ),
-      onTap: () {
-        DateTime dt = DateTime.now();
-        int dn = dt.year - 5;
-        DateTime ystart = DateTime(dn);
-        dn = dt.year + 10;
-        DateTime yend = DateTime(dn);
-
-        showDatePicker(
-          context: context,
-          initialDate: dtClass.DateTimeNow(),
-          firstDate: ystart,
-          lastDate: yend,
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              txtDateStop.text = dtClass.ConvertDateThaiNow(value);
-              if (_errorField == 'date_stop') _errorField = null;
-            });
-          }
-        });
-      },
     );
 
     final txt_days = TextField(
@@ -530,6 +531,42 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
           setState(() => _errorField = null);
         }
       },
+    );
+
+    final txt_date_stop = TextField(
+      style: styleHeadPurple4,
+      focusNode: _focus_date_stop,
+      controller: txtDateStop,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor:
+            _errorField == 'date_stop' ? Colors.red.shade100 : lightyellow2,
+        hintText: "วันที่สิ้นสุด",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      // onTap: () {
+      //   DateTime dt = DateTime.now();
+      //   int dn = dt.year - 5;
+      //   DateTime ystart = DateTime(dn);
+      //   dn = dt.year + 10;
+      //   DateTime yend = DateTime(dn);
+
+      //   showDatePicker(
+      //     context: context,
+      //     initialDate: dtClass.DateTimeNow(),
+      //     firstDate: ystart,
+      //     lastDate: yend,
+      //   ).then((value) {
+      //     if (value != null) {
+      //       setState(() {
+      //         txtDateStop.text = dtClass.ConvertDateThaiNow(value);
+      //         if (_errorField == 'date_stop') _errorField = null;
+      //       });
+      //     }
+      //   });
+      // },
     );
 
     final txt_acc = TextField(
@@ -694,10 +731,15 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
                 itemStatusJobDetail.clear();
                 itemStatusJobDetail.add('กรุณาเลือกรายละเอียดสถานะงาน');
 
+                itemStatusJobDetailDay.clear();
+                itemStatusJobDetailDay.add(0); // Placeholder for days
+
                 for (var i = 0; i < jsonRes.length; i++) {
                   itemStatusJobDetail.add(
                     jsonRes[i]['name_msg_detail'].toString(),
                   );
+
+                  itemStatusJobDetailDay.add(int.parse(jsonRes[i]['days']));
                 }
                 setState(() {
                   sel_status_job_detail = '0';
@@ -741,13 +783,51 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
           }).toList(),
       onChanged: (value) {
         if (value == null) return;
+
         setState(() {
           sel_status_job_detail = value;
           txt_status_job_detail = itemStatusJobDetail[int.parse(value)];
+
+          txtDays.text = itemStatusJobDetailDay[int.parse(value)].toString();
+
           if (_errorField == 'status_job_detail' && value != '0') {
             _errorField = null;
           }
         });
+
+        //msg.Alert(context, "days", txtDays.text);
+        //=======  get Last Date Stop ==============
+        if (txtDays.text != '0') {
+          holidayService
+              .getAllHoliday(years)
+              .then((holidayData) {
+                //print('Loaded holiday data: $holidayData');
+                // print(
+                //   "Holiday Count : " + holidayData['dates'].length.toString(),
+                // );
+                // for (int i = 0; i < holidayData['dates'].length; i++) {
+                //   print(holidayData['dates'][i]);
+                // }
+
+                String day_end = dtClass.LastDate(
+                  dtClass.ConvertDateThaitoDB(txtDateStart.text),
+                  int.parse(txtDays.text),
+                  holidayData['dates'],
+                );
+                setState(() {
+                  txtDateStop.text = dtClass.ConvertDateThai(day_end);
+                });
+
+                // msg.Alert(
+                //   context,
+                //   "test convert thai date to yyyy-mm-dd",
+                //   txtDateStop.text,
+                // );
+              })
+              .catchError((error) {
+                print('Failed to load holiday data: $error');
+              });
+        }
       },
       //hint: Text("เลือกปีงบประมาณ"),
       disabledHint: Text("Disabled"),
@@ -963,7 +1043,8 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
 
           if (_file != null) {
             FileName = _file!.path;
-            FileName = FileName.replaceAll(RegExp(r'.*/'), '');
+            FileName = FileName.split(RegExp(r'[\\/]+')).last;
+            FileName = _sanitizeFileName(FileName);
           } else {
             FileName = "";
           }
@@ -1125,7 +1206,7 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
         minWidth: MediaQuery.of(context).size.width / 5,
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
-        onPressed: () {
+        onPressed: () async {
           //Navigator.of(context).pop();
           //ShowStartBook.routeName,
           //Navigator.popAndPushNamed(context, ShowStartBook.routeName);
@@ -1135,8 +1216,16 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
           //call launchURL(urlStr, fileName)
           //String fullUrl = urlStr + Uri.encodeComponent(fileName);
           //url = "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
+          if (FileNameOriginal.isEmpty) {
+            snackMsg.showSnackBarMsg('ไม่พบไฟล์แนบ', context);
+            return;
+          }
 
-          open.launchURL(urlPath, FileNameOriginal);
+          try {
+            await open.launchURL(urlPath, FileNameOriginal);
+          } catch (e) {
+            snackMsg.showSnackBarMsg(e.toString(), context);
+          }
         },
         child: Text(
           "Download",
@@ -1358,25 +1447,25 @@ class _SendTbStatusBetweenUnitState extends State<SendTbStatusBetweenUnit> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 85,
-                      child: Text(
-                        'วันที่ส่งเรื่อง : ',
-                        style: styleSmalless(black),
-                      ),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth * 0.7,
-                      child: txtdate,
-                    ),
-                  ],
-                ),
-              ),
 
+              // Padding(
+              //   padding: const EdgeInsets.all(2.0),
+              //   child: Row(
+              //     children: [
+              //       Container(
+              //         width: 85,
+              //         child: Text(
+              //           'วันที่เริ่มส่ง : ',
+              //           style: styleSmalless(black),
+              //         ),
+              //       ),
+              //       Container(
+              //         width: SizeConfig.screenWidth * 0.7,
+              //         child: txtdate,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Row(

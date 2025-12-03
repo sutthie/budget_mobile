@@ -1,0 +1,29 @@
+class GetHoliday {
+
+int years=yb.getYearBudget();
+
+//======================get getExpType=============================
+  Future<Json> getAllHoliday(String years) async {
+    String url = "http://$ipAddress/FlutterBudget/GetAllHoliday.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"years": years},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        final items =
+            json.decode(response.body.trim());		
+
+        return items as List[];
+
+      } else {
+        return null;
+      }
+    } else {
+		return null;
+      // throw Exception('Failed to load data from Server.');
+    }
+  }

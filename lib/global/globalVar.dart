@@ -1,5 +1,6 @@
-import 'package:currency_formatter/currency_formatter.dart';
+// import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //library vars;
 const String ipAddSrv = "10.130.228.1"; // flutterBudget
@@ -45,11 +46,20 @@ String idExpSpen = "00-0-000-00-00-00";
 
 // set language baht money
 // do not remember inclue intl: ^0.19.0 in pubspec.yaml
-CurrencyFormat thBahtSettings = CurrencyFormat(
-  code: 'th',
-  symbol: 'บาท',
-  symbolSide: SymbolSide.right,
-  thousandSeparator: '.',
-  decimalSeparator: ',',
-  symbolSeparator: ' ',
+// CurrencyFormat thBahtSettings = CurrencyFormat(
+//   code: 'th',
+//   symbol: 'บาท',
+//   symbolSide: SymbolSide.right,
+//   thousandSeparator: ',',
+//   decimalSeparator: '.',
+//   symbolSeparator: ' ',
+// );
+
+const currencyRegExp = r'^\d+(?:[\.,]\d{0,2})?$';
+final currencyFormatter = FilteringTextInputFormatter.allow(
+  RegExp(currencyRegExp),
+);
+
+const TextInputType keyBoardTypeDecimal = TextInputType.numberWithOptions(
+  decimal: true,
 );

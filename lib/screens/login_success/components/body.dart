@@ -22,8 +22,7 @@ class Body extends StatelessWidget {
   final txtcntSend = TextEditingController();
 
   Body() {
-    GetYearBudget yb = new GetYearBudget();
-    yearBud = yb.getYearBudget();
+    yearBud = GetYearBudget.getYearBudget();
     print("Year Budget : " + yearBud.toString());
 
     ManageLogin _login = ManageLogin();

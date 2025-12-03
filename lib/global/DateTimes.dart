@@ -163,6 +163,83 @@ class DateTimes {
     return dateRet;
   }
 
+  //=======Convert yyyy-mm-dd to thai date ===================================
+  String ConvertDateThai(String dates) // format dates yyyy-mm-dd
+  {
+    DateTime date_tmp = DateTime.parse(dates);
+
+    dayn = date_tmp.day;
+    monthn = date_tmp.month;
+    yearn = date_tmp.year + 543;
+
+    dateRet =
+        dayn.toString() +
+        " " +
+        MonthTh[monthn - 1].toString() +
+        " " +
+        yearn.toString();
+
+    return dateRet;
+  }
+
+  //-----------Convert thai date to yyyy-mm-dd---------------------------------
+  String ConvertDateThaitoDB(String dates) // format dates yyyy-mm-dd
+  {
+    List<String> date_tmp = dates.split(" ");
+
+    String day_str = date_tmp[0];
+    String month_str = date_tmp[1];
+    int yearn = int.parse(date_tmp[2]) - 543;
+
+    int monthn = 0;
+
+    switch (month_str) {
+      case "ม.ค.":
+        monthn = 1;
+        break;
+      case "ก.พ.":
+        monthn = 2;
+        break;
+      case "มี.ค.":
+        monthn = 3;
+        break;
+      case "เม.ย.":
+        monthn = 4;
+        break;
+      case "พ.ค.":
+        monthn = 5;
+        break;
+      case "มิ.ย.":
+        monthn = 6;
+        break;
+      case "ก.ค.":
+        monthn = 7;
+        break;
+      case "ส.ค.":
+        monthn = 8;
+        break;
+      case "ก.ย.":
+        monthn = 9;
+        break;
+      case "ต.ค.":
+        monthn = 10;
+        break;
+      case "พ.ย.":
+        monthn = 11;
+        break;
+      case "ธ.ค.":
+        monthn = 12;
+        break;
+    }
+    //==============================
+
+    String dateRet = yearn.toString() + "-" + monthn.toString() + "-" + day_str;
+
+    return dateRet;
+  }
+
+  //============================================
+
   String DateThaiNowFull() {
     DateTime now = DateTime.now();
 
@@ -214,36 +291,37 @@ class DateTimes {
     List<String> dtemp = dt.split(" ");
 
     String dayn = dtemp[0];
+    dayn = dayn.padLeft(2, '0');
 
     //===========month==============
     String monthn = "";
     switch (dtemp[1]) {
       case "ม.ค.":
-        monthn = "1";
+        monthn = "01";
         break;
       case "ก.พ.":
-        monthn = "2";
+        monthn = "02";
         break;
       case "มี.ค.":
-        monthn = "3";
+        monthn = "03";
         break;
       case "เม.ย.":
-        monthn = "4";
+        monthn = "04";
         break;
       case "พ.ค.":
-        monthn = "5";
+        monthn = "05";
         break;
       case "มิ.ย.":
-        monthn = "6";
+        monthn = "06";
         break;
       case "ก.ค.":
-        monthn = "7";
+        monthn = "07";
         break;
       case "ส.ค.":
-        monthn = "8";
+        monthn = "08";
         break;
       case "ก.ย.":
-        monthn = "9";
+        monthn = "09";
         break;
       case "ต.ค.":
         monthn = "10";
@@ -306,4 +384,69 @@ class DateTimes {
       iconSize: 40,
     );
   }
-}
+
+  //============Cal Last Date==================================
+  // day_end = dtClass.LastDate(
+  // txtDate.text,
+  // int.parse(txtDays.text),
+  //holidayData['dates'],
+  // );
+
+  String LastDate(
+    String dstart,
+    int workingDaysNeeded,
+    List<dynamic> holidayArrStr,
+  ) {
+    workingDaysNeeded += 1;
+
+    if (workingDaysNeeded <= 0) return "Error";
+
+    DateTime currentDate;
+    try {
+      currentDate = DateTime.parse(dstart);
+    } catch (e) {
+      return "Error: Invalid Date";
+    }
+
+    Set<String> holidaySet = holidayArrStr.map((e) => e.toString()).toSet();
+    int daysCounted = 0;
+
+    for (int i = 0; i < 1000; i++) {
+      // Safety break
+      int dayOfWeek = currentDate.weekday; // 1 = Mon, 7 = Sun
+
+      if (dayOfWeek != DateTime.sunday && dayOfWeek != DateTime.saturday) {
+        // แปลงเป็น "yyyy-mm-dd" เพื่อตรวจสอบ
+        String isoDateString = fmtDatetoYMD(currentDate);
+
+        // ตรวจสอบว่าไม่ใช่วันหยุดที่ระบุ
+        if (!holidaySet.contains(isoDateString)) {
+          daysCounted++;
+        }
+      }
+
+      // เมื่อนับครบตามที่ต้องการ ให้หยุด
+      if (daysCounted == workingDaysNeeded) {
+        break;
+      }
+
+      // เลื่อนไปวันถัดไป
+      currentDate = currentDate.add(Duration(days: 1));
+    }
+
+    return fmtDatetoYMD(currentDate);
+  }
+
+  fmtDatetoYMD(DateTime date) {
+    int dayn = date.day;
+    int monthn = date.month;
+    int yearn = date.year;
+
+    String day_str = dayn.toString().padLeft(2, '0');
+    String month_str = monthn.toString().padLeft(2, '0');
+
+    String dateRet = yearn.toString() + "-" + month_str + "-" + day_str;
+
+    return dateRet;
+  }
+} //=======end class DateTimes ============================

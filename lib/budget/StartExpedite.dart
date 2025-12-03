@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors, file_names
 import 'dart:convert';
+// import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import '../global/FirstCharOnly.dart';
+import '../global/GetHoliday.dart';
 import '../global/MySQLService.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
@@ -57,6 +59,8 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     'งานก่อสร้าง',
     'งานอื่นๆ',
   ];
+
+  final GetHoliday holidayService = GetHoliday();
 
   int sel_acc = 0;
   int sel_secret = 0;
@@ -138,10 +142,10 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
   //final FocusNode _focus_ddlSecret = FocusNode();
 
   //const currencyRegExp = r'^(\d+)?\.?\d{0,2}$';
-  static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
-  final currencyFormatter = FilteringTextInputFormatter.allow(
-    RegExp(currencyRegExp),
-  );
+  // static const currencyRegExp = r'^(\d+)(?:\.|\,)\d{0,2}$';
+  // final currencyFormatter = FilteringTextInputFormatter.allow(
+  //   RegExp(currencyRegExp),
+  // );
 
   //==========set==fullname=====
   String fullname = "";
@@ -170,8 +174,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     mydb = MySQLDB();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
     txtYear.text = yearNow.toString();
 
     //=====init UNIT Name==============
@@ -200,6 +203,55 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     // _focus.addListener(() {
     //   print("Focus Node Status: ${_focus.hasFocus}");
     // });
+
+    _focus_days.addListener(() {
+      if (!_focus_days.hasFocus) {
+        if (txtDays.text.isNotEmpty &&
+            txtDays.text != '0' &&
+            txtDateStart.text.isNotEmpty &&
+            txtDateStart.text != "0000-00-00") {
+          // alert value in txt_days
+          // msg.Alert(
+          //   context,
+          //   "Status Text Changed",
+          //   "Value : " + txtDays.text + " วัน",
+          // );
+
+          //=====get holiday in year======
+          String day_end;
+
+          holidayService
+              .getAllHoliday(yearNow.toString())
+              .then((holidayData) {
+                //print('Loaded holiday data: $holidayData');
+                // print(
+                //   "Holiday Count : " + holidayData['dates'].length.toString(),
+                // );
+                // for (int i = 0; i < holidayData['dates'].length; i++) {
+                //   print(holidayData['dates'][i]);
+                // }
+
+                day_end = dtClass.LastDate(
+                  dtClass.ConvertDateThaitoDB(txtDateStart.text),
+                  int.parse(txtDays.text),
+                  holidayData['dates'],
+                );
+                setState(() {
+                  txtDateStop.text = dtClass.ConvertDateThai(day_end);
+                });
+
+                // msg.Alert(
+                //   context,
+                //   "test convert thai date to yyyy-mm-dd",
+                //   txtDateStop.text,
+                // );
+              })
+              .catchError((error) {
+                print('Failed to load holiday data: $error');
+              });
+        }
+      }
+    });
 
     // Register all controllers here so we can dispose them in one place
     AllTextControllerinWidget = [
@@ -314,6 +366,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       // minLines: 1, // Display at least 5 lines
       // maxLines: null,
       controller: txtTitle,
+      inputFormatters: [FirstCharNotDigitFormatter()],
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         filled: true,
@@ -352,11 +405,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       focusNode: _focus_addr_book,
       controller: txtBookNo,
       //keyboardType: TextInputType.number,
-      // inputFormatters: [
-      //   //FilteringTextInputFormatter.digitsOnly,
-      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-      //   currencyFormatter,
-      // ],
+      inputFormatters: [FirstCharNotDigitFormatter()],
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         filled: true,
@@ -381,15 +430,13 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       //focusNode: focusNode,
       focusNode: _focus_amout,
       controller: txtAmout,
-      keyboardType: TextInputType.number,
-      // inputFormatters: [
-      //   currencyFormatter,
-      // ],
+      keyboardType: keyBoardTypeDecimal,
+      inputFormatters: [currencyFormatter],
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         filled: true,
         fillColor: _errorField == 'amout' ? Colors.red.shade100 : Colors.white,
-        hintText: "จำนวนเงิน",
+        hintText: "รับค่าจำนวนเงินเท่านั้น !!!",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
       onChanged: (value) {
@@ -411,6 +458,7 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
     );
 
     final txtdate = TextField(
+      readOnly: true,
       style: styleInput,
       //autofocus: true,
       //focusNode: focusNode,
@@ -456,9 +504,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
           }
         });
       },
-      onSubmitted: (v) {
-        //_focus_ddlSecret.requestFocus();
-      },
+      // onSubmitted: (v) {
+      //   //_focus_ddlSecret.requestFocus();
+      // },
     );
 
     final txt_date_start = TextField(
@@ -512,29 +560,29 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
         hintText: "วันที่สิ้นสุด",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
-      onTap: () {
-        DateTime dt = DateTime.now();
-        int dn = dt.year - 5;
-        DateTime ystart = DateTime(dn);
-        dn = dt.year + 10;
-        DateTime yend = DateTime(dn);
+      // onTap: () {
+      //   DateTime dt = DateTime.now();
+      //   int dn = dt.year - 5;
+      //   DateTime ystart = DateTime(dn);
+      //   dn = dt.year + 10;
+      //   DateTime yend = DateTime(dn);
 
-        showDatePicker(
-          context: context,
-          initialDate: dtClass.DateTimeNow(),
-          firstDate: ystart,
-          lastDate: yend,
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              txtDateStop.text = dtClass.ConvertDateThaiNow(value);
-              if (_errorField == 'date_stop') {
-                _errorField = null;
-              }
-            });
-          }
-        });
-      },
+      //   showDatePicker(
+      //     context: context,
+      //     initialDate: dtClass.DateTimeNow(),
+      //     firstDate: ystart,
+      //     lastDate: yend,
+      //   ).then((value) {
+      //     if (value != null) {
+      //       setState(() {
+      //         txtDateStop.text = dtClass.ConvertDateThaiNow(value);
+      //         if (_errorField == 'date_stop') {
+      //           _errorField = null;
+      //         }
+      //       });
+      //     }
+      //   });
+      // },
     );
 
     final txt_days = TextField(
@@ -552,6 +600,9 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
       onChanged: (v) {
         if (_errorField == 'days' && v.isNotEmpty && v != '0') {
           setState(() => _errorField = null);
+
+          // alert value in txt_days
+          msg.Alert(context, "Status Text Changed", "Value : " + v + " วัน");
         }
       },
     );
@@ -781,13 +832,18 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
           String dateStartDB = txtDateStart.text;
           if (txtDateStart.text != "0000-00-00") {
             dateStartDB = dtClass.ConvDateThaiToDateDB(txtDateStart.text);
+          } else {
+            dateStartDB = "0000-00-00";
           }
 
           String dateStopDB = txtDateStop.text;
           if (txtDateStop.text != "0000-00-00") {
             dateStopDB = dtClass.ConvDateThaiToDateDB(txtDateStop.text);
+          } else {
+            dateStopDB = "0000-00-00";
           }
 
+          // remove comma in amout
           String fmtCommaStr = "r'[\,]";
           RegExp fmtCommaRegExp = RegExp(fmtCommaStr);
           //const fmtMoneyDisp = "r'^(\d+)(?:\.|\,)\d{0,2}";
@@ -1028,14 +1084,14 @@ class _ShowBudgetDetailState extends State<StartExpedite> {
               Padding(padding: const EdgeInsets.all(2.0), child: txttitle),
               Padding(padding: const EdgeInsets.all(2.0), child: txt_addr_book),
               Padding(padding: const EdgeInsets.all(2.0), child: txt_amout),
-              Padding(padding: const EdgeInsets.all(2.0), child: txtdate),
 
+              Padding(padding: const EdgeInsets.all(2.0), child: txtdate),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: txt_date_start,
               ),
-              Padding(padding: const EdgeInsets.all(2.0), child: txt_date_stop),
               Padding(padding: const EdgeInsets.all(2.0), child: txt_days),
+              Padding(padding: const EdgeInsets.all(2.0), child: txt_date_stop),
 
               Padding(
                 padding: const EdgeInsets.all(2.0),

@@ -9,19 +9,31 @@ How to Use
 */
 
 class SnackBarMsg {
-//=========================================================
+  //=========================================================
   showSnackBarMsg(msg, context) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Colors.red,
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.info),
-          Text('${msg}',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        ],
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        content: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.info, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                '$msg',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

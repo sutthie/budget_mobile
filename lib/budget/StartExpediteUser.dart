@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+// import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
 import 'package:budget_mobile/budget/ShowStartBook.dart';
 import 'package:budget_mobile/models/BookUnit.dart';
 import 'package:flutter/material.dart';
+import '../global/FormatMoney.dart';
 import '../global/MySQLService.dart';
 import '../global/size_config.dart';
 import '../models/Expedite.dart';
 import '../global/globalVar.dart';
 import '../global/ResponseMessage.dart';
 import '../global/GetYearBudget.dart';
-import 'package:currency_formatter/currency_formatter.dart';
+// import 'package:currency_formatter/currency_formatter.dart';
 import '../models/UnitName.dart';
 import 'package:budget_mobile/styles/colors.dart';
 import 'package:budget_mobile/styles/TextStyle.dart';
@@ -44,7 +46,7 @@ class StartExpediteUser extends StatefulWidget {
 class _StartExpediteUserState extends State<StartExpediteUser> {
   late MySQLDB mydb;
   late ResponseMessage msg;
-  late DateTimes now = DateTimes();
+  late DateTimes dtClass = DateTimes();
   String DateString = "";
   //String DateReal = "";
   String msgStr = "";
@@ -61,7 +63,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   UploadFileClass upc = UploadFileClass();
 
   // download file attach original
-  late OpenUrlBrowser open;
+  late final OpenUrlBrowser open;
 
   SnackBarMsg snackMsg = SnackBarMsg();
   //=========data ddl==============
@@ -74,6 +76,8 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   ];
 
   List<String> itemStatusJobDetail = ['กรุณาเลือกรายละเอียดสถานะงาน'];
+  // day timeline in status_detail
+  List<int> itemStatusJobDetailDay = [0];
 
   //String sel_status_job = "กรุณาเลือกสถานะงาน";
   String sel_status_job = "0";
@@ -81,6 +85,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
   String sel_status_job_detail = "0";
   String txt_status_job_detail = "";
+  // int days = 0;
 
   String id_use_int = "0";
   //String send_to = "0";
@@ -106,19 +111,26 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
   final txtTypeJob = TextEditingController();
   final txtFile = TextEditingController();
 
-  final FocusNode ddlNode = FocusNode(); // ddl unit
+  final txtDateStart = TextEditingController();
+  final txtDateStop = TextEditingController();
+  final txtDays = TextEditingController();
 
   // add,edit textfield
   final txtDate = TextEditingController();
   final txtETC = TextEditingController();
+
+  // Keep a single list of all controllers on this page for easy disposal
+  late final List<TextEditingController> AllTextControllerinWidget;
+
   // ddl unit
   // ddl job status
   // ddl job status detail
   // text show file upload
 
   // define FocusNode
-  final FocusNode _focus = FocusNode();
-  //final FocusNode _focusDate = FocusNode();
+  final FocusNode _focus_ddl_status = FocusNode();
+  final FocusNode _focus_ddl_status_detail = FocusNode();
+  final FocusNode _focus_ddl_to_unit = FocusNode();
 
   //==========set==fullname=====
   String fullname = ""; // for response person
@@ -144,10 +156,10 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
     msg = ResponseMessage();
     mydb = MySQLDB();
+    open = OpenUrlBrowser();
 
     //=====init Data=================
-    GetYearBudget yb = new GetYearBudget();
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
     txtYear.text = yearNow.toString();
 
     //=====init UNIT Name==============
@@ -155,7 +167,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     unitList = mydb.getUnitList();
 
     //======init Date to TextField========
-    DateString = now.DateThaiNow();
+    DateString = dtClass.DateThaiNow();
     txtDate.text = DateString; // show date send set to now
     //=====tbl_book_unit====
     mydb
@@ -169,16 +181,26 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             txtBookNo.text = result.doc_unit_no;
 
             // convert date from DB to thai date
-            txtDateOriginal.text = now.ConvertDateThaiNow(
+            txtDateOriginal.text = dtClass.ConvertDateThaiNow(
               DateTime.parse(result.unit_date_no),
             );
 
-            String format_money = CurrencyFormatter.format(
-              result.amout,
-              thBahtSettings,
-            );
+            //=====timeline job====
+            if (result.date_start.toString() == "-0001-11-30 00:00:00.000")
+              txtDateStart.text = "0000-00-00";
+            else
+              txtDateStart.text = result.date_start.toString();
 
-            txtAmout.text = format_money;
+            if (result.date_stop.toString() == "-0001-11-30 00:00:00.000")
+              txtDateStop.text = "0000-00-00";
+            else
+              txtDateStop.text = result.date_stop.toString();
+
+            txtDays.text = result.days.toString();
+
+            txtAmout.text = FormatMoney.formatCurrencyfromDouble(
+              double.parse(result.amout.toString()),
+            );
 
             //txtUnitName.text = result.id_use_int.toString();
 
@@ -190,17 +212,40 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
             txtTypeJob.text = result.type_job;
 
             txtResponseOriginal.text = result.response_person;
+
             setState(() {
               FileNameOriginal = result.doc_unit;
             });
           }
         });
 
-    open = OpenUrlBrowser();
+    AllTextControllerinWidget = [
+      txtListName,
+      txtTitle,
+      txtAmout,
+      txtBookNo,
+      txtDate,
+      txtResponseOriginal,
+      txtETC,
+      txtDateOriginal,
+      txtSender,
+      txtDateStart,
+      txtDateStop,
+      txtDays,
+    ];
   }
 
   @override
   void dispose() {
+    _focus_ddl_status.dispose();
+    _focus_ddl_status_detail.dispose();
+    _focus_ddl_to_unit.dispose();
+
+    // Clean up controllers
+    for (var controller in AllTextControllerinWidget) {
+      controller.dispose();
+    }
+
     super.dispose();
   }
 
@@ -232,9 +277,10 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     );
 
     final txttitle = TextField(
+      readOnly: true,
       style: styleHeadPurple4,
       autofocus: true,
-      focusNode: _focus,
+      // focusNode: _focus,
       //enabled: true,
       // minLines: 1, // Display at least 5 lines
       // maxLines: null,
@@ -254,7 +300,45 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       // },
     );
 
+    final txt_unitname = TextField(
+      style: styleHeadPurple4,
+      controller: txtUnitName,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+    );
+
+    final txtbookno = TextField(
+      readOnly: true,
+      style: styleHeadPurple4,
+      //autofocus: true,
+      //focusNode: focusNode,
+      //focusNode: _focus,
+      controller: txtBookNo,
+      //keyboardType: TextInputType.number,
+      // inputFormatters: [
+      //   //FilteringTextInputFormatter.digitsOnly,
+      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+      //   currencyFormatter,
+      // ],
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "ที่ของหนังสือ",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      onSubmitted: (v) {
+        //_fieldFocusChange(context, _focus, _nextFocus);
+      },
+    );
+
     final txt_amout = TextField(
+      readOnly: true,
       style: styleHeadPurple4,
       //autofocus: true,
       //focusNode: focusNode,
@@ -281,30 +365,6 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       // },
     );
 
-    final txtbookno = TextField(
-      style: styleHeadPurple4,
-      //autofocus: true,
-      //focusNode: focusNode,
-      //focusNode: _focus,
-      controller: txtBookNo,
-      //keyboardType: TextInputType.number,
-      // inputFormatters: [
-      //   //FilteringTextInputFormatter.digitsOnly,
-      //   //FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
-      //   currencyFormatter,
-      // ],
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        filled: true,
-        fillColor: lightyellow2,
-        hintText: "ที่ของหนังสือ",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-      ),
-      onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
-      },
-    );
-
     final txt_date_original = TextField(
       style: styleHeadPurple4,
       readOnly: true,
@@ -320,6 +380,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
     final txtdate = TextField(
       style: styleHeadPurple4,
+      readOnly: true,
       //autofocus: true,
       //focusNode: focusNode,
       //focusNode: _focusDate,
@@ -337,33 +398,33 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
         hintText: "วันที่ตั้งเรื่อง",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
       ),
-      onTap: () {
-        DateTime dt = DateTime.now();
-        int dn = dt.year - 5;
-        DateTime ystart = DateTime(dn);
-        dn = dt.year + 10;
-        DateTime yend = DateTime(dn);
+      // onTap: () {
+      //   DateTime dt = DateTime.now();
+      //   int dn = dt.year - 5;
+      //   DateTime ystart = DateTime(dn);
+      //   dn = dt.year + 10;
+      //   DateTime yend = DateTime(dn);
 
-        showDatePicker(
-          context: context,
-          initialDate: now.DateTimeNow(),
-          firstDate: ystart,
-          lastDate: yend,
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              DateString = now.ConvertDateThaiNow(value);
-              //DateReal = now.ConvertDateDB(value);
-            });
+      //   showDatePicker(
+      //     context: context,
+      //     initialDate: now.DateTimeNow(),
+      //     firstDate: ystart,
+      //     lastDate: yend,
+      //   ).then((value) {
+      //     if (value != null) {
+      //       setState(() {
+      //         DateString = now.ConvertDateThaiNow(value);
+      //         //DateReal = now.ConvertDateDB(value);
+      //       });
 
-            txtDate.text = DateString;
-            //txtHideDate.text = DateReal;
-          }
-        });
-      },
-      onSubmitted: (v) {
-        //_fieldFocusChange(context, _focus, _nextFocus);
-      },
+      //       txtDate.text = DateString;
+      //       //txtHideDate.text = DateReal;
+      //     }
+      //   });
+      // },
+      // onSubmitted: (v) {
+      //   //_fieldFocusChange(context, _focus, _nextFocus);
+      // },
     );
 
     final txt_acc = TextField(
@@ -402,32 +463,6 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       ),
     );
 
-    final txt_unitname = TextField(
-      style: styleHeadPurple4,
-      controller: txtUnitName,
-      readOnly: true,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        filled: true,
-        fillColor: lightyellow2,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-      ),
-    );
-
-    final txt_etc = TextField(
-      style: styleHeadPurple4,
-      controller: txtETC,
-      //readOnly: true,
-      minLines: 1, // Display at least 5 lines
-      maxLines: null,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-        filled: true,
-        fillColor: lightyellow2,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
-      ),
-    );
-
     final txt_response_original = TextField(
       style: styleHeadPurple4,
       //autofocus: true,
@@ -452,6 +487,20 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       onSubmitted: (v) {
         //_fieldFocusChange(context, _focus, _nextFocus);
       },
+    );
+
+    final txt_etc = TextField(
+      style: styleHeadPurple4,
+      controller: txtETC,
+      //readOnly: true,
+      minLines: 1, // Display at least 5 lines
+      maxLines: null,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+      ),
     );
 
     final txt_sender = TextField(
@@ -494,8 +543,94 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       ),
     );
 
+    final txt_date_start = TextField(
+      style: styleHeadPurple4,
+      controller: txtDateStart,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "วันที่เริ่ม",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      // onTap: () {
+      //   DateTime dt = DateTime.now();
+      //   int dn = dt.year - 5;
+      //   DateTime ystart = DateTime(dn);
+      //   dn = dt.year + 10;
+      //   DateTime yend = DateTime(dn);
+
+      //   showDatePicker(
+      //     context: context,
+      //     initialDate: dtClass.DateTimeNow(),
+      //     firstDate: ystart,
+      //     lastDate: yend,
+      //   ).then((value) {
+      //     if (value != null) {
+      //       setState(() {
+      //         txtDateStart.text = dtClass.ConvertDateThaiNow(value);
+      //         if (_errorField == 'date_start') {
+      //           _errorField = null;
+      //         }
+      //       });
+      //     }
+      //   });
+      // },
+    );
+
+    final txt_date_stop = TextField(
+      style: styleHeadPurple4,
+      controller: txtDateStop,
+      readOnly: true,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "วันที่สิ้นสุด",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+      // onTap: () {
+      //   DateTime dt = DateTime.now();
+      //   int dn = dt.year - 5;
+      //   DateTime ystart = DateTime(dn);
+      //   dn = dt.year + 10;
+      //   DateTime yend = DateTime(dn);
+
+      //   showDatePicker(
+      //     context: context,
+      //     initialDate: dtClass.DateTimeNow(),
+      //     firstDate: ystart,
+      //     lastDate: yend,
+      //   ).then((value) {
+      //     if (value != null) {
+      //       setState(() {
+      //         txtDateStop.text = dtClass.ConvertDateThaiNow(value);
+      //         if (_errorField == 'date_stop') {
+      //           _errorField = null;
+      //         }
+      //       });
+      //     }
+      //   });
+      // },
+    );
+
+    final txt_days = TextField(
+      style: styleHeadPurple4,
+      controller: txtDays,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        filled: true,
+        fillColor: lightyellow2,
+        hintText: "จำนวนวัน",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+      ),
+    );
+
     //==========DDL================================
     final ddlStatusJob = DropdownButton(
+      focusNode: _focus_ddl_status,
       borderRadius: BorderRadius.circular(10),
       value: sel_status_job,
       //value: '0',
@@ -531,24 +666,24 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
                 //===============================================
                 itemStatusJobDetail.clear();
-                List<String> itemStatusJobDetailTemp = [];
+                itemStatusJobDetail.add('กรุณาเลือกรายละเอียดสถานะงาน');
+
+                itemStatusJobDetailDay.clear();
+                itemStatusJobDetailDay.add(0); // Placeholder for days
 
                 for (var i = 0; i < jsonRes.length; i++) {
                   //print(jsonRes[i].name_msg_detail.toString() + "\n");
                   //print(jsonRes[i]['name_msg_detail'].toString() + "\n");
-                  itemStatusJobDetailTemp.add(
+                  itemStatusJobDetail.add(
                     jsonRes[i]['name_msg_detail'].toString(),
                   );
-                }
 
-                itemStatusJobDetailTemp.insert(
-                  0,
-                  'กรุณาเลือกรายละเอียดสถานะงาน',
-                );
+                  itemStatusJobDetailDay.add(int.parse(jsonRes[i]['days']));
+                }
 
                 setState(() {
                   sel_status_job_detail = "0";
-                  itemStatusJobDetail.addAll(itemStatusJobDetailTemp);
+                  txt_status_job_detail = '';
                 });
                 //===============================================
               }
@@ -573,6 +708,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
     );
 
     final ddlStatusJobDetail = DropdownButton(
+      focusNode: _focus_ddl_status_detail,
       borderRadius: BorderRadius.circular(10),
       value: sel_status_job_detail,
       items:
@@ -591,6 +727,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
         setState(() {
           sel_status_job_detail = value!;
           txt_status_job_detail = itemStatusJobDetail[int.parse(value)];
+          txtDays.text = itemStatusJobDetailDay[int.parse(value)].toString();
         });
       },
       //hint: Text("เลือกปีงบประมาณ"),
@@ -609,6 +746,44 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
       iconSize: 30,
     );
 
+    // final ddlStatusJobDetail = DropdownButton(
+    //   focusNode: _focus_ddl_status_detail,
+    //   borderRadius: BorderRadius.circular(10),
+    //   value: sel_status_job_detail,
+    //   items:
+    //       itemStatusJobDetail.map((item) {
+    //         int index = itemStatusJobDetail.indexOf(item);
+    //         return DropdownMenuItem<String>(
+    //           child: Padding(
+    //             padding: const EdgeInsets.all(2.0),
+    //             child: Text('$item'),
+    //           ),
+    //           //value: item,
+    //           value: index.toString(),
+    //         );
+    //       }).toList(),
+    //   onChanged: (value) {
+    //     setState(() {
+    //       sel_status_job_detail = value!;
+    //       txt_status_job_detail = itemStatusJobDetail[int.parse(value)];
+    //     });
+    //   },
+    //   //hint: Text("เลือกปีงบประมาณ"),
+    //   disabledHint: Text("Disabled"),
+    //   elevation: 3,
+    //   style: TextStyle(
+    //     color: Colors.green.shade900,
+    //     fontSize: 13,
+    //     //fontWeight: FontWeight.bold
+    //   ),
+    //   //style: styleLabel,
+    //   dropdownColor: Colors.grey.shade200,
+    //   icon: Icon(Icons.arrow_drop_down_circle),
+    //   iconDisabledColor: Colors.red,
+    //   iconEnabledColor: Colors.blue,
+    //   iconSize: 30,
+    // );
+
     //======define ddl widget=======
     Widget ddlUnit(udata) {
       return FutureBuilder<List<UnitName>?>(
@@ -620,7 +795,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
           //return Center(child: CircularProgressIndicator());
           else
             return DropdownButton<String>(
-              focusNode: ddlNode,
+              focusNode: _focus_ddl_to_unit,
               //autofocus: true,
               //isExpanded: true,
               borderRadius: BorderRadius.circular(10),
@@ -696,6 +871,35 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
         onPressed: () {
+          //validate data
+          List<String> missing = [];
+          if (sent_to == '0') missing.add('unit');
+          if (sel_status_job == '0') missing.add('status_job');
+          if (sel_status_job_detail == '0') missing.add('status_job_detail');
+
+          if (missing.isNotEmpty) {
+            final firstMissing = missing.first;
+            switch (firstMissing) {
+              case 'unit':
+                msgStr = 'กรุณาเลือกหน่วยที่ต้องการส่ง';
+                break;
+              case 'status_job':
+                msgStr = 'กรุณาเลือกสถานะงาน';
+                break;
+              case 'status_job_detail':
+                msgStr = 'กรุณาเลือกรายละเอียดสถานะงาน';
+                break;
+              default:
+                msgStr = 'กรุณากรอกข้อมูลให้ครบถ้วน !!!';
+            }
+            msg.Alert(context, 'Error', msgStr);
+            return;
+          }
+
+          // All validations passed
+
+          //=============================================================
+
           if (widget.id_job.isEmpty ||
               id_use_int == "0" ||
               sent_to == "0" ||
@@ -721,7 +925,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                 itemStatusJobDetail[int.parse(sel_status_job_detail)];
 
             //txtDate.text = now.ConvDateThaiToDateDB(txtDate.text);
-            String dateDB = now.ConvDateThaiToDateDB(txtDate.text);
+            String dateDB = dtClass.ConvDateThaiToDateDB(txtDate.text);
             print("date format db : " + dateDB);
 
             // cut only filename
@@ -875,18 +1079,26 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
         minWidth: MediaQuery.of(context).size.width / 5,
         padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
         highlightColor: Colors.amber, //on press button change color
-        onPressed: () {
+        onPressed: () async {
           //Navigator.of(context).pop();
           //ShowStartBook.routeName,
           //Navigator.popAndPushNamed(context, ShowStartBook.routeName);
 
           String urlPath = 'http://$ipAddress/$Budget_Site/Follow/doc/';
 
+          if (FileNameOriginal.isEmpty) {
+            snackMsg.showSnackBarMsg('ไม่พบไฟล์แนบ', context);
+            return;
+          }
+
           //call launchURL(urlStr, fileName)
           //String fullUrl = urlStr + Uri.encodeComponent(fileName);
           //url = "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
-
-          open.launchURL(urlPath, FileNameOriginal);
+          try {
+            await open.launchURL(urlPath, FileNameOriginal);
+          } catch (e) {
+            snackMsg.showSnackBarMsg(e.toString(), context);
+          }
         },
         child: Text(
           "Download",
@@ -1204,6 +1416,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       style: TextButton.styleFrom(
                         //padding: const EdgeInsets.only(left: 0),
                         fixedSize: Size(SizeConfig.screenWidth * 0.7, 55),
+                        alignment: Alignment.centerLeft,
                         foregroundColor: blue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
@@ -1212,6 +1425,19 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       ),
                       onPressed: () async {
                         //print("Open Attached File: " + FileNameOriginal);
+
+                        if (FileNameOriginal.isEmpty) {
+                          snackMsg.showSnackBarMsg('ไม่พบไฟล์แนบ', context);
+                          return;
+                        }
+
+                        if (!FileNameOriginal.toLowerCase().endsWith('.pdf')) {
+                          const warning =
+                              'not support view please download file';
+                          print(warning);
+                          snackMsg.showSnackBarMsg(warning, context);
+                          return;
+                        }
 
                         url =
                             "http://$ipAddress/$Budget_Site/Follow/doc/$FileNameOriginal";
@@ -1243,6 +1469,7 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
                       child: Text(
                         FileNameOriginal,
                         style: styleSmalless(purple),
+                        textAlign: TextAlign.left,
                       ),
                     ),
                   ],
@@ -1251,6 +1478,72 @@ class _StartExpediteUserState extends State<StartExpediteUser> {
 
               //hidden TextField
               //Visibility(visible: false, child: txt_hide_bookdate),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 80,
+                      child: Text(
+                        'วันที่เริ่ม : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_date_start,
+
+                      //width: 350,
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 80,
+                      child: Text(
+                        'วันที่สิ้นสุด : ',
+                        style: styleSmalless(black),
+                      ),
+                    ),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_date_stop,
+
+                      //width: 350,
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 80,
+                      child: Text('จำนวนวัน : ', style: styleSmalless(black)),
+                    ),
+                    Container(
+                      width: SizeConfig.screenWidth * 0.7,
+                      child: txt_days,
+
+                      //width: 350,
+                    ),
+                  ],
+                ),
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(6.0),
                 child: Row(

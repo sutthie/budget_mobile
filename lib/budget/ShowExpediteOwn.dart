@@ -27,7 +27,7 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
   // To show Selected Item in Text.
   String selyear = "";
 
-// init year now
+  // init year now
   GetYearBudget yb = new GetYearBudget();
   late int yearNow;
 
@@ -39,7 +39,7 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
   Future<List<Expedite>?> getDataList(String txtsearch, String ddlyear) {
     Future<List<Expedite>?> datlist;
     MySQLDB mydb = new MySQLDB();
-    datlist = mydb.getExpSearch(txtsearch, ddlyear) as Future<List<Expedite>?>;
+    datlist = mydb.getExpSearch(txtsearch, ddlyear);
     return datlist;
   }
 
@@ -58,8 +58,8 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
     super.initState();
     _controller = AnimationController(vsync: this);
 
-// init data
-    yearNow = yb.getYearBudget();
+    // init data
+    yearNow = GetYearBudget.getYearBudget();
     listyear = [for (var i = yearNow - 5; i <= yearNow; i++) i];
 
     getDropDownItem();
@@ -96,7 +96,7 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
       color: Colors.black,
     );
 
-//Create ListView using data get from service
+    //Create ListView using data get from service
     Widget listExpenWidget(context, snapshot) {
       //final String idExpSpen = "";
       if (snapshot.data != null && snapshot.data.length > 0) {
@@ -123,9 +123,9 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ShowExpDetail(
-                      id_exp_spen: '${spen.id_exp_spen}',
-                    ),
+                    builder:
+                        (context) =>
+                            ShowExpDetail(id_exp_spen: '${spen.id_exp_spen}'),
                     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
                   ),
                 );
@@ -137,15 +137,18 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${spen.list_exp_spen}',
+                              style: const TextStyle(fontSize: 16.0),
                             ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('${spen.list_exp_spen}',
-                                  style: const TextStyle(fontSize: 16.0)),
-                            )),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -154,32 +157,36 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         child: Card(
-                            color: Colors.blue[200],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 8,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    // var msg = new ResponseMessage();
-                                    // msg.Alert(context, "รหัสงบ",
-                                    //     '${spen.id_exp_spen}');
+                          color: Colors.blue[200],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          elevation: 8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // var msg = new ResponseMessage();
+                                // msg.Alert(context, "รหัสงบ",
+                                //     '${spen.id_exp_spen}');
 
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => StartExpedite(
-                                    //       id_exp_spen: '${spen.id_exp_spen}',
-                                    //     ),
-                                    //     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
-                                    //   ),
-                                    // );
-                                  },
-                                  child: Text('รหัสงบ : ${spen.id_exp_spen}',
-                                      style: TextStyle(fontSize: 14))),
-                            )),
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => StartExpedite(
+                                //       id_exp_spen: '${spen.id_exp_spen}',
+                                //     ),
+                                //     //builder: (context) => ShowBudgetDetail('${spen.list_exp_spen}'),
+                                //   ),
+                                // );
+                              },
+                              child: Text(
+                                'รหัสงบ : ${spen.id_exp_spen}',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -205,26 +212,27 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
         );
     }
 
-// call from Body Part in Scaffold
-// Main Display ListView call listExpenWidget for create ListView
+    // call from Body Part in Scaffold
+    // Main Display ListView call listExpenWidget for create ListView
     Widget listListExspenWidget(data) {
       return FutureBuilder(
-          //future: mydb.getExpSearch("", years),
-          future: data,
-          builder: (context, tbDBSnap) {
-            switch (tbDBSnap.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              /* case ConnectionState.done:
+        //future: mydb.getExpSearch("", years),
+        future: data,
+        builder: (context, tbDBSnap) {
+          switch (tbDBSnap.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            /* case ConnectionState.done:
             return */
-              default:
-                if (tbDBSnap.hasError)
-                  return new Text('Error: ${tbDBSnap.error}');
-                else
-                  return listExpenWidget(context, tbDBSnap);
-            }
-          });
+            default:
+              if (tbDBSnap.hasError)
+                return new Text('Error: ${tbDBSnap.error}');
+              else
+                return listExpenWidget(context, tbDBSnap);
+          }
+        },
+      );
     }
 
     //======define widget=======
@@ -253,12 +261,12 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
         //autofocus: true,
         controller: txtSearch,
         decoration: InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-            filled: true,
-            fillColor: Colors.yellowAccent.shade100,
-            hintText: "ค้นหา",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(8.0))),
+          contentPadding: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
+          filled: true,
+          fillColor: Colors.yellowAccent.shade100,
+          hintText: "ค้นหา",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+        ),
         onSubmitted: (v) {
           //_fieldFocusChange(context, _focus, _nextFocus);
         },
@@ -291,12 +299,10 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
 
     final ddlYearNew = DropdownButton(
       value: yearNow,
-      items: listyear.map((int item) {
-        return DropdownMenuItem<int>(
-          child: Text('$item'),
-          value: item,
-        );
-      }).toList(),
+      items:
+          listyear.map((int item) {
+            return DropdownMenuItem<int>(child: Text('$item'), value: item);
+          }).toList(),
       onChanged: (value) {
         selyear = value.toString();
         //if not found alert no found
@@ -324,7 +330,7 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
       iconSize: 40,
     );
 
-//======widget button==========
+    //======widget button==========
     final searchButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(20.0),
@@ -345,11 +351,15 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
             datList = getDataList(txtSearch.text.trim(), yearNow.toString());
           });
         },
-        child: Text("ค้นหา",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "ค้นหา",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -365,11 +375,15 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Main",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Main",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
@@ -386,24 +400,25 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
           //Navigator.of(context).pop();
           txtSearch.text = "";
           setState(() {
-            yearNow = yb.getYearBudget();
+            yearNow = GetYearBudget.getYearBudget();
             datList = getDataList("", yearNow.toString());
           });
         },
-        child: Text("Reset",
-            textAlign: TextAlign.center,
-            style: styleInput.copyWith(color: Colors.white, fontSize: 14
-                //fontWeight: FontWeight.bold
-                )),
+        child: Text(
+          "Reset",
+          textAlign: TextAlign.center,
+          style: styleInput.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            //fontWeight: FontWeight.bold
+          ),
+        ),
       ),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "งบประมาณประจำปี",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text("งบประมาณประจำปี", style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.lightBlueAccent,
       body: Column(
@@ -414,9 +429,7 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
                 padding: const EdgeInsets.all(4.0),
                 child: Text('เลือกปีงบประมาณ', style: styleHead),
               ),
-              SizedBox(
-                width: 5,
-              ),
+              SizedBox(width: 5),
               ddlYearNew,
             ],
           ),
@@ -428,14 +441,10 @@ class _ShowExpediteOwnState extends State<ShowExpediteOwn>
               ),
               Container(width: 140.0, child: txtsearch()),
               searchButon,
-              SizedBox(
-                width: 3,
-              ),
+              SizedBox(width: 3),
               backButon,
-              SizedBox(
-                width: 3,
-              ),
-              ResetButon
+              SizedBox(width: 3),
+              ResetButon,
               //ddlYear,
               //txtsearch,
             ],

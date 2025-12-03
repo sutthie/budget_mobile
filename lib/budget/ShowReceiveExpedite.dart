@@ -40,7 +40,6 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
   String selyear = "";
 
   // init year now
-  GetYearBudget yb = new GetYearBudget();
   late int yearNow;
 
   //int yearNow = DateTime.now().year.toInt() + 543;
@@ -81,7 +80,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
     super.initState();
     _controller = AnimationController(vsync: this);
 
-    yearNow = yb.getYearBudget();
+    yearNow = GetYearBudget.getYearBudget();
     listyear = [for (var i = yearNow - 5; i <= yearNow + 2; i++) i];
 
     getDropDownItem();
@@ -398,7 +397,7 @@ class _ShowReceiveExpediteState extends State<ShowReceiveExpedite>
           //Navigator.of(context).pop();
           txtSearch.text = "";
           setState(() {
-            yearNow = yb.getYearBudget();
+            yearNow = GetYearBudget.getYearBudget();
             datList = getDataList("", yearNow.toString());
           });
         },

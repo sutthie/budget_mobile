@@ -66,7 +66,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
     _controller = AnimationController(vsync: this);
 
     // init data
-    yearNow = yb.getYearBudget().toString();
+    yearNow = GetYearBudget.getYearBudget().toString();
     selyear = yearNow;
 
     listyear = [
@@ -410,7 +410,7 @@ class _GetBudgetState extends State<ShowExpediteAdmin>
           //Navigator.of(context).pop();
           txtSearch.text = "";
           setState(() {
-            yearNow = yb.getYearBudget().toString();
+            yearNow = GetYearBudget.getYearBudget().toString();
             datList = getDataList("", yearNow.toString());
           });
         },

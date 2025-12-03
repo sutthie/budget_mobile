@@ -1608,6 +1608,28 @@ class MySQLDB {
     }
   }
 
+  //============get Date Rec Rx==========================
+  Future<String> getDateRecRx(String id_status) async {
+    String url = "http://$ipAddress/FlutterBudget/GetDateRecRx.php";
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: {"id_status": id_status},
+    );
+    if (response.statusCode == 200) {
+      //print(response.body);
+
+      if (response.body.trim() != "") {
+        return response.body.trim();
+      } else {
+        return "";
+      }
+    } else {
+      return "";
+      //throw Exception('Failed to load data from Server.');
+    }
+  }
+
   //======================================================
   static Future<String> createTable(String tb) async {
     String url = "http://$ipAddress/FlutterBudget/CreateTable.php";

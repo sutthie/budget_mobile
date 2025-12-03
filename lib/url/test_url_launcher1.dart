@@ -38,10 +38,7 @@ class _test_url_launcher1State extends State<test_url_launcher1> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         //title: Text(widget.title),
-        title: Text(
-          "ปรับปรุงข้อมูลผู้ใช้",
-          style: styleHeadWhite4,
-        ),
+        title: Text("ปรับปรุงข้อมูลผู้ใช้", style: styleHeadWhite4),
       ),
       backgroundColor: lightyellow2,
       body: Center(
@@ -59,12 +56,13 @@ class _test_url_launcher1State extends State<test_url_launcher1> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          launchUrl(Uri.parse(fullUrl)).onError(
-                            (error, stackTrace) {
-                              print("Url is not valid!");
-                              return false;
-                            },
-                          );
+                          launchUrl(Uri.parse(fullUrl)).onError((
+                            error,
+                            stackTrace,
+                          ) {
+                            print("Url is not valid!");
+                            return false;
+                          });
                         },
                         child: Text('Open link 1 Work'),
                       ),
@@ -74,7 +72,7 @@ class _test_url_launcher1State extends State<test_url_launcher1> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          open.launchURL("", fullUrl);
+                          await open.launchURL(urlStr, fn1);
                         },
                         child: Text('Openlink User Fuction'),
                       ),
@@ -83,40 +81,44 @@ class _test_url_launcher1State extends State<test_url_launcher1> {
                   Row(
                     children: [
                       ElevatedButton.icon(
-                          onPressed: () async {
-                            if (!await launchUrl(Uri.parse(fullUrl))) {
-                              throw 'Could not launch $fullUrl';
-                            }
-                          },
-                          icon: const Icon(Icons.add_link),
-                          label: const Text('View Url Work')),
+                        onPressed: () async {
+                          if (!await launchUrl(Uri.parse(fullUrl))) {
+                            throw 'Could not launch $fullUrl';
+                          }
+                        },
+                        icon: const Icon(Icons.add_link),
+                        label: const Text('View Url Work'),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
                       ElevatedButton.icon(
-                          onPressed: () async {
-                            Uri uri = Uri.parse("https://www.google.co.th");
-                            if (!await launchUrl(uri)) {
-                              throw 'Could not launch $fullUrl';
-                            }
-                          },
-                          icon: const Icon(Icons.add_link),
-                          label: const Text('Open Url : www')),
+                        onPressed: () async {
+                          Uri uri = Uri.parse("https://www.google.co.th");
+                          if (!await launchUrl(uri)) {
+                            throw 'Could not launch $fullUrl';
+                          }
+                        },
+                        icon: const Icon(Icons.add_link),
+                        label: const Text('Open Url : www'),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
                       ElevatedButton.icon(
-                          onPressed: () async {
-                            Uri uri = Uri.parse(
-                                "http://10.130.230.64/budget1/index.htm");
-                            if (!await launchUrl(uri)) {
-                              throw 'Could not launch $fullUrl';
-                            }
-                          },
-                          icon: const Icon(Icons.add_link),
-                          label: const Text('Open Budget Web App')),
+                        onPressed: () async {
+                          Uri uri = Uri.parse(
+                            "http://10.130.230.64/budget1/index.htm",
+                          );
+                          if (!await launchUrl(uri)) {
+                            throw 'Could not launch $fullUrl';
+                          }
+                        },
+                        icon: const Icon(Icons.add_link),
+                        label: const Text('Open Budget Web App'),
+                      ),
                     ],
                   ),
                 ],
